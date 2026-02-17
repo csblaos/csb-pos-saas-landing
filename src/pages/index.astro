@@ -1,0 +1,24 @@
+---
+// This page handles the root redirect logic
+import { languages, defaultLang } from '../lib/lang';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
+    <script is:inline define:vars={{ defaultLang, languages }}>
+        // Client-side redirect based on saved preference
+        try {
+            const storedLang = localStorage.getItem('lang');
+            const userLang = storedLang && storedLang in languages ? storedLang : defaultLang;
+            window.location.href = `/${userLang}/`;
+        } catch (e) {
+            window.location.href = `/${defaultLang}/`;
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

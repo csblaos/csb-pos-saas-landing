@@ -1,0 +1,19 @@
+---
+import PricingSelect from '../islands/PricingSelect';
+import { getLangFromUrl } from '../../lib/lang';
+import { t } from '../../data/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<section id="pricing" class="py-20 bg-[var(--color-bg)] border-b-2 border-[var(--color-border)]">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16 space-y-4">
+      <h2 class="text-4xl md:text-5xl font-black uppercase text-[var(--color-text)]">{t('pricing.title', lang)}</h2>
+      <p class="text-xl font-bold text-gray-600 dark:text-gray-300">{t('pricing.subtitle', lang)}</p>
+    </div>
+
+    <!-- React Island -->
+    <PricingSelect client:visible lang={lang} />
+  </div>
+</section>

@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import PricingSelect from '../../components/islands/PricingSelect';
+import { getLangFromUrl, languages } from '../../lib/lang';
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+const comparison = [
+  { feature: 'Users', start: '1-2', pro: '3-5', biz: 'Unlimited' },
+  { feature: 'Channels', start: 'Facebook', pro: 'All', biz: 'All + API' },
+  { feature: 'Printer Support', start: '❌', pro: '✅', biz: '✅' },
+  { feature: 'Stock Sync', start: '✅', pro: '✅', biz: '✅' },
+  { feature: 'Custom Domain', start: '❌', pro: '❌', biz: '✅' },
+  { feature: 'Priority Support', start: '❌', pro: '✅', biz: 'VIP' },
+];
+---
+
+<Base title="Packages & Pricing | AstroPOS">
+  <Navbar />
+  
+  <main class="py-20">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h1 class="text-5xl font-black uppercase mb-4">Choose Your Weapon</h1>
+        <p class="text-xl text-gray-600 font-bold">Fair prices. No hidden fees. Cancel anytime.</p>
+      </div>
+
+      <PricingSelect client:load lang={lang} />
+      
+      {/* Detailed Comparison */}
+      <div class="mt-24 max-w-4xl mx-auto">
+        <h2 class="text-3xl font-black mb-8 text-center uppercase">Feature Comparison</h2>
+        <div class="overflow-x-auto border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)]">
+          <table class="w-full text-left border-collapse bg-[var(--color-bg-card)]">
+            <thead>
+              <tr class="bg-black text-white dark:bg-white dark:text-black">
+                <th class="p-4 border-r border-gray-700">Feature</th>
+                <th class="p-4 border-r border-gray-700 text-center">Starter</th>
+                <th class="p-4 border-r border-gray-700 text-center text-lime-400 dark:text-lime-600">Pro</th>
+                <th class="p-4 text-center">Business</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparison.map((row, i) => (
+                <tr class={i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900' : 'bg-white dark:bg-black'}>
+                  <td class="p-4 border-r-2 border-[var(--color-border)] font-bold">{row.feature}</td>
+                  <td class="p-4 border-r-2 border-[var(--color-border)] text-center">{row.start}</td>
+                  <td class="p-4 border-r-2 border-[var(--color-border)] text-center font-bold">{row.pro}</td>
+                  <td class="p-4 text-center">{row.biz}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>

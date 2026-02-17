@@ -1,0 +1,34 @@
+---
+import LanguageToggle from '../islands/LanguageToggle';
+import ThemeToggle from '../islands/ThemeToggle';
+import Button from '../common/Button.astro';
+import { getLangFromUrl } from '../../lib/lang';
+import { t } from '../../data/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<nav class="sticky top-0 z-[100] w-full border-b-2 border-[var(--color-border)] bg-[var(--color-bg-card)]/80 backdrop-blur-md transition-colors duration-300">
+  <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+    <a href={`/${lang}/`} class="text-2xl font-black italic tracking-tighter flex items-center gap-2 text-[var(--color-text)]">
+      <div class="w-8 h-8 bg-lime-400 border-2 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)]"></div>
+      Astro<span class="text-lime-600">POS</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8 font-bold text-sm text-[var(--color-text)]">
+      <a href={`/${lang}/packages`} class="hover:underline decoration-2 underline-offset-4">{t('nav.packages', lang)}</a>
+      <a href={`/${lang}/services`} class="hover:underline decoration-2 underline-offset-4">{t('nav.services', lang)}</a>
+      <a href={`/${lang}/news`} class="hover:underline decoration-2 underline-offset-4">{t('nav.news', lang)}</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <ThemeToggle client:load />
+      <LanguageToggle client:load />
+      <div class="hidden sm:block">
+        <Button href={`/${lang}/demo`} variant="secondary" class="text-xs px-4 py-2">
+          {t('nav.demo', lang)}
+        </Button>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,18 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'dark';
+  class?: string;
+}
+
+const { variant = 'primary', class: className } = Astro.props;
+
+const variants = {
+  primary: "bg-[#a3e635] text-black",
+  secondary: "bg-[#f472b6] text-black",
+  dark: "bg-black text-white",
+};
+---
+
+<span class={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${variants[variant]} ${className || ''}`}>
+  <slot />
+</span>

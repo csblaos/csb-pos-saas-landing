@@ -1,0 +1,53 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Navbar from '../../../components/sections/Navbar.astro';
+import { getCollection } from 'astro:content';
+import { getLangFromUrl, languages } from '../../../lib/lang';
+import { t } from '../../../data/i18n';
+import { Calendar, Tag } from 'lucide-react';
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Base title="News & Updates | AstroPOS">
+  <Navbar />
+  
+  <main class="py-20 bg-[var(--color-bg)] min-h-screen">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h1 class="text-5xl font-black mb-12 uppercase text-[var(--color-text)]">{t('nav.news', lang)}</h1>
+      
+      <div class="grid gap-8">
+        {sortedNews.map((post) => (
+          <article class="bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] overflow-hidden flex flex-col md:flex-row hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-all">
+             <div class="md:w-1/3 bg-gray-200 border-b-2 md:border-b-0 md:border-r-2 border-[var(--color-border)] aspect-video md:aspect-auto">
+               <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover" />
+             </div>
+             <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+               <div>
+                 <div class="flex items-center gap-4 text-sm font-bold text-gray-500 mb-2">
+                   <span class="flex items-center gap-1"><Calendar size={14}/> {post.data.pubDate.toISOString().slice(0,10)}</span>
+                   <span class="flex items-center gap-1"><Tag size={14}/> {post.data.tags.join(', ')}</span>
+                 </div>
+                 <h2 class="text-2xl font-black mb-3">
+                   <a href={`/${lang}/news/${post.slug}`} class="hover:underline decoration-2 underline-offset-4 text-[var(--color-text)]">
+                     {post.data.title}
+                   </a>
+                 </h2>
+                 <p class="font-medium text-gray-700 dark:text-gray-300 mb-4">{post.data.description}</p>
+               </div>
+               <a href={`/${lang}/news/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors">
+                 Read Article →
+               </a>
+             </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</Base>

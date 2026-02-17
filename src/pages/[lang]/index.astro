@@ -1,0 +1,100 @@
+---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import Hero from '../../components/sections/Hero.astro';
+import Features from '../../components/sections/Features.astro';
+import Pricing from '../../components/sections/Pricing.astro';
+import Button from '../../components/common/Button.astro';
+import { getLangFromUrl, languages } from '../../lib/lang';
+import { t } from '../../data/i18n';
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+const faqs = [
+  { q: t('faq.q1', lang), a: t('faq.a1', lang) },
+  { q: t('faq.q2', lang), a: t('faq.a2', lang) },
+  { q: t('faq.q3', lang), a: t('faq.a3', lang) },
+];
+---
+
+<Base title="AstroPOS - The Ultimate Sales Machine">
+  <Navbar />
+  
+  <main>
+    <Hero />
+    <Features />
+    
+    <!-- How it works -->
+    <section class="py-20 bg-[var(--color-bg-card)] border-y-2 border-[var(--color-border)]">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-black mb-12 uppercase text-[var(--color-text)]">{t('howItWorks.title', lang)}</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="p-6">
+            <div class="text-6xl font-black text-gray-200 dark:text-gray-800 mb-4">01</div>
+            <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step1', lang)}</h3>
+            <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step1.desc', lang)}</p>
+          </div>
+          <div class="p-6">
+            <div class="text-6xl font-black text-gray-200 dark:text-gray-800 mb-4">02</div>
+            <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step2', lang)}</h3>
+            <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step2.desc', lang)}</p>
+          </div>
+          <div class="p-6">
+            <div class="text-6xl font-black text-gray-200 dark:text-gray-800 mb-4">03</div>
+            <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step3', lang)}</h3>
+            <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step3.desc', lang)}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Pricing />
+
+    <!-- FAQ -->
+    <section class="py-20 bg-[var(--color-bg)]">
+      <div class="container mx-auto px-4 max-w-3xl">
+        <h2 class="text-4xl font-black mb-12 text-center uppercase text-[var(--color-text)]">{t('faq.title', lang)}</h2>
+        <div class="space-y-6">
+          {faqs.map((f, i) => (
+             <details class="group bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] open:shadow-none open:translate-y-1 transition-all">
+               <summary class="flex justify-between items-center p-6 font-bold cursor-pointer list-none text-[var(--color-text)]">
+                 <span>{f.q}</span>
+                 <span class="transform group-open:rotate-180 transition-transform">▼</span>
+               </summary>
+               <div class="px-6 pb-6 text-gray-600 dark:text-gray-300 font-medium leading-relaxed border-t-2 border-[var(--color-border)] pt-4">
+                 {f.a}
+               </div>
+             </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-24 bg-black text-white text-center dark:bg-white dark:text-black">
+      <div class="container mx-auto px-4">
+        <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
+          STOP WASTING TIME <br/>
+          <span class="text-lime-400 dark:text-lime-600">START SELLING MOORE.</span>
+        </h2>
+        <Button href={`/${lang}/packages`} class="bg-lime-400 text-black border-white hover:bg-lime-300 text-xl px-12 py-6 dark:border-black">
+          {t('hero.cta.start', lang)}
+        </Button>
+      </div>
+    </section>
+  </main>
+  
+  <footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)]">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="font-bold text-sm">{t('footer.copyright', lang)}</p>
+      <div class="flex gap-4 text-sm font-bold underline">
+         <a href={`/${lang}/privacy`}>{t('footer.privacy', lang)}</a>
+         <a href={`/${lang}/terms`}>{t('footer.terms', lang)}</a>
+      </div>
+    </div>
+  </footer>
+</Base>

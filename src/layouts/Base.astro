@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+import { getLangFromUrl } from '../lib/lang';
+import { t } from '../data/i18n';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+const { 
+  title, 
+  description = t('hero.subheadline', lang), 
+  image = "/og-image.jpg" 
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <title>{title}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+Thai:wght@400;600;800&family=Noto+Sans+Lao:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <ViewTransitions />
+    <ViewTransitions />
+    <script is:inline>
+      // Theme Logic
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return 'system';
+      })();
+    
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (theme === 'dark' || (theme === 'system' && systemDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+
+      // Language Logic (Auto-Redirect)
+      if (typeof localStorage !== 'undefined') {
+        const storedLang = localStorage.getItem('lang');
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // If we have a stored lang, but no URL param or it matches default,
+        // (Decision: only redirect if NO param is present, to allow linking to specific langs)
+        if (storedLang && !urlParams.has('lang')) {
+             const url = new URL(window.location.href);
+             url.searchParams.set('lang', storedLang);
+             window.location.replace(url.toString());
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-[var(--color-bg)] text-[var(--color-text)] min-h-screen flex flex-col font-sans transition-colors duration-300">
+    <slot />
+  </body>
+</html>

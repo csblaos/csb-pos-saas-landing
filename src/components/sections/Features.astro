@@ -1,0 +1,68 @@
+---
+import Card from '../common/Card.astro';
+import { ClipboardPaste, Truck, Package, History, Printer, ShieldCheck } from 'lucide-react';
+import { getLangFromUrl } from '../../lib/lang';
+import { t } from '../../data/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+
+const features = [
+  {
+    icon: ClipboardPaste,
+    title: t('features.smartPaste', lang),
+    desc: t('features.smartPaste.desc', lang),
+    color: "bg-blue-200"
+  },
+  {
+    icon: Truck,
+    title: "COD Management",
+    desc: "Track Cash on Delivery status. Know exactly when money hits your account.",
+    color: "bg-green-200"
+  },
+  {
+    icon: Package,
+    title: "Real-time Stock",
+    desc: "Inventory cuts automatically across all channels. Never oversell again.",
+    color: "bg-yellow-200"
+  },
+  {
+    icon: Printer,
+    title: "Instant Lables",
+    desc: "Print shipping labels in one click. Supports standard thermal printers.",
+    color: "bg-pink-200"
+  },
+  {
+    icon: History,
+    title: "Customer History",
+    desc: "See previous orders and bad behavior tags (Blacklist) before you ship.",
+    color: "bg-purple-200"
+  },
+  {
+    icon: ShieldCheck,
+    title: "Secure & Stable",
+    desc: "100% Static site architecture means zero downtime and blazing speed.",
+    color: "bg-orange-200"
+  }
+];
+---
+
+<section id="features" class="py-20 bg-[var(--color-bg-card)] border-b-2 border-[var(--color-border)]">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16 space-y-4">
+      <h2 class="text-4xl md:text-5xl font-black uppercase text-[var(--color-text)]">{t('features.title', lang)}</h2>
+      <p class="text-xl font-bold text-gray-600 dark:text-gray-300">{t('features.subtitle', lang)}</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {features.map((f, i) => (
+        <Card class="hover:-translate-y-2 transition-transform duration-300">
+          <div class={`w-12 h-12 ${f.color} border-2 border-[var(--color-border)] flex items-center justify-center mb-4 shadow-[2px_2px_0px_0px_var(--color-shadow)] text-black`}>
+            <f.icon size={24} />
+          </div>
+          <h3 class="text-xl font-black mb-2 text-[var(--color-text)]">{f.title}</h3>
+          <p class="font-medium text-gray-700 dark:text-gray-300 leading-relaxed">{f.desc}</p>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>

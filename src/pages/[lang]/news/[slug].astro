@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Navbar from '../../../components/sections/Navbar.astro';
+import { getLangFromUrl, languages } from '../../../lib/lang';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news');
+  const langs = Object.keys(languages);
+  
+  // Generate paths for every post in every language
+  return langs.flatMap(lang => 
+    posts.map(post => ({
+      params: { lang, slug: post.slug },
+      props: { post },
+    }))
+  );
+}
+
+const { post } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const { Content } = await post.render();
+---
+
+<Base title={`${post.data.title} | AstroPOS News`}>
+  <Navbar />
+  
+  <main class="py-20 bg-[var(--color-bg)]">
+    <div class="container mx-auto px-4 max-w-3xl">
+      <div class="mb-8 text-center">
+         <span class="inline-block bg-lime-300 text-black border-2 border-black px-3 py-1 font-bold text-sm mb-4">
+           {post.data.tags[0]}
+         </span>
+         <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight text-[var(--color-text)]">{post.data.title}</h1>
+         <p class="font-bold text-gray-500">{post.data.pubDate.toISOString().slice(0,10)} • By {post.data.author}</p>
+      </div>
+      
+      <div class="prose prose-lg prose-headings:font-black prose-p:font-medium prose-img:border-2 prose-img:border-[var(--color-border)] prose-img:shadow-[4px_4px_0px_0px_var(--color-shadow)] prose-a:text-pink-500 prose-blockquote:border-l-4 prose-blockquote:border-[var(--color-border)] prose-blockquote:bg-[var(--color-bg-card)] prose-blockquote:p-4 prose-blockquote:not-italic font-sans text-[var(--color-text)] dark:prose-invert">
+        <Content />
+      </div>
+
+      <div class="mt-12 pt-8 border-t-2 border-[var(--color-border)] text-center">
+        <a href={`/${lang}/news`} class="font-black hover:underline text-[var(--color-text)]">← Back to News</a>
+      </div>
+    </div>
+  </main>
+</Base>

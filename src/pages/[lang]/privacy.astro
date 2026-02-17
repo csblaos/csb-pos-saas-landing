@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import { getLangFromUrl, languages } from '../../lib/lang';
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<Base title="Privacy Policy | AstroPOS">
+  <Navbar />
+  <div class="container mx-auto px-4 py-20 max-w-3xl">
+    <h1 class="text-5xl font-black mb-8">Privacy Policy</h1>
+    <div class="prose prose-lg prose-headings:font-black prose-p:font-medium border-2 border-[var(--color-border)] p-8 bg-[var(--color-bg-card)] shadow-[8px_8px_0px_0px_var(--color-shadow)] text-[var(--color-text)] dark:prose-invert">
+      <p>Last updated: October 2024</p>
+      
+      <h3>1. Information We Collect</h3>
+      <p>We collect information you provide directly to us, such as when you create an account, subscribe to our newsletter, or request customer support.</p>
+
+      <h3>2. How We Use Your Information</h3>
+      <p>We use the information we collect to provide, maintain, and improve our services, including to process transactions and send you related information.</p>
+
+      <h3>3. Data Security</h3>
+      <p>We implement appropriate technical and organizational measures to protect the security of your personal information.</p>
+
+      <h3>4. Contact Us</h3>
+      <p>If you have any questions about this Privacy Policy, please contact us at privacy@astropos.com.</p>
+    </div>
+  </div>
+</Base>
