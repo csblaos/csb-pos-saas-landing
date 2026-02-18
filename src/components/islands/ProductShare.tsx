@@ -49,7 +49,7 @@ export default function ProductShare({ url, title, translations }: ProductShareP
         <div className="flex flex-col gap-4 p-6 bg-gray-50 border-2 border-dashed border-black/20 rounded-lg mt-8">
             <h3 className="font-bold uppercase text-sm text-gray-500">{translations.share}</h3>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
                 {/* Copy Link Button */}
                 <button
                     onClick={handleCopy}
