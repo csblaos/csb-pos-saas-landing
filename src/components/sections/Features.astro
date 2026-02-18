@@ -15,39 +15,39 @@ const features = [
   },
   {
     icon: Truck,
-    title: "COD Management",
-    desc: "Track Cash on Delivery status. Know exactly when money hits your account.",
+    title: t('features.codManagement', lang),
+    desc: t('features.codManagement.desc', lang),
     color: "bg-green-200"
   },
   {
     icon: Package,
-    title: "Real-time Stock",
-    desc: "Inventory cuts automatically across all channels. Never oversell again.",
+    title: t('features.realTimeStock', lang),
+    desc: t('features.realTimeStock.desc', lang),
     color: "bg-yellow-200"
   },
   {
     icon: Printer,
-    title: "Instant Lables",
-    desc: "Print shipping labels in one click. Supports standard thermal printers.",
+    title: t('features.instantLabels', lang),
+    desc: t('features.instantLabels.desc', lang),
     color: "bg-pink-200"
   },
   {
     icon: History,
-    title: "Customer History",
-    desc: "See previous orders and bad behavior tags (Blacklist) before you ship.",
+    title: t('features.customerHistory', lang),
+    desc: t('features.customerHistory.desc', lang),
     color: "bg-purple-200"
   },
   {
     icon: ShieldCheck,
-    title: "Secure & Stable",
-    desc: "100% Static site architecture means zero downtime and blazing speed.",
+    title: t('features.secureStable', lang),
+    desc: t('features.secureStable.desc', lang),
     color: "bg-orange-200"
   }
 ];
 ---
 
 <section id="features" class="py-20 bg-[var(--color-bg-card)] border-b-2 border-[var(--color-border)]">
-  <div class="container mx-auto px-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
     <div class="text-center mb-16 space-y-4">
       <h2 class="text-4xl md:text-5xl font-black uppercase text-[var(--color-text)]">{t('features.title', lang)}</h2>
       <p class="text-xl font-bold text-gray-600 dark:text-gray-300">{t('features.subtitle', lang)}</p>

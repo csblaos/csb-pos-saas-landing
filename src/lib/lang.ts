@@ -9,10 +9,8 @@ export type Lang = keyof typeof languages;
 export const defaultLang: Lang = 'th';
 
 export function getLangFromUrl(url: URL): Lang {
-    const langParam = url.searchParams.get('lang');
-    if (langParam && Object.keys(languages).includes(langParam)) {
-        return langParam as Lang;
-    }
+    const [, lang] = url.pathname.split('/');
+    if (lang in languages) return lang as Lang;
     return defaultLang;
 }
 
@@ -30,8 +28,28 @@ export function setLang(lang: Lang) {
     if (typeof localStorage !== 'undefined') {
         localStorage.setItem('lang', lang);
     }
-    // Reload with new query param
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', lang);
-    window.location.href = url.toString();
+
+    // Get current path segments
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+
+    // Check if first segment is a language code
+    if (pathSegments[0] && pathSegments[0] in languages) {
+        // Replace the language segment
+        pathSegments[0] = lang;
+    } else {
+        // No language in path, prepend it
+        pathSegments.unshift(lang);
+    }
+
+    // Construct new path
+    const newPath = '/' + pathSegments.join('/');
+
+    // Navigate to new path (only preserve hash, not query params)
+    window.location.href = newPath + window.location.hash;
+}
+
+export function useTranslatedPath(lang: Lang) {
+    return function translatePath(path: string, l: Lang = lang) {
+        return `/${l}${path.startsWith('/') ? path : '/' + path}`;
+    }
 }

@@ -44,10 +44,20 @@ const {
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+Thai:wght@400;600;800&family=Noto+Sans+Lao:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+Thai:wght@400;600;800&family=Noto+Sans+Lao+Looped:wght@400;600;800&display=swap" rel="stylesheet">
     
     <ViewTransitions />
-    <ViewTransitions />
+    <style is:global>
+      @view-transition {
+        navigation: auto;
+      }
+      
+      /* Smooth fade transition for language changes */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 0.3s;
+      }
+    </style>
     <script is:inline>
       // Theme Logic
       const theme = (() => {
@@ -68,14 +78,12 @@ const {
       // Language Logic (Auto-Redirect)
       if (typeof localStorage !== 'undefined') {
         const storedLang = localStorage.getItem('lang');
-        const urlParams = new URLSearchParams(window.location.search);
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        const langInPath = pathSegments[0];
         
-        // If we have a stored lang, but no URL param or it matches default,
-        // (Decision: only redirect if NO param is present, to allow linking to specific langs)
-        if (storedLang && !urlParams.has('lang')) {
-             const url = new URL(window.location.href);
-             url.searchParams.set('lang', storedLang);
-             window.location.replace(url.toString());
+        // Only redirect if we have a stored language and we're at root or no language in path
+        if (storedLang && (!langInPath || !['en', 'th', 'la'].includes(langInPath))) {
+          window.location.replace(`/${storedLang}/`);
         }
       }
     </script>

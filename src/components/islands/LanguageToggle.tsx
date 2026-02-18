@@ -6,24 +6,37 @@ export default function LanguageToggle() {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        // With path-based routing, we can get the lang from the URL accurately in the strict sense?
-        // Actually, `window.location.pathname` is better
         const pathSegments = window.location.pathname.split('/');
-        const langInPath = pathSegments[1] as Lang; // /en/...
+        const langInPath = pathSegments[1] as Lang;
 
         if (langInPath && langInPath in languages) {
             setCurrentLang(langInPath);
         } else {
-            // Fallback for verification
             setCurrentLang(getLangFromLocalStorage());
         }
     }, []);
 
     const handleSelect = (l: Lang) => {
-        // setLang now handles the redirect to new path
         setLang(l);
         setCurrentLang(l);
         setIsOpen(false);
+    };
+
+    // Preload the target language page on hover for faster navigation
+    const handleHover = (lang: Lang) => {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        if (pathSegments[0] && pathSegments[0] in languages) {
+            pathSegments[0] = lang;
+        } else {
+            pathSegments.unshift(lang);
+        }
+        const targetPath = '/' + pathSegments.join('/');
+
+        // Create a link element to preload the page
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = targetPath;
+        document.head.appendChild(link);
     };
 
     return (
@@ -41,7 +54,8 @@ export default function LanguageToggle() {
                         <button
                             key={code}
                             onClick={() => handleSelect(code as Lang)}
-                            className="p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-bold border-b border-[var(--color-border)] last:border-0 text-[var(--color-text)] flex items-center gap-2"
+                            onMouseEnter={() => handleHover(code as Lang)}
+                            className="p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-bold border-b border-[var(--color-border)] last:border-0 text-[var(--color-text)] flex items-center gap-2 transition-colors"
                         >
                             <span>{config.flag}</span>
                             <span>{config.label}</span>

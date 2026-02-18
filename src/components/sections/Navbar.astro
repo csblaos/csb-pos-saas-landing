@@ -9,7 +9,7 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <nav class="sticky top-0 z-[100] w-full border-b-2 border-[var(--color-border)] bg-[var(--color-bg-card)]/80 backdrop-blur-md transition-colors duration-300">
-  <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-16 flex items-center justify-between">
     <a href={`/${lang}/`} class="text-2xl font-black italic tracking-tighter flex items-center gap-2 text-[var(--color-text)]">
       <div class="w-8 h-8 bg-lime-400 border-2 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)]"></div>
       Astro<span class="text-lime-600">POS</span>

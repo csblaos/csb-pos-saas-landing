@@ -30,21 +30,21 @@ const faqs = [
     
     <!-- How it works -->
     <section class="py-20 bg-[var(--color-bg-card)] border-y-2 border-[var(--color-border)]">
-      <div class="container mx-auto px-4 text-center">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
         <h2 class="text-4xl font-black mb-12 uppercase text-[var(--color-text)]">{t('howItWorks.title', lang)}</h2>
         <div class="grid md:grid-cols-3 gap-8">
           <div class="p-6">
-            <div class="text-6xl font-black text-gray-200 dark:text-gray-800 mb-4">01</div>
+            <div class="w-16 h-16 bg-lime-400 border-2 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[4px_4px_0px_0px_var(--color-shadow)] text-black">1</div>
             <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step1', lang)}</h3>
             <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step1.desc', lang)}</p>
           </div>
           <div class="p-6">
-            <div class="text-6xl font-black text-gray-200 dark:text-gray-800 mb-4">02</div>
+            <div class="w-16 h-16 bg-pink-400 border-2 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[4px_4px_0px_0px_var(--color-shadow)] text-black">2</div>
             <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step2', lang)}</h3>
             <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step2.desc', lang)}</p>
           </div>
           <div class="p-6">
-            <div class="text-6xl font-black text-gray-200 dark:text-gray-800 mb-4">03</div>
+            <div class="w-16 h-16 bg-blue-400 border-2 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[4px_4px_0px_0px_var(--color-shadow)] text-black">3</div>
             <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step3', lang)}</h3>
             <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step3.desc', lang)}</p>
           </div>
@@ -76,7 +76,7 @@ const faqs = [
 
     <!-- Final CTA -->
     <section class="py-24 bg-black text-white text-center dark:bg-white dark:text-black">
-      <div class="container mx-auto px-4">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
           STOP WASTING TIME <br/>
           <span class="text-lime-400 dark:text-lime-600">START SELLING MOORE.</span>
@@ -89,7 +89,7 @@ const faqs = [
   </main>
   
   <footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)]">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="font-bold text-sm">{t('footer.copyright', lang)}</p>
       <div class="flex gap-4 text-sm font-bold underline">
          <a href={`/${lang}/privacy`}>{t('footer.privacy', lang)}</a>
