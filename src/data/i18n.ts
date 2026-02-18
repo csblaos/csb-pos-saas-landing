@@ -6,6 +6,7 @@ export const translations = {
     'nav.home': 'Home',
     'nav.packages': 'Pricing',
     'nav.services': 'Services',
+    'nav.hardware': 'Shop',
     'nav.news': 'News',
     'nav.demo': 'Demo',
 
@@ -46,6 +47,34 @@ export const translations = {
     'pricing.subtitle': 'Invest in your business. Cancel anytime.',
     'pricing.select': 'Select Plan',
     'pricing.popular': 'Best Value',
+    'pricing.compareFeatures': 'Compare All Features',
+    'pricing.readyToStart': 'Ready to Start?',
+    'pricing.youSelected': 'You selected:',
+    'pricing.plan': 'Plan',
+    'pricing.noCreditCard': 'No credit card required for trial.',
+    'pricing.confirm': 'Apply via WhatsApp',
+    'pricing.checkout': 'Go to Checkout',
+    'pricing.perMonth': 'Per Month',
+
+    // Package Features (Starter)
+    'pricing.starter.shops': '1 Shop',
+    'pricing.starter.users': '1-2 Users',
+    'pricing.starter.reports': 'Basic Reports',
+    'pricing.starter.channels': 'Facebook Only',
+
+    // Package Features (Pro)
+    'pricing.pro.shops': '1 Shop',
+    'pricing.pro.users': '3-5 Users',
+    'pricing.pro.channels': 'All Channels (FB/TikTok/Line)',
+    'pricing.pro.labels': 'Print Labels',
+    'pricing.pro.reports': 'Advanced Reports',
+
+    // Package Features (Business)
+    'pricing.business.shops': 'Unlimited Shops',
+    'pricing.business.users': 'Unlimited Users',
+    'pricing.business.rbac': 'RBAC Roles',
+    'pricing.business.api': 'API Access',
+    'pricing.business.support': 'Dedicated Support',
 
     // FAQ
     'faq.title': 'FAQ',
@@ -91,12 +120,23 @@ export const translations = {
     'demo.title': 'Try it yourself.',
     'demo.subtitle': 'Experience the speed of AstroPOS. No login required.',
     'demo.back': 'Back to Orders',
+    // Hardware Page
+    'hardware.hero.title': 'Pro Gear for',
+    'hardware.hero.title.highlight': 'Pro Sellers',
+    'hardware.hero.subtitle': 'Official hardware tested and guaranteed to work perfectly with AstroPOS.',
+    'hardware.warranty.title': '1 Year Warranty',
+    'hardware.warranty.desc': 'Free replacement for any defects.',
+    'hardware.shipping.title': 'Fast Shipping',
+    'hardware.shipping.desc': 'Nationwide delivery within 2-3 days.',
+    'hardware.setup.title': 'Remote Setup',
+    'hardware.setup.desc': 'We help you set up remotely via TeamViewer.',
   },
   th: {
     // Navigation
     'nav.home': 'หน้าหลัก',
     'nav.packages': 'ราคา',
     'nav.services': 'บริการ',
+    'nav.hardware': 'ร้านค้า',
     'nav.news': 'บทความ',
     'nav.demo': 'ลองใช้ระบบ',
 
@@ -137,6 +177,34 @@ export const translations = {
     'pricing.subtitle': 'คุ้มค่าแก่การลงทุน ยกเลิกเมื่อไหร่ก็ได้',
     'pricing.select': 'เลือกแพ็กเกจนี้',
     'pricing.popular': 'ขายดีที่สุด',
+    'pricing.compareFeatures': 'เปรียบเทียบฟีเจอร์ทั้งหมด',
+    'pricing.readyToStart': 'พร้อมเริ่มต้นแล้วใช่ไหม?',
+    'pricing.youSelected': 'คุณเลือก:',
+    'pricing.plan': 'แพ็กเกจ',
+    'pricing.noCreditCard': 'ไม่ต้องใส่บัตรเครดิตสำหรับทดลองใช้',
+    'pricing.confirm': 'สมัครผ่าน WhatsApp',
+    'pricing.checkout': 'ไปชำระเงิน',
+    'pricing.perMonth': 'ต่อเดือน',
+
+    // Package Features (Starter)
+    'pricing.starter.shops': '1 ร้านค้า',
+    'pricing.starter.users': '1-2 ผู้ใช้',
+    'pricing.starter.reports': 'รายงานพื้นฐาน',
+    'pricing.starter.channels': 'Facebook เท่านั้น',
+
+    // Package Features (Pro)
+    'pricing.pro.shops': '1 ร้านค้า',
+    'pricing.pro.users': '3-5 ผู้ใช้',
+    'pricing.pro.channels': 'ทุกช่องทาง (FB/TikTok/Line)',
+    'pricing.pro.labels': 'พิมพ์ใบปะหน้า',
+    'pricing.pro.reports': 'รายงานขั้นสูง',
+
+    // Package Features (Business)
+    'pricing.business.shops': 'ร้านค้าไม่จำกัด',
+    'pricing.business.users': 'ผู้ใช้ไม่จำกัด',
+    'pricing.business.rbac': 'กำหนดสิทธิ์ผู้ใช้ (RBAC)',
+    'pricing.business.api': 'เชื่อมต่อ API',
+    'pricing.business.support': 'ทีมซัพพอร์ตส่วนตัว',
 
     // FAQ
     'faq.title': 'คำถามที่พบบ่อย',
@@ -178,16 +246,34 @@ export const translations = {
     'footer.privacy': 'นโยบายความเป็นส่วนตัว',
     'footer.terms': 'ข้อตกลงการใช้งาน',
 
+    // Testimonials
+    'testimonials.title': 'เสียงจากผู้ใช้งาน',
+    'testimonials.subtitle': 'เรื่องราวความสำเร็จจากร้านค้าที่เติบโตไปกับเรา',
+    'testimonials.quote.best.pos.ever': 'นี่คือระบบ POS ที่ดีที่สุดเท่าที่เคยใช้มา ติดตั้งเสร็จใน 5 นาที!',
+    'testimonials.quote.saved.my.time': 'เมื่อก่อนเสียวันละ 4 ชม. ทำบัญชี ตอนนี้เหลือแค่ 30 นาทีเอง',
+    'testimonials.quote.easy.to.use': 'ขนาดอาม่ายังใช้เป็น ง่ายและเร็วมากๆ ระบบเสถียรสุดๆ',
+
     // Demo
     'demo.title': 'ลองเล่นให้เห็นกับตา',
     'demo.subtitle': 'สัมผัสความเร็วของ AstroPOS ด้วยตัวเอง ไม่ต้องสมัครสมาชิก',
     'demo.back': 'กลับไปหน้ารายการ',
+    // Hardware Page
+    'hardware.hero.title': 'อุปกรณ์มือโปร สำหรับ',
+    'hardware.hero.title.highlight': 'แม่ค้ามือโปร',
+    'hardware.hero.subtitle': 'ฮาร์ดแวร์ที่เราคัดมาแล้วว่า "เสถียร" และทำงานร่วมกับ AstroPOS ได้ 100%',
+    'hardware.warranty.title': 'รับประกัน 1 ปี',
+    'hardware.warranty.desc': 'เสียเปลี่ยนตัวใหม่ให้ทันที',
+    'hardware.shipping.title': 'ส่งไวทั่วไทย',
+    'hardware.shipping.desc': 'ถึงมือภายใน 2-3 วันทำการ',
+    'hardware.setup.title': 'ติดตั้งฟรี',
+    'hardware.setup.desc': 'เราช่วยตั้งค่าผ่าน TeamViewer ให้ฟรี',
   },
   la: {
     // Navigation
     'nav.home': 'ໜ້າຫຼັກ',
     'nav.packages': 'ລາຄາ',
     'nav.services': 'ບໍລິການ',
+    'nav.hardware': 'ຮ້ານຄ້າ',
     'nav.news': 'ຂ່າວສານ',
     'nav.demo': 'ທົດລອງໃຊ້',
 
@@ -228,6 +314,34 @@ export const translations = {
     'pricing.subtitle': 'ຄຸ້ມຄ່າການລົງທຶນ ຍົກເລີກເມື່ອໃດກໍໄດ້',
     'pricing.select': 'ເລືອກແພັກເກັດນີ້',
     'pricing.popular': 'ຂາຍດີທີ່ສຸດ',
+    'pricing.compareFeatures': 'ປຽບທຽບຟີເຈີທັງໝົດ',
+    'pricing.readyToStart': 'ພ້ອມເລີ່ມຕົ້ນແລ້ວບໍ?',
+    'pricing.youSelected': 'ເຈົ້າເລືອກ:',
+    'pricing.plan': 'ແພັກເກັດ',
+    'pricing.noCreditCard': 'ບໍ່ຕ້ອງໃສ່ບັດເຄຣດິດສຳລັບທົດລອງໃຊ້',
+    'pricing.confirm': 'ສະໝັກຜ່ານ WhatsApp',
+    'pricing.checkout': 'ໄປຊຳລະເງິນ',
+    'pricing.perMonth': 'ຕໍ່ເດືອນ',
+
+    // Package Features (Starter)
+    'pricing.starter.shops': '1 ຮ້ານຄ້າ',
+    'pricing.starter.users': '1-2 ຜູ້ໃຊ້',
+    'pricing.starter.reports': 'ລາຍງານພື້ນຖານ',
+    'pricing.starter.channels': 'Facebook ເທົ່ານັ້ນ',
+
+    // Package Features (Pro)
+    'pricing.pro.shops': '1 ຮ້ານຄ້າ',
+    'pricing.pro.users': '3-5 ຜູ້ໃຊ້',
+    'pricing.pro.channels': 'ທຸກຊ່ອງທາງ (FB/TikTok/Line)',
+    'pricing.pro.labels': 'ພິມໃບປະໜ້າ',
+    'pricing.pro.reports': 'ລາຍງານຂັ້ນສູງ',
+
+    // Package Features (Business)
+    'pricing.business.shops': 'ຮ້ານຄ້າບໍ່ຈຳກັດ',
+    'pricing.business.users': 'ຜູ້ໃຊ້ບໍ່ຈຳກັດ',
+    'pricing.business.rbac': 'ກຳນົດສິດຜູ້ໃຊ້ (RBAC)',
+    'pricing.business.api': 'ເຊື່ອມຕໍ່ API',
+    'pricing.business.support': 'ທີມຊັບພອດສ່ວນຕົວ',
 
     // FAQ
     'faq.title': 'ຄຳຖາມທີ່ພົບເລື້ອຍ',
@@ -269,10 +383,27 @@ export const translations = {
     'footer.privacy': 'ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ',
     'footer.terms': 'ຂໍ້ຕົກລົງການນຳໃຊ້',
 
+    // Testimonials
+    'testimonials.title': 'ສຽງຈາກຜູ້ໃຊ້ງານ',
+    'testimonials.subtitle': 'ເລື່ອງລາວຄວາມສຳເລັດຈາກຮ້ານຄ້າທີ່ເຕີບໂຕໄປກັບເຮົາ',
+    'testimonials.quote.best.pos.ever': 'ນີ້ຄືລະບົບ POS ທີ່ດີທີ່ສຸດເທົ່າທີ່ເຄີຍໃຊ້ມາ ຕິດຕັ້ງແລ້ວໃນ 5 ນາທີ!',
+    'testimonials.quote.saved.my.time': 'ເມື່ອກ່ອນເສຍເວລາ 4 ຊົ່ວໂມງເຮັດບັນຊີ ດຽວນີ້ເຫຼືອແຄ່ 30 ນາທີ',
+    'testimonials.quote.easy.to.use': 'ຂະໜາດແມ່ເຖົ້າກໍຍັງໃຊ້ເປັນ ງ່າຍແລະໄວຫຼາຍ ລະບົບສະຖຽນສຸດໆ',
+
     // Demo
     'demo.title': 'ລອງຫຼິ້ນເບິ່ງ',
     'demo.subtitle': 'ສຳຜັດຄວາມໄວຂອງ AstroPOS ດ້ວຍຕົວເອງ ບໍ່ຕ້ອງສະໝັກສະມາຊິກ.',
     'demo.back': 'ກັບໄປໜ້າລາຍການ',
+    // Hardware Page
+    'hardware.hero.title': 'ອຸປະກອນມືອາຊີບ ສຳລັບ',
+    'hardware.hero.title.highlight': 'ແມ່ຄ້າມືອາຊີບ',
+    'hardware.hero.subtitle': 'ຮາດແວທີ່ເຮົາຄັດມາແລ້ວວ່າ "ສະຖຽນ" ແລະ ເຮັດວຽກຮ່ວມກັບ AstroPOS ໄດ້ 100%',
+    'hardware.warranty.title': 'ຮັບປະກັນ 1 ປີ',
+    'hardware.warranty.desc': 'ເສຍປ່ຽນຕົວໃໝ່ໃຫ້ທັນທີ',
+    'hardware.shipping.title': 'ສົ່ງໄວທົ່ວປະເທດ',
+    'hardware.shipping.desc': 'ຮອດມືພາຍໃນ 2-3 ວັນທຳການ',
+    'hardware.setup.title': 'ຕິດຕັ້ງຟຣີ',
+    'hardware.setup.desc': 'ເຮົາຊ່ວຍຕັ້ງຄ່າຜ່ານ TeamViewer ໃຫ້ຟຣີ',
   }
 };
 

@@ -1,12 +1,13 @@
 ---
 import PricingSelect from '../islands/PricingSelect';
+import Button from '../common/Button.astro';
 import { getLangFromUrl } from '../../lib/lang';
 import { t } from '../../data/i18n';
 
 const lang = getLangFromUrl(Astro.url);
 ---
 
-<section id="pricing" class="py-20 bg-[var(--color-bg)] border-b-2 border-[var(--color-border)]">
+<section id="pricing" class="py-20 border-b-2 border-[var(--color-border)]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
     <div class="text-center mb-16 space-y-4">
       <h2 class="text-4xl md:text-5xl font-black uppercase text-[var(--color-text)]">{t('pricing.title', lang)}</h2>
@@ -15,5 +16,12 @@ const lang = getLangFromUrl(Astro.url);
 
     <!-- React Island -->
     <PricingSelect client:visible lang={lang} />
+    
+    <!-- Compare All Features Button -->
+    <div class="text-center mt-12">
+      <Button href={`/${lang}/packages#comparison`} variant="secondary">
+        {t('pricing.compareFeatures', lang)}
+      </Button>
+    </div>
   </div>
 </section>

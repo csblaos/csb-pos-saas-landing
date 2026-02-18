@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import HardwareGrid from '../../components/islands/HardwareGrid';
+import { getLangFromUrl, languages } from '../../lib/lang';
+import { t } from '../../data/i18n';
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<Base title={`Hardware Shop - AstroPOS`}>
+  <Navbar />
+  
+  <main class="py-20">
+    <!-- Hero Header -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
+      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
+        {t('hardware.hero.title', lang)} <span class="bg-lime-400 px-2 border-2 border-black shadow-[4px_4px_0px_0px_black] text-black inline-block transform -rotate-2">{t('hardware.hero.title.highlight', lang)}</span>
+      </h1>
+      <p class="text-xl md:text-2xl font-bold text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        {t('hardware.hero.subtitle', lang)}
+      </p>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <HardwareGrid lang={lang} client:load />
+    </div>
+
+    <!-- Warranty Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+        <div class="grid md:grid-cols-3 gap-8 text-center bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] p-12 shadow-[8px_8px_0px_0px_var(--color-shadow)]">
+            <div>
+                <div class="text-4xl mb-4">🛡️</div>
+                <h3 class="text-xl font-black uppercase mb-2">{t('hardware.warranty.title', lang)}</h3>
+                <p class="text-sm font-medium opacity-70">{t('hardware.warranty.desc', lang)}</p>
+            </div>
+            <div>
+                <div class="text-4xl mb-4">🚀</div>
+                <h3 class="text-xl font-black uppercase mb-2">{t('hardware.shipping.title', lang)}</h3>
+                <p class="text-sm font-medium opacity-70">{t('hardware.shipping.desc', lang)}</p>
+            </div>
+            <div>
+                <div class="text-4xl mb-4">💬</div>
+                <h3 class="text-xl font-black uppercase mb-2">{t('hardware.setup.title', lang)}</h3>
+                <p class="text-sm font-medium opacity-70">{t('hardware.setup.desc', lang)}</p>
+            </div>
+        </div>
+    </div>
+  </main>
+  
+  <footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)] text-center">
+    <p class="font-bold text-sm">© 2024 AstroPOS Hardware Store</p>
+  </footer>
+</Base>

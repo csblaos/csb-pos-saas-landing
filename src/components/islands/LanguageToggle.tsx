@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { type Lang, setLang, getLangFromLocalStorage, languages } from '../../lib/lang';
 
 export default function LanguageToggle() {
     const [currentLang, setCurrentLang] = useState<Lang>('th');
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const pathSegments = window.location.pathname.split('/');
@@ -14,6 +15,18 @@ export default function LanguageToggle() {
         } else {
             setCurrentLang(getLangFromLocalStorage());
         }
+
+        // Click outside listener
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const handleSelect = (l: Lang) => {
@@ -40,7 +53,7 @@ export default function LanguageToggle() {
     };
 
     return (
-        <div className="relative z-50">
+        <div className="relative z-50" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="px-3 py-2 font-bold border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)] shadow-[2px_2px_0px_0px_var(--color-shadow)] active:translate-y-[2px] active:shadow-none transition-all flex items-center gap-2 rounded-md"
@@ -49,7 +62,7 @@ export default function LanguageToggle() {
             </button>
 
             {isOpen && (
-                <div className="absolute top-full right-0 mt-2 w-32 flex flex-col bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)]">
+                <div className="absolute top-full right-0 mt-2 w-max min-w-[120px] flex flex-col bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] origin-top-right">
                     {Object.entries(languages).map(([code, config]) => (
                         <button
                             key={code}

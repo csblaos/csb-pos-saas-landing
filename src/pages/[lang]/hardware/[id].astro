@@ -1,0 +1,135 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Navbar from '../../../components/sections/Navbar.astro';
+import Button from '../../../components/common/Button.astro';
+import { hardwareProducts } from '../../../data/hardware';
+import { languages } from '../../../lib/lang';
+import { t } from '../../../data/i18n';
+import { Check, Star, ArrowLeft, Share2 } from 'lucide-react';
+
+export async function getStaticPaths() {
+  const paths = [];
+  Object.keys(languages).forEach((lang) => {
+    hardwareProducts.forEach((product) => {
+      paths.push({
+        params: { lang, id: product.id },
+        props: { product },
+      });
+    });
+  });
+  return paths;
+}
+
+const { lang, id } = Astro.params;
+const { product } = Astro.props;
+
+// WhatsApp Logic
+const currentUrl = Astro.url.href;
+const whatsappMessage = encodeURIComponent(
+  `Hello AstroPOS, I'm interested in: ${product.name[lang]} (${product.price.toLocaleString()} THB).\nLink: ${currentUrl}`
+);
+const whatsappLink = `https://wa.me/8562059083986?text=${whatsappMessage}`;
+
+// Translations for this page specific UI
+const translations = {
+    back: { en: 'Back to Shop', th: 'กลับไปหน้าร้าน', la: 'ກັບໄປໜ້າຮ້ານ' },
+    specs: { en: 'Specifications', th: 'ข้อมูลจำเพาะ', la: 'ຂໍ້ມູນຈຳເພາະ' },
+    buy: { en: 'Buy via WhatsApp', th: 'สั่งซื้อผ่าน WhatsApp', la: 'ສັ່ງຊື້ຜ່ານ WhatsApp' },
+    includes: { en: 'What\'s in the box', th: 'อุปกรณ์ในกล่อง', la: 'ອຸປະກອນໃນກ່ອງ' },
+};
+
+const txt = (key) => translations[key][lang];
+---
+
+<Base 
+  title={`${product.name[lang]} - AstroPOS Hardware`}
+  description={product.description[lang]}
+  image={product.image}
+>
+  <Navbar />
+
+  <main class="py-20 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Breadcrumb / Back -->
+      <a href={`/${lang}/hardware`} class="inline-flex items-center gap-2 font-bold text-gray-500 hover:text-black mb-8 transition-colors">
+        <ArrowLeft size={20} /> {txt('back')}
+      </a>
+
+      <div class="grid md:grid-cols-2 gap-12 lg:gap-20">
+        <!-- Left: Image -->
+        <div class="relative">
+            <div class="aspect-square bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-lg overflow-hidden relative">
+                {product.badge && (
+                    <div class="absolute top-4 right-4 bg-yellow-400 border-2 border-black px-4 py-1 font-black text-sm uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-10">
+                        {product.badge[lang]}
+                    </div>
+                )}
+                <img 
+                    src={product.image} 
+                    alt={product.name[lang]}
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                    style="view-transition-name: product-image;"
+                />
+            </div>
+        </div>
+
+        <!-- Right: Content -->
+        <div class="flex flex-col">
+            <h1 class="text-4xl md:text-5xl font-black uppercase leading-tight mb-2">
+                {product.name[lang]}
+            </h1>
+            
+            <div class="flex items-center gap-2 text-yellow-500 mb-6 font-bold text-lg">
+                <div class="flex"><Star fill="currentColor" /><Star fill="currentColor" /><Star fill="currentColor" /><Star fill="currentColor" /><Star fill="currentColor" /></div>
+                <span class="text-black text-sm">(5.0/5.0 reviews)</span>
+            </div>
+
+            <div class="text-3xl font-black font-mono mb-8 bg-lime-100 inline-block px-4 py-2 border-2 border-black -rotate-1 self-start">
+                ฿{product.price.toLocaleString()}
+            </div>
+
+            <p class="text-xl text-gray-600 font-medium mb-8 leading-relaxed">
+                {product.description[lang]}
+            </p>
+
+            <!-- Specs -->
+            <div class="mb-8 p-6 bg-gray-50 border-2 border-black/10 rounded-lg">
+                <h3 class="font-black uppercase mb-4 text-lg border-b-2 border-black/10 pb-2">{txt('specs')}</h3>
+                <ul class="space-y-3">
+                    {product.specs.map(spec => (
+                        <li class="flex items-center gap-3 font-bold text-gray-700">
+                             <div class="w-6 h-6 rounded-full bg-lime-400 border-2 border-black flex items-center justify-center shrink-0">
+                                <Check size={14} strokeWidth={4} />
+                             </div>
+                             {spec}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <!-- Action -->
+            <div class="mt-auto flex flex-col gap-4">
+                <a 
+                    href={whatsappLink}
+                    target="_blank"
+                    class="w-full bg-lime-400 hover:bg-lime-300 text-black border-2 border-black font-black text-xl py-4 flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all uppercase rounded-lg"
+                >
+                    <Share2 size={24} /> {txt('buy')}
+                </a>
+                <p class="text-center text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    Secure Payment • Fast Shipping • 1 Year Warranty
+                </p>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer (Simple version or reuse Main Footer) -->
+  <footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)] text-center mt-20">
+    <p class="font-bold text-sm">© 2024 AstroPOS Hardware Store</p>
+  </footer>
+
+</Base>

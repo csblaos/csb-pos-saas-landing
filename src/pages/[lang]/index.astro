@@ -4,6 +4,7 @@ import Navbar from '../../components/sections/Navbar.astro';
 import Hero from '../../components/sections/Hero.astro';
 import Features from '../../components/sections/Features.astro';
 import Pricing from '../../components/sections/Pricing.astro';
+import Testimonials from '../../components/sections/Testimonials.astro';
 import Button from '../../components/common/Button.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
@@ -52,10 +53,12 @@ const faqs = [
       </div>
     </section>
 
+    <Testimonials lang={lang} />
+
     <Pricing />
 
     <!-- FAQ -->
-    <section class="py-20 bg-[var(--color-bg)]">
+    <section class="py-20">
       <div class="container mx-auto px-4 max-w-3xl">
         <h2 class="text-4xl font-black mb-12 text-center uppercase text-[var(--color-text)]">{t('faq.title', lang)}</h2>
         <div class="space-y-6">

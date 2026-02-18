@@ -16,7 +16,7 @@
 
 @layer base {
   :root {
-    --color-bg: #f0f0f0;
+    --color-bg: #f9f9f9;
     --color-bg-card: #ffffff;
     --color-text: #000000;
     --color-border: #000000;
@@ -76,5 +76,26 @@
     --color-text: #000000;
     --color-border: #000000;
     --color-shadow: #000000;
+  }
+
+  /* Background Grid Animation */
+  .bg-grid {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    opacity: 0.05;
+    /* Very subtle */
+    animation: grid-pan 20s linear infinite;
+  }
+
+  @keyframes grid-pan {
+    0% {
+      background-position: 0 0;
+    }
+
+    100% {
+      background-position: 40px 40px;
+    }
   }
 }

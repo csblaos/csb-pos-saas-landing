@@ -1,6 +1,7 @@
 ---
 import LanguageToggle from '../islands/LanguageToggle';
 import ThemeToggle from '../islands/ThemeToggle';
+import MobileMenu from '../islands/MobileMenu';
 import Button from '../common/Button.astro';
 import { getLangFromUrl } from '../../lib/lang';
 import { t } from '../../data/i18n';
@@ -16,19 +17,49 @@ const lang = getLangFromUrl(Astro.url);
     </a>
 
     <div class="hidden md:flex items-center gap-8 font-bold text-sm text-[var(--color-text)]">
-      <a href={`/${lang}/packages`} class="hover:underline decoration-2 underline-offset-4">{t('nav.packages', lang)}</a>
-      <a href={`/${lang}/services`} class="hover:underline decoration-2 underline-offset-4">{t('nav.services', lang)}</a>
-      <a href={`/${lang}/news`} class="hover:underline decoration-2 underline-offset-4">{t('nav.news', lang)}</a>
+      {
+        [
+          { href: `/${lang}/`, label: t('nav.home', lang), exact: true },
+          { href: `/${lang}/packages`, label: t('nav.packages', lang) },
+          { href: `/${lang}/hardware`, label: t('nav.hardware', lang) },
+          { href: `/${lang}/services`, label: t('nav.services', lang) },
+          { href: `/${lang}/news`, label: t('nav.news', lang) },
+        ].map((link) => {
+          const isActive = link.exact 
+            ? Astro.url.pathname === link.href 
+            : Astro.url.pathname.startsWith(link.href);
+            
+          return (
+            <a 
+              href={link.href} 
+              class={`
+                px-3 py-1 transition-all duration-200 border-2 
+                ${isActive 
+                  ? 'bg-lime-400 text-black border-black shadow-[2px_2px_0px_0px_black] -translate-y-[2px]' 
+                  : 'border-transparent hover:border-black/20 hover:bg-gray-100 dark:hover:bg-white/10 hover:-translate-y-[1px]'
+                }
+              `}
+            >
+              {link.label}
+            </a>
+          );
+        })
+      }
     </div>
 
     <div class="flex items-center gap-3">
-      <ThemeToggle client:load />
+      {/* Mobile: Language Toggle & Menu */}
       <LanguageToggle client:load />
-      <div class="hidden sm:block">
+
+      <div class="hidden sm:flex items-center gap-3">
+        <ThemeToggle client:load />
         <Button href={`/${lang}/demo`} variant="secondary" class="text-xs px-4 py-2">
           {t('nav.demo', lang)}
         </Button>
       </div>
+      
+      {/* Mobile Menu */}
+      <MobileMenu lang={lang as any} client:load />
     </div>
   </div>
 </nav>
