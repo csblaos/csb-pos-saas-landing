@@ -16,6 +16,8 @@ export const translations = {
     'hero.cta.start': 'Start Free Trial',
     'hero.cta.demo': 'View Live Demo',
     'hero.trusted': 'Trusted by 1,000+ shops in SEA',
+    'finalCta.line1': 'STOP WASTING TIME',
+    'finalCta.line2': 'START SELLING MOORE.',
 
     // Features
     'features.title': 'Why Sellers Love Us?',
@@ -193,7 +195,7 @@ export const translations = {
     'nav.solutions': 'โซลูชัน',
     'nav.hardware': 'ร้านค้า',
     'nav.blog': 'บทความ',
-    'nav.demo': 'ลองใช้ระบบ',
+    'nav.demo': 'ดูตัวอย่าง',
 
     // Hero Section
     'hero.headline': 'ขายได้ทุกที่\nจัดการง่ายในที่เดียว',
@@ -201,6 +203,8 @@ export const translations = {
     'hero.cta.start': 'ทดลองใช้ฟรี',
     'hero.cta.demo': 'ดูตัวอย่างระบบ',
     'hero.trusted': 'ไว้วางใจโดยร้านค้ากว่า 1,000+ แห่ง',
+    'finalCta.line1': 'หยุดเสียเวลา',
+    'finalCta.line2': 'เริ่มขายให้มากขึ้น',
 
     // Features
     'features.title': 'ทำไมต้อง AstroPOS?',
@@ -378,7 +382,7 @@ export const translations = {
     'nav.solutions': 'ລະບົບຂອງເຮົາ',
     'nav.hardware': 'ຮ້ານຄ້າ',
     'nav.blog': 'ບົດຄວາມ',
-    'nav.demo': 'ທົດລອງໃຊ້',
+    'nav.demo': 'ເບິ່ງຕົວຢ່າງ',
 
     // Hero Section
     'hero.headline': 'ຂາຍໄດ້ທຸກບ່ອນ\nຈັດການງ່າຍໃນບ່ອນດຽວ',
@@ -386,6 +390,8 @@ export const translations = {
     'hero.cta.start': 'ທົດລອງໃຊ້ຟຣີ',
     'hero.cta.demo': 'ເບິ່ງຕົວຢ່າງ',
     'hero.trusted': 'ໄວ້ວາງໃຈໂດຍຮ້ານຄ້າກວ່າ 1,000+ ແຫ່ງ',
+    'finalCta.line1': 'ເຊົາເສຍເວລາ',
+    'finalCta.line2': 'ເລີ່ມຂາຍໃຫ້ໄດ້ຫຼາຍຂຶ້ນ',
 
     // Features
     'features.title': 'ເປັນຫຍັງຕ້ອງ AstroPOS?',

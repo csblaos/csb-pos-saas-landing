@@ -29,8 +29,11 @@ export function setLang(lang: Lang) {
         localStorage.setItem('lang', lang);
     }
 
+    const currentUrl = new URL(window.location.href);
+    const hasTrailingSlash = currentUrl.pathname.endsWith('/');
+
     // Get current path segments
-    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    const pathSegments = currentUrl.pathname.split('/').filter(Boolean);
 
     // Check if first segment is a language code
     if (pathSegments[0] && pathSegments[0] in languages) {
@@ -42,10 +45,13 @@ export function setLang(lang: Lang) {
     }
 
     // Construct new path
-    const newPath = '/' + pathSegments.join('/');
+    let newPath = '/' + pathSegments.join('/');
+    if (hasTrailingSlash && !newPath.endsWith('/')) {
+        newPath += '/';
+    }
 
-    // Navigate to new path (only preserve hash, not query params)
-    window.location.href = newPath + window.location.hash;
+    // Navigate to new path and preserve query params/hash
+    window.location.href = newPath + currentUrl.search + currentUrl.hash;
 }
 
 export function useTranslatedPath(lang: Lang) {

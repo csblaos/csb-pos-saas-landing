@@ -31,10 +31,10 @@ export default function ScrollToTop() {
             onClick={scrollToTop}
             className={`
         fixed bottom-8 right-8 z-50 p-3
-        bg-brand-primary text-black border-2 border-black
-        shadow-[4px_4px_0px_0px_black]
-        hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_black]
-        active:translate-y-0 active:shadow-[2px_2px_0px_0px_black]
+        bg-brand-primary text-black border-1 border-black
+        shadow-[2px_2px_0px_0px_black]
+        hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_black]
+        active:translate-y-0 active:shadow-[0px_0px_0px_0px_black]
         transition-all duration-300
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}
       `}
