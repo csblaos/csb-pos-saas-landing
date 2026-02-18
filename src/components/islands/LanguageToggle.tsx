@@ -57,14 +57,14 @@ export default function LanguageToggle() {
         <div className="relative z-50" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="px-3 py-2 font-bold border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)] shadow-[2px_2px_0px_0px_var(--color-shadow)] active:translate-y-[2px] active:shadow-none transition-all flex items-center gap-2 rounded-md"
+                className="px-3 py-2 text-sm font-black border-2 border-black bg-white text-black shadow-[3px_3px_0px_0px_black] active:translate-y-[1px] active:shadow-none transition-all flex items-center gap-2"
             >
                 <Globe size={20} />
                 <span>{languages[currentLang]?.label?.slice(0, 3).toUpperCase() || 'TH'}</span>
             </button>
 
             {isOpen && (
-                <div className="absolute top-full right-0 mt-2 w-max min-w-[120px] flex flex-col bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] origin-top-right">
+                <div className="absolute top-full right-0 mt-2 w-max min-w-[120px] flex flex-col bg-white border-2 border-black shadow-[4px_4px_0px_0px_black] origin-top-right">
                     {Object.entries(languages).map(([code, config]) => (
                         <button
                             key={code}

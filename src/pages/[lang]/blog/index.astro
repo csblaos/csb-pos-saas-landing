@@ -2,10 +2,10 @@
 import Base from '../../../layouts/Base.astro';
 import Navbar from '../../../components/sections/Navbar.astro';
 import Footer from '../../../components/sections/Footer.astro';
+import SidebarLiveOrders from '../../../components/islands/SidebarLiveOrders';
 import { getCollection } from 'astro:content';
 import { getLangFromUrl, languages } from '../../../lib/lang';
 import { t } from '../../../data/i18n';
-import { Calendar, Tag } from 'lucide-react';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -14,40 +14,96 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const allNews = await getCollection('news');
 const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Collect all unique tags
+const allTags = [...new Set(allNews.flatMap(post => post.data.tags))];
+
+// Sidebar translations
+const sidebarStrings: Record<string, Record<string, string>> = {
+  tags: { en: 'Popular Topics', th: 'หัวข้อยอดนิยม', la: 'ຫົວຂໍ້ຍອດນິຍົມ' },
+  demoBadge: { en: 'TRY IT', th: 'ลองเลย', la: 'ລອງເລີຍ' },
+  demoTitle: { en: 'See AstroPOS in Action', th: 'ดู AstroPOS ทำงานจริง', la: 'ເບິ່ງ AstroPOS ເຮັດວຽກຈິງ' },
+  demoDesc: { en: 'Try our live POS demo. No signup needed.', th: 'ลอง POS Demo สดๆ ไม่ต้องสมัคร', la: 'ລອງ POS Demo ສົດໆ ບໍ່ຕ້ອງສະໝັກ' },
+  demoCta: { en: 'Open Demo →', th: 'เปิด Demo →', la: 'ເປີດ Demo →' },
+  readArticle: { en: 'Read →', th: 'อ่าน →', la: 'ອ່ານ →' },
+  liveTitle: { en: 'Orders Coming In', th: 'ออเดอร์กำลังเข้า', la: 'ອໍເດີກຳລັງເຂົ້າ' },
+  liveSubtitle: { en: 'See orders flow in real-time from every channel.', th: 'ดูออเดอร์ไหลเข้าจากทุกช่องทาง', la: 'ເບິ່ງອໍເດີໄຫລເຂົ້າຈາກທຸກຊ່ອງທາງ' },
+  liveCta: { en: 'Start Free Trial →', th: 'เริ่มทดลองฟรี →', la: 'ເລີ່ມທົດລອງຟຣີ →' },
+};
+const st = (key: string) => sidebarStrings[key]?.[lang] || sidebarStrings[key]?.['en'] || key;
 ---
 
 <Base title="Blog & Academy | AstroPOS">
   <Navbar />
   
   <main class="py-20 min-h-screen">
-    <div class="container mx-auto px-4 max-w-4xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       <h1 class="text-5xl font-black mb-12 uppercase text-[var(--color-text)]">{t('nav.blog', lang)}</h1>
       
-      <div class="grid gap-8">
-        {sortedNews.map((post) => (
-          <article class="bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] overflow-hidden flex flex-col md:flex-row hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-all">
-             <div class="md:w-1/3 bg-gray-200 border-b-2 md:border-b-0 md:border-r-2 border-[var(--color-border)] aspect-video md:aspect-auto">
-               <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover" />
-             </div>
-             <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
-               <div>
-                 <div class="flex items-center gap-4 text-sm font-bold text-gray-500 mb-2">
-                   <span class="flex items-center gap-1"><Calendar size={14}/> {post.data.pubDate.toISOString().slice(0,10)}</span>
-                   <span class="flex items-center gap-1"><Tag size={14}/> {post.data.tags.join(', ')}</span>
-                 </div>
-                 <h2 class="text-2xl font-black mb-3">
-                   <a href={`/${lang}/blog/${post.slug}`} class="hover:underline decoration-2 underline-offset-4 text-[var(--color-text)]">
-                     {post.data.title}
-                   </a>
-                 </h2>
-                 <p class="font-medium text-gray-700 dark:text-gray-300 mb-4">{post.data.description}</p>
-               </div>
-               <a href={`/${lang}/blog/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors">
-                 Read Article →
-               </a>
-             </div>
-          </article>
-        ))}
+      <div class="grid lg:grid-cols-[1fr_300px] gap-10">
+        {/* Blog Posts - Main Column */}
+        <div class="space-y-6">
+          {sortedNews.map((post) => (
+            <article class="bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] overflow-hidden flex flex-col md:flex-row hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-all">
+              <div class="md:w-1/3 bg-gray-200 border-b-2 md:border-b-0 md:border-r-2 border-[var(--color-border)] aspect-video md:aspect-auto overflow-hidden">
+                <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div class="p-5 md:p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-4 text-xs font-bold text-gray-500 mb-2">
+                    <span class="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                      {post.data.pubDate.toISOString().slice(0,10)}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                      {post.data.tags.join(', ')}
+                    </span>
+                  </div>
+                  <h2 class="text-xl font-black mb-2">
+                    <a href={`/${lang}/blog/${post.slug}`} class="hover:underline decoration-2 underline-offset-4 text-[var(--color-text)]">
+                      {post.data.title}
+                    </a>
+                  </h2>
+                  <p class="font-medium text-gray-600 text-sm mb-4 line-clamp-2">{post.data.description}</p>
+                </div>
+                <a href={`/${lang}/blog/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors text-sm">
+                  {st('readArticle')}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Sidebar */}
+        <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+          
+          {/* Animated Live Orders */}
+          <SidebarLiveOrders 
+            client:visible
+            title={st('liveTitle')}
+            subtitle={st('liveSubtitle')}
+            cta={st('liveCta')}
+            ctaLink={`/${lang}/packages`}
+          />
+
+          {/* Banner Ad - Demo */}
+          <div class="border-2 border-black bg-black text-white p-5 shadow-[4px_4px_0px_0px_rgba(163,230,53,1)] relative overflow-hidden">
+            <span class="absolute -top-0 -right-1 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">
+              {st('demoBadge')}
+            </span>
+            <div class="text-3xl mb-2">🖥️</div>
+            <h3 class="text-lg font-black mb-1 leading-tight">{st('demoTitle')}</h3>
+            <p class="text-xs font-bold text-gray-400 mb-3">{st('demoDesc')}</p>
+            <a 
+              href={`/${lang}/demo`}
+              class="inline-block w-full text-center font-black text-xs py-2 bg-white text-black border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              {st('demoCta')}
+            </a>
+          </div>
+
+        </aside>
       </div>
     </div>
   </main>

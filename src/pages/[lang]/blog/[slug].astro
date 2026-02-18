@@ -3,13 +3,14 @@ import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import Navbar from '../../../components/sections/Navbar.astro';
 import Footer from '../../../components/sections/Footer.astro';
+import ProductShare from '../../../components/islands/ProductShare';
+import SidebarLiveOrders from '../../../components/islands/SidebarLiveOrders';
 import { getLangFromUrl, languages } from '../../../lib/lang';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news');
   const langs = Object.keys(languages);
   
-  // Generate paths for every post in every language
   return langs.flatMap(lang => 
     posts.map(post => ({
       params: { lang, slug: post.slug },
@@ -22,131 +23,182 @@ const { post } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const { Content } = await post.render();
 
-import ProductShare from '../../../components/islands/ProductShare';
-import { getCollection } from 'astro:content';
-
 // Fetch Related Posts
 const allPosts = await getCollection('news');
 const relatedPosts = allPosts
-    .filter(p => p.slug !== post.slug) // Exclude current post
-    .sort(() => 0.5 - Math.random()) // Shuffle
-    .slice(0, 3); // Take 3
+    .filter(p => p.slug !== post.slug)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 3);
 
-// Translations for blog UI
-const strings = {
+// Translations
+const strings: Record<string, Record<string, string>> = {
   shareTitle: { en: 'Share this article', th: 'แชร์บทความนี้', la: 'ແບ່ງປັນບົດຄວາມນີ້' },
   copy: { en: 'Copy Link', th: 'คัดลอกลิงก์', la: 'ຄັດລອກລິ້ງ' },
   copied: { en: 'Copied!', th: 'คัดลอกแล้ว!', la: 'ຄັດລອກແລ້ວ!' },
   back: { en: 'Back to Blog', th: 'กลับไปหน้าบทความ', la: 'ກັບໄປໜ້າບົດຄວາມ' },
-  ad: { en: 'Advertisement', th: 'พื้นที่โฆษณา', la: 'ພື້ນທີ່ໂຄສະນາ' },
   readNext: { en: 'Read Next', th: 'บทความแนะนำ', la: 'ບົດຄວາມແນະນຳ' },
+  related: { en: 'Related Articles', th: 'บทความที่เกี่ยวข้อง', la: 'ບົດຄວາມທີ່ກ່ຽວຂ້ອງ' },
+  liveTitle: { en: 'Orders Coming In', th: 'ออเดอร์กำลังเข้า', la: 'ອໍເດີກຳລັງເຂົ້າ' },
+  liveSubtitle: { en: 'See orders flow in real-time from every channel.', th: 'ดูออเดอร์ไหลเข้าจากทุกช่องทาง', la: 'ເບິ່ງອໍເດີໄຫລເຂົ້າຈາກທຸກຊ່ອງທາງ' },
+  liveCta: { en: 'Start Free Trial →', th: 'เริ่มทดลองฟรี →', la: 'ເລີ່ມທົດລອງຟຣີ →' },
+  demoBadge: { en: 'TRY IT', th: 'ลองเลย', la: 'ລອງເລີຍ' },
+  demoTitle: { en: 'See It In Action', th: 'ดูการทำงานจริง', la: 'ເບິ່ງການເຮັດວຽກຈິງ' },
+  demoDesc: { en: 'Try our live POS demo.', th: 'ลอง POS Demo สดๆ', la: 'ລອງ POS Demo ສົດໆ' },
+  demoCta: { en: 'Open Demo →', th: 'เปิด Demo →', la: 'ເປີດ Demo →' },
 };
-const t = (key) => strings[key][lang];
+const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
 ---
 
 <Base title={`${post.data.title} | AstroPOS Blog`}>
   <Navbar />
   
-  <main class="py-12 md:py-20 bg-[var(--color-bg)] min-h-screen">
-    <div class="container mx-auto px-4 max-w-4xl">
+  <main class="py-12 md:py-20 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       
-      {/* Breadcrumb / Back */}
+      {/* Breadcrumb */}
       <a href={`/${lang}/blog`} class="inline-flex items-center text-gray-500 hover:text-black font-bold mb-8 transition-colors">
         ← {t('back')}
       </a>
 
-      {/* Hero Header */}
-      <div class="mb-12">
-         <div class="flex items-center gap-4 mb-6">
-            <span class="bg-lime-300 text-black border-2 border-black px-3 py-1 font-black text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-              {post.data.tags[0]}
-            </span>
-            <span class="font-bold text-gray-500 text-sm">
-              {post.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </span>
-         </div>
-         
-         <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight text-[var(--color-text)] tracking-tight">
-            {post.data.title}
-         </h1>
-
-         <div class="flex items-center gap-3 border-b-2 border-[var(--color-border)] pb-8 mb-8">
-            <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-black overflow-hidden">
-                <img src={`https://ui-avatars.com/api/?name=${post.data.author}&background=random`} alt={post.data.author} />
+      <div class="grid lg:grid-cols-[1fr_300px] gap-10">
+        {/* Main Article Column */}
+        <div>
+          {/* Hero Header */}
+          <div class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+              <span class="bg-lime-300 text-black border-2 border-black px-3 py-1 font-black text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                {post.data.tags[0]}
+              </span>
+              <span class="font-bold text-gray-500 text-sm">
+                {post.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </span>
             </div>
-            <div>
+            
+            <h1 class="text-4xl md:text-5xl font-black mb-8 leading-tight text-[var(--color-text)] tracking-tight">
+              {post.data.title}
+            </h1>
+
+            <div class="flex items-center gap-3 border-b-2 border-[var(--color-border)] pb-8 mb-8">
+              <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-black overflow-hidden">
+                <img src={`https://ui-avatars.com/api/?name=${post.data.author}&background=random`} alt={post.data.author} />
+              </div>
+              <div>
                 <p class="font-black text-sm">{post.data.author}</p>
                 <p class="text-xs text-gray-500 font-bold">Editor</p>
+              </div>
             </div>
-         </div>
 
-         {/* Featured Image */}
-         {post.data.image && (
-            <div class="aspect-video w-full border-2 border-black rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-12 relative bg-gray-100">
+            {/* Featured Image */}
+            {post.data.image && (
+              <div class="aspect-video w-full border-2 border-black rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-12 relative bg-gray-100">
                 <img 
-                    src={post.data.image} 
-                    alt={post.data.title}
-                    class="w-full h-full object-cover"
+                  src={post.data.image} 
+                  alt={post.data.title}
+                  class="w-full h-full object-cover"
                 />
-            </div>
-         )}
-      </div>
-      
-      {/* Content Area */}
-      <article class="prose prose-lg prose-headings:font-black prose-p:font-medium prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-img:border-2 prose-img:border-[var(--color-border)] prose-img:shadow-[4px_4px_0px_0px_var(--color-shadow)] prose-img:rounded-lg prose-a:text-lime-600 prose-a:font-black prose-blockquote:border-l-4 prose-blockquote:border-black prose-blockquote:bg-gray-50 dark:prose-blockquote:bg-gray-900 prose-blockquote:p-6 prose-blockquote:not-italic prose-blockquote:font-bold font-sans text-[var(--color-text)] dark:prose-invert max-w-none">
-        {/* Recommended Ad Placement: Top of Content (optional) */}
-        {/* <div class="w-full h-32 bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center font-bold text-gray-400 mb-8 uppercase tracking-widest">{t('ad')}</div> */}
-        
-        <Content />
-      </article>
+              </div>
+            )}
+          </div>
+          
+          {/* Content Area */}
+          <article class="prose prose-lg prose-headings:font-black prose-p:font-medium prose-p:text-gray-700 prose-img:border-2 prose-img:border-[var(--color-border)] prose-img:shadow-[4px_4px_0px_0px_var(--color-shadow)] prose-img:rounded-lg prose-a:text-lime-600 prose-a:font-black prose-blockquote:border-l-4 prose-blockquote:border-black prose-blockquote:bg-gray-50 prose-blockquote:p-6 prose-blockquote:not-italic prose-blockquote:font-bold font-sans text-[var(--color-text)] max-w-none">
+            <Content />
+          </article>
 
-      {/* Recommended Ad Placement: Bottom of Content */}
-      <div class="my-16">
-        <p class="text-xs font-bold text-gray-400 uppercase mb-2 text-center tracking-widest">{t('ad')}</p>
-        <div class="w-full h-48 md:h-60 bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center gap-2 rounded-lg">
-            <span class="font-black text-gray-300 text-4xl uppercase">Banner Space</span>
-            <span class="font-bold text-gray-400 text-sm">Recommended Size: 728x90 or Responsive</span>
-        </div>
-      </div>
-
-      {/* Share Section */}
-      <div class="border-t-2 border-[var(--color-border)] pt-12 mt-12 mb-20">
-        <div class="max-w-2xl mx-auto">
-            <ProductShare 
+          {/* Share Section */}
+          <div class="border-t-2 border-[var(--color-border)] pt-12 mt-12 mb-12">
+            <div class="max-w-2xl">
+              <ProductShare 
                 client:visible
                 url={Astro.url.href} 
                 title={post.data.title} 
                 translations={{
-                    share: t('shareTitle'),
-                    copy: t('copy'),
-                    copied: t('copied')
+                  share: t('shareTitle'),
+                  copy: t('copy'),
+                  copied: t('copied')
                 }} 
-            />
+              />
+            </div>
+          </div>
         </div>
+
+        {/* Sidebar */}
+        <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+          
+          {/* Animated Live Orders */}
+          <SidebarLiveOrders 
+            client:visible
+            title={t('liveTitle')}
+            subtitle={t('liveSubtitle')}
+            cta={t('liveCta')}
+            ctaLink={`/${lang}/packages`}
+          />
+
+          {/* Related Articles in Sidebar */}
+          <div class="border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] p-5 shadow-[4px_4px_0px_0px_var(--color-shadow)]">
+            <h3 class="font-black text-sm uppercase tracking-wider mb-4 text-[var(--color-text)]">{t('related')}</h3>
+            <div class="space-y-4">
+              {relatedPosts.slice(0, 3).map((relatedPost) => (
+                <a href={`/${lang}/blog/${relatedPost.slug}`} class="group flex gap-3 hover:bg-gray-50 p-2 -mx-2 rounded transition-colors">
+                  {relatedPost.data.image && (
+                    <div class="w-16 h-16 shrink-0 border border-gray-200 overflow-hidden rounded">
+                      <img src={relatedPost.data.image} alt={relatedPost.data.title} class="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-black leading-tight line-clamp-2 group-hover:text-lime-600 transition-colors">
+                      {relatedPost.data.title}
+                    </h4>
+                    <p class="text-[10px] text-gray-400 font-bold mt-1">
+                      {relatedPost.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { month: 'short', day: 'numeric' })}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Banner Ad 2 - Demo */}
+          <div class="border-2 border-black bg-black text-white p-5 shadow-[4px_4px_0px_0px_rgba(163,230,53,1)] relative overflow-hidden">
+            <span class="absolute -top-0 -right-1 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">
+              {t('demoBadge')}
+            </span>
+            <div class="text-3xl mb-2">🖥️</div>
+            <h3 class="text-lg font-black mb-1 leading-tight">{t('demoTitle')}</h3>
+            <p class="text-xs font-bold text-gray-400 mb-3">{t('demoDesc')}</p>
+            <a 
+              href={`/${lang}/demo`}
+              class="inline-block w-full text-center font-black text-sm py-2 bg-lime-400 text-black border-2 border-lime-400 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              {t('demoCta')}
+            </a>
+          </div>
+
+        </aside>
       </div>
 
-      {/* Read Next Section */}
-      <div class="border-t-2 border-[var(--color-border)] pt-12">
+      {/* Read Next - Full Width Below */}
+      <div class="border-t-2 border-[var(--color-border)] pt-12 mt-16">
         <h3 class="text-3xl font-black uppercase mb-8 text-center">{t('readNext')}</h3>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {relatedPosts.slice(0, 3).map((relatedPost) => (
-                <a href={`/${lang}/blog/${relatedPost.slug}`} class="group block bg-white dark:bg-gray-900 border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all">
-                    {relatedPost.data.image && (
-                        <div class="aspect-video overflow-hidden border-b-2 border-[var(--color-border)]">
-                            <img src={relatedPost.data.image} alt={relatedPost.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                    )}
-                    <div class="p-6">
-                        <span class="text-xs font-bold text-lime-600 uppercase mb-2 block">{relatedPost.data.tags[0]}</span>
-                        <h4 class="text-xl font-black leading-tight mb-2 group-hover:text-lime-600 transition-colors line-clamp-2">
-                            {relatedPost.data.title}
-                        </h4>
-                        <p class="text-sm text-gray-500 font-bold">
-                            {relatedPost.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}
-                        </p>
-                    </div>
-                </a>
-            ))}
+          {relatedPosts.slice(0, 3).map((relatedPost) => (
+            <a href={`/${lang}/blog/${relatedPost.slug}`} class="group block bg-white border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all">
+              {relatedPost.data.image && (
+                <div class="aspect-video overflow-hidden border-b-2 border-[var(--color-border)]">
+                  <img src={relatedPost.data.image} alt={relatedPost.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+              )}
+              <div class="p-6">
+                <span class="text-xs font-bold text-lime-600 uppercase mb-2 block">{relatedPost.data.tags[0]}</span>
+                <h4 class="text-xl font-black leading-tight mb-2 group-hover:text-lime-600 transition-colors line-clamp-2">
+                  {relatedPost.data.title}
+                </h4>
+                <p class="text-sm text-gray-500 font-bold">
+                  {relatedPost.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
 
