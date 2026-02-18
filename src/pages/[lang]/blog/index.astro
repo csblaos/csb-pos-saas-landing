@@ -6,6 +6,7 @@ import SidebarLiveOrders from '../../../components/islands/SidebarLiveOrders';
 import { getCollection } from 'astro:content';
 import { getLangFromUrl, languages } from '../../../lib/lang';
 import { t } from '../../../data/i18n';
+import { blogIndexSidebarCopy, fromLang } from '../../../data/localizedCopy';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -18,19 +19,7 @@ const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubD
 // Collect all unique tags
 const allTags = [...new Set(allNews.flatMap(post => post.data.tags))];
 
-// Sidebar translations
-const sidebarStrings: Record<string, Record<string, string>> = {
-  tags: { en: 'Popular Topics', th: 'หัวข้อยอดนิยม', la: 'ຫົວຂໍ້ຍອດນິຍົມ' },
-  demoBadge: { en: 'TRY IT', th: 'ลองเลย', la: 'ລອງເລີຍ' },
-  demoTitle: { en: 'See AstroPOS in Action', th: 'ดู AstroPOS ทำงานจริง', la: 'ເບິ່ງ AstroPOS ເຮັດວຽກຈິງ' },
-  demoDesc: { en: 'Try our live POS demo. No signup needed.', th: 'ลอง POS Demo สดๆ ไม่ต้องสมัคร', la: 'ລອງ POS Demo ສົດໆ ບໍ່ຕ້ອງສະໝັກ' },
-  demoCta: { en: 'Open Demo →', th: 'เปิด Demo →', la: 'ເປີດ Demo →' },
-  readArticle: { en: 'Read →', th: 'อ่าน →', la: 'ອ່ານ →' },
-  liveTitle: { en: 'Orders Coming In', th: 'ออเดอร์กำลังเข้า', la: 'ອໍເດີກຳລັງເຂົ້າ' },
-  liveSubtitle: { en: 'See orders flow in real-time from every channel.', th: 'ดูออเดอร์ไหลเข้าจากทุกช่องทาง', la: 'ເບິ່ງອໍເດີໄຫລເຂົ້າຈາກທຸກຊ່ອງທາງ' },
-  liveCta: { en: 'Start Free Trial →', th: 'เริ่มทดลองฟรี →', la: 'ເລີ່ມທົດລອງຟຣີ →' },
-};
-const st = (key: string) => sidebarStrings[key]?.[lang] || sidebarStrings[key]?.['en'] || key;
+const st = fromLang(blogIndexSidebarCopy, lang);
 ---
 
 <Base title="Blog & Academy | AstroPOS">
@@ -68,7 +57,7 @@ const st = (key: string) => sidebarStrings[key]?.[lang] || sidebarStrings[key]?.
                   <p class="font-medium text-gray-600 text-sm mb-4 line-clamp-2">{post.data.description}</p>
                 </div>
                 <a href={`/${lang}/blog/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors text-sm">
-                  {st('readArticle')}
+                  {st.readArticle}
                 </a>
               </div>
             </article>
@@ -81,25 +70,25 @@ const st = (key: string) => sidebarStrings[key]?.[lang] || sidebarStrings[key]?.
           {/* Animated Live Orders */}
           <SidebarLiveOrders 
             client:visible
-            title={st('liveTitle')}
-            subtitle={st('liveSubtitle')}
-            cta={st('liveCta')}
+            title={st.liveTitle}
+            subtitle={st.liveSubtitle}
+            cta={st.liveCta}
             ctaLink={`/${lang}/packages`}
           />
 
           {/* Banner Ad - Demo */}
           <div class="border-1 border-black bg-black text-white p-5 shadow-[2px_2px_0px_0px_rgba(163,230,53,1)] relative overflow-hidden">
             <span class="absolute -top-0 -right-1 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">
-              {st('demoBadge')}
+              {st.demoBadge}
             </span>
             <div class="text-3xl mb-2">🖥️</div>
-            <h3 class="text-lg font-black mb-1 leading-tight">{st('demoTitle')}</h3>
-            <p class="text-xs font-bold text-gray-400 mb-3">{st('demoDesc')}</p>
+            <h3 class="text-lg font-black mb-1 leading-tight">{st.demoTitle}</h3>
+            <p class="text-xs font-bold text-gray-400 mb-3">{st.demoDesc}</p>
             <a 
               href={`/${lang}/demo`}
               class="inline-block w-full text-center font-black text-xs py-2 bg-white text-black border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              {st('demoCta')}
+              {st.demoCta}
             </a>
           </div>
 

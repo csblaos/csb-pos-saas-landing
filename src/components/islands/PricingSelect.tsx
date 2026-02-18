@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Check, Gift } from 'lucide-react';
+import { Check, Gift, X } from 'lucide-react';
 import type { Lang } from '../../lib/lang';
 import { t } from '../../data/i18n';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
+import { buildPricingSelectMessage, fromLang, pricingLeadFormCopy } from '../../data/localizedCopy';
 
 const plans = [
     {
@@ -31,33 +32,73 @@ const plans = [
 
 export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+    const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+    const [leadForm, setLeadForm] = useState({ contactName: '', storeName: '', phone: '' });
+    const [showNameError, setShowNameError] = useState(false);
+    const formCopy = fromLang(pricingLeadFormCopy, lang);
 
-    const getWhatsAppLink = (planId: string) => {
-        const plan = plans.find(p => p.id === planId);
-        if (!plan) return '#';
+    const getPlanById = (planId: string) => plans.find((p) => p.id === planId);
 
+    const getPlanMeta = (plan: (typeof plans)[number]) => {
         const isYearly = billingCycle === 'yearly';
-        // Yearly = full price × 12 months (bonus: get 14 months)
         const finalPrice = isYearly ? plan.priceLak * 12 : plan.priceLak;
-        const finalUsd = isYearly ? plan.price * 12 : plan.price;
         const period = isYearly ? t('pricing.yearly', lang) : t('pricing.monthly', lang);
         const bonus = isYearly ? ` (${t('pricing.yearlyBonus', lang)})` : '';
 
-        // Format LAK with commas
-        const formattedPrice = finalPrice.toLocaleString();
+        return {
+            isYearly,
+            finalPrice,
+            period,
+            bonus,
+            formattedPrice: finalPrice.toLocaleString(),
+        };
+    };
 
-        // Localized Message
-        let message = '';
-        if (lang === 'th') {
-            message = `สวัสดี สนใจแพ็กเกจ *${plan.name}* (${formattedPrice}₭ / ${period})${bonus}\n\nชื่อร้าน: \nเบอร์โทร: \n\nขอรายละเอียดการชำระเงินด้วยครับ`;
-        } else if (lang === 'la') {
-            message = `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${plan.name}* (${formattedPrice}₭ / ${period})${bonus}\n\nຊື່ຮ້ານ: \nເບີໂທ: \n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
-        } else {
-            message = `Hello, I want to subscribe to *${plan.name} Plan* (${formattedPrice} LAK / ${period})${bonus}\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
-        }
+    const getWhatsAppLink = (
+        planId: string,
+        lead?: { contactName?: string; storeName?: string; phone?: string }
+    ) => {
+        const plan = getPlanById(planId);
+        if (!plan) return '#';
+
+        const { formattedPrice, period, bonus } = getPlanMeta(plan);
+        const message = buildPricingSelectMessage(lang, plan.name, formattedPrice, period, bonus, lead);
 
         return buildWhatsAppLink(storeSettings.whatsapp.packageSales, message);
     };
+
+    const openLeadForm = (planId: string) => {
+        setSelectedPlanId(planId);
+        setLeadForm({ contactName: '', storeName: '', phone: '' });
+        setShowNameError(false);
+    };
+
+    const closeLeadForm = () => {
+        setSelectedPlanId(null);
+        setShowNameError(false);
+    };
+
+    const handleSendWithDetails = () => {
+        if (!selectedPlanId) return;
+        if (!leadForm.contactName.trim()) {
+            setShowNameError(true);
+            return;
+        }
+
+        const link = getWhatsAppLink(selectedPlanId, leadForm);
+        window.open(link, '_blank', 'noopener,noreferrer');
+        closeLeadForm();
+    };
+
+    const handleQuickSend = () => {
+        if (!selectedPlanId) return;
+        const link = getWhatsAppLink(selectedPlanId);
+        window.open(link, '_blank', 'noopener,noreferrer');
+        closeLeadForm();
+    };
+
+    const selectedPlan = selectedPlanId ? getPlanById(selectedPlanId) : null;
+    const selectedPlanMeta = selectedPlan ? getPlanMeta(selectedPlan) : null;
 
     return (
         <div className="space-y-12">
@@ -132,37 +173,143 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
 
                             {/* Direct CTA Buttons */}
                             {plan.id === 'starter' ? (
-                                <a
-                                    href={getWhatsAppLink(plan.id)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    type="button"
+                                    onClick={() => openLeadForm(plan.id)}
                                     className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-[var(--color-bg)] hover:bg-gray-100 text-[var(--color-text)] uppercase"
                                 >
                                     {t('pricing.startTrial', lang)}
-                                </a>
+                                </button>
                             ) : plan.id === 'business' ? (
-                                <a
-                                    href={getWhatsAppLink(plan.id)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    type="button"
+                                    onClick={() => openLeadForm(plan.id)}
                                     className="w-full py-3 font-black border-1 border-[var(--color-border)] text-center transition-all bg-black text-white hover:bg-gray-800 uppercase"
                                 >
                                     {t('pricing.getBusiness', lang)}
-                                </a>
+                                </button>
                             ) : (
-                                <a
-                                    href={getWhatsAppLink(plan.id)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    type="button"
+                                    onClick={() => openLeadForm(plan.id)}
                                     className="w-full py-3 font-black border-1 border-black text-center transition-all bg-lime-400 text-black hover:bg-lime-300 shadow-[2px_2px_0px_0px_black] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_black] uppercase"
                                 >
                                     {t('pricing.getPro', lang)}
-                                </a>
+                                </button>
                             )}
                         </div>
                     );
                 })}
             </div>
+
+            {selectedPlan && selectedPlanMeta && (
+                <div className="fixed inset-0 z-[200]" onClick={closeLeadForm} role="dialog" aria-modal="true">
+                    <div className="fixed inset-0 h-dvh w-screen bg-black/60" />
+
+                    <div className="relative flex h-full w-full items-center justify-center p-4">
+                        <div
+                            className="relative w-full max-w-lg bg-white border-2 border-black shadow-[6px_6px_0px_0px_black] p-5 md:p-6"
+                            onClick={(event) => event.stopPropagation()}
+                        >
+                            <div className="flex items-start justify-between gap-4">
+                            <div>
+                                <h3 className="text-xl md:text-2xl font-black uppercase">{formCopy.title}</h3>
+                                <p className="mt-1 text-sm font-semibold text-gray-600">{formCopy.subtitle}</p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={closeLeadForm}
+                                className="p-1 border-2 border-black bg-white hover:bg-gray-100"
+                                aria-label={formCopy.close}
+                            >
+                                <X size={16} />
+                            </button>
+                        </div>
+
+                        <div className="mt-5 grid grid-cols-3 gap-3 text-xs md:text-sm">
+                            <div className="border border-black p-2">
+                                <p className="font-black uppercase text-gray-500">{formCopy.packageLabel}</p>
+                                <p className="mt-1 font-bold">{selectedPlan.name}</p>
+                            </div>
+                            <div className="border border-black p-2">
+                                <p className="font-black uppercase text-gray-500">{formCopy.periodLabel}</p>
+                                <p className="mt-1 font-bold">{selectedPlanMeta.period}</p>
+                            </div>
+                            <div className="border border-black p-2">
+                                <p className="font-black uppercase text-gray-500">{formCopy.totalLabel}</p>
+                                <p className="mt-1 font-bold">₭{selectedPlanMeta.formattedPrice}</p>
+                            </div>
+                        </div>
+
+                        {selectedPlan.id === 'starter' && (
+                            <div className="mt-4 border-2 border-black bg-lime-100 p-3">
+                                <span className="inline-block bg-black text-lime-300 px-2 py-1 text-[10px] md:text-xs font-black uppercase">
+                                    {formCopy.trialBadge}
+                                </span>
+                                <p className="mt-2 text-xs md:text-sm font-bold text-black">
+                                    {formCopy.trialHint}
+                                </p>
+                            </div>
+                        )}
+
+                        <div className="mt-5 space-y-3">
+                            <label className="block">
+                                <span className="text-xs font-black uppercase">{formCopy.contactName} *</span>
+                                <input
+                                    value={leadForm.contactName}
+                                    onChange={(e) => {
+                                        setLeadForm((prev) => ({ ...prev, contactName: e.target.value }));
+                                        if (showNameError && e.target.value.trim()) setShowNameError(false);
+                                    }}
+                                    placeholder={formCopy.contactPlaceholder}
+                                    className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
+                                />
+                                {showNameError && (
+                                    <p className="mt-1 text-xs font-bold text-red-600">{formCopy.requiredName}</p>
+                                )}
+                            </label>
+
+                            <label className="block">
+                                <span className="text-xs font-black uppercase">{formCopy.storeName}</span>
+                                <input
+                                    value={leadForm.storeName}
+                                    onChange={(e) => setLeadForm((prev) => ({ ...prev, storeName: e.target.value }))}
+                                    placeholder={formCopy.storePlaceholder}
+                                    className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
+                                />
+                            </label>
+
+                            <label className="block">
+                                <span className="text-xs font-black uppercase">{formCopy.phone}</span>
+                                <input
+                                    value={leadForm.phone}
+                                    onChange={(e) => setLeadForm((prev) => ({ ...prev, phone: e.target.value }))}
+                                    placeholder={formCopy.phonePlaceholder}
+                                    className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
+                                />
+                            </label>
+                        </div>
+
+                        <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                            <button
+                                type="button"
+                                onClick={handleSendWithDetails}
+                                className="flex-1 py-3 font-black uppercase border-2 border-black bg-lime-400 text-black hover:bg-lime-300"
+                            >
+                                {formCopy.sendWithDetails}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleQuickSend}
+                                className="flex-1 py-3 font-black uppercase border-2 border-black bg-white text-black hover:bg-gray-100"
+                            >
+                                {formCopy.sendQuick}
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <div className="text-center">
                 <p className="text-sm text-gray-600 font-semibold">

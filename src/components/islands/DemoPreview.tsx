@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import { Package, Users, ShoppingCart, Activity, Search, Plus, Trash2, Printer, X } from 'lucide-react';
 import type { Lang } from '../../lib/lang';
-
-// Mock translations
-const t = (key: string, lang: Lang) => {
-    const dict: any = {
-        en: { pending: 'Pending', shipped: 'Shipped', paid: 'Paid', order: 'Order', customer: 'Customer', channel: 'Channel', status: 'Status', total: 'Total', back: 'Go back to Orders' },
-        th: { pending: 'รอโอน', shipped: 'ส่งแล้ว', paid: 'โอนแล้ว', order: 'ออเดอร์', customer: 'ลูกค้า', channel: 'ช่องทาง', status: 'สถานะ', total: 'ยอดรวม', back: 'กลับไปหน้ารายการ' },
-        la: { pending: 'ລໍຖ້າໂອນ', shipped: 'ສົ່ງແລ້ວ', paid: 'ໂອນແລ້ວ', order: 'ອໍເດີ', customer: 'ລູກຄ້າ', channel: 'ຊ່ອງທາງ', status: 'ສະຖານະ', total: 'ລວມ', back: 'ກັບໄປໜ້າລາຍການ' }
-    };
-    return dict[lang]?.[key] || key;
-};
+import { demoPreviewCopy, fromLang } from '../../data/localizedCopy';
 
 export default function DemoPreview({ lang = 'th' }: { lang?: Lang }) {
+    const copy = fromLang(demoPreviewCopy, lang);
+    const t = (key: keyof typeof copy) => copy[key];
     const [activeTab, setActiveTab] = useState('orders');
     const [orders, setOrders] = useState([
         { id: 'ORD-001', customer: 'Somchai Jaidee', status: 'Pending', total: 1500, channel: 'Facebook' },
@@ -133,10 +126,10 @@ export default function DemoPreview({ lang = 'th' }: { lang?: Lang }) {
                                     <thead className="bg-gray-100 border-b-2 border-black">
                                         <tr className="text-black">
                                             <th className="p-4 font-black border-r-2 border-black w-24">ID</th>
-                                            <th className="p-4 font-black border-r-2 border-black">{t('customer', lang)}</th>
-                                            <th className="p-4 font-black border-r-2 border-black">{t('channel', lang)}</th>
-                                            <th className="p-4 font-black border-r-2 border-black">{t('status', lang)}</th>
-                                            <th className="p-4 font-black text-right">{t('total', lang)}</th>
+                                            <th className="p-4 font-black border-r-2 border-black">{t('customer')}</th>
+                                            <th className="p-4 font-black border-r-2 border-black">{t('channel')}</th>
+                                            <th className="p-4 font-black border-r-2 border-black">{t('status')}</th>
+                                            <th className="p-4 font-black text-right">{t('total')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-black">
@@ -157,7 +150,7 @@ export default function DemoPreview({ lang = 'th' }: { lang?: Lang }) {
                                                         }`}>
                                                         <span className={`w-2 h-2 rounded-full ${order.status === 'Pending' ? 'bg-orange-500' : 'bg-green-600'
                                                             }`}></span>
-                                                        {t(order.status.toLowerCase(), lang)}
+                                                        {t(order.status.toLowerCase() as 'pending' | 'shipped' | 'paid')}
                                                     </span>
                                                 </td>
                                                 <td className="p-4 font-bold text-right">฿{order.total.toLocaleString()}</td>
@@ -174,7 +167,7 @@ export default function DemoPreview({ lang = 'th' }: { lang?: Lang }) {
                             <Activity size={48} />
                             <p className="text-xl font-bold">This is a mock demo.</p>
                             <button onClick={() => setActiveTab('orders')} className="text-blue-500 underline font-bold">
-                                {t('back', lang)}
+                                {t('back')}
                             </button>
                         </div>
                     )}

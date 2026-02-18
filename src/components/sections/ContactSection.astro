@@ -1,53 +1,11 @@
 ---
 import { getLangFromUrl } from '../../lib/lang';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
+import { contactSectionCopy, contactSectionMessage, fromLang } from '../../data/localizedCopy';
 
 const lang = getLangFromUrl(Astro.url);
-
-const content = {
-  en: {
-    title: 'Need Help Choosing The Right Plan?',
-    subtitle: 'Talk to our team for setup, pricing, and onboarding support.',
-    whatsapp: 'Chat on WhatsApp',
-    demo: 'Open POS Demo',
-    about: 'About AstroPOS',
-    direct: 'Direct Contact',
-    sales: 'Sales',
-    support: 'Support',
-    response: 'Avg. response within 10 minutes',
-  },
-  th: {
-    title: 'ยังไม่แน่ใจว่าแพ็กเกจไหนเหมาะ?',
-    subtitle: 'คุยกับทีมเราได้ทันที เรื่องราคา การติดตั้ง และการเริ่มต้นใช้งาน',
-    whatsapp: 'คุยผ่าน WhatsApp',
-    demo: 'เปิด POS Demo',
-    about: 'รู้จัก AstroPOS',
-    direct: 'ติดต่อโดยตรง',
-    sales: 'ฝ่ายขาย',
-    support: 'ฝ่ายซัพพอร์ต',
-    response: 'ตอบกลับเฉลี่ยภายใน 10 นาที',
-  },
-  la: {
-    title: 'ຍັງບໍ່ແນ່ໃຈວ່າແພັກເກັດໃດເໝາະ?',
-    subtitle: 'ຄຸຍກັບທີມງານໄດ້ທັນທີ ເລື່ອງລາຄາ ການຕິດຕັ້ງ ແລະ ການເລີ່ມໃຊ້ງານ',
-    whatsapp: 'ຄຸຍຜ່ານ WhatsApp',
-    demo: 'ເປີດ POS Demo',
-    about: 'ຮູ້ຈັກ AstroPOS',
-    direct: 'ຕິດຕໍ່ໂດຍກົງ',
-    sales: 'ຝ່າຍຂາຍ',
-    support: 'ຝ່າຍຊັບພອດ',
-    response: 'ຕອບກັບສະເລ່ຍໃນ 10 ນາທີ',
-  },
-} as const;
-
-const c = content[lang];
-
-const message =
-  lang === 'th'
-    ? 'สวัสดีครับ สนใจขอคำแนะนำแพ็กเกจที่เหมาะกับร้านของผม'
-    : lang === 'la'
-      ? 'ສະບາຍດີ ຂ້ອຍສົນໃຈຂໍຄຳແນະນຳແພັກເກັດທີ່ເໝາະກັບຮ້ານຂອງຂ້ອຍ'
-      : 'Hello, I need help choosing the best package for my store.';
+const c = fromLang(contactSectionCopy, lang);
+const message = fromLang(contactSectionMessage, lang);
 
 const whatsappLink = buildWhatsAppLink(storeSettings.whatsapp.packageSales, message);
 ---

@@ -4,99 +4,15 @@ import Navbar from '../../components/sections/Navbar.astro';
 import Footer from '../../components/sections/Footer.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
+import { aboutPageCopy, aboutWhatsappMessage, fromLang } from '../../data/localizedCopy';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));
 }
 
 const lang = getLangFromUrl(Astro.url);
-
-const content = {
-  en: {
-    badge: 'About Us',
-    title: 'Built for social sellers who need speed.',
-    subtitle:
-      'AstroPOS helps merchants close orders faster, track stock in real-time, and ship with confidence.',
-    missionTitle: 'Our Mission',
-    missionBody:
-      'Make modern POS tools simple for small and medium businesses in Southeast Asia.',
-    visionTitle: 'Our Vision',
-    visionBody:
-      'Enable every seller to run their business from one clear, reliable system.',
-    founded: 'Founded',
-    based: 'Based in',
-    support: 'Support',
-    valuesTitle: 'What We Care About',
-    value1Title: 'Speed',
-    value1Body: 'Fast workflows that help teams process more orders every day.',
-    value2Title: 'Reliability',
-    value2Body: 'Stable tools that work consistently even in high-volume periods.',
-    value3Title: 'Practical Support',
-    value3Body: 'Real humans who help with setup, onboarding, and operations.',
-    ctaTitle: 'Ready to grow with AstroPOS?',
-    ctaWhatsapp: 'Chat with Sales',
-    ctaPackages: 'View Packages',
-  },
-  th: {
-    badge: 'เกี่ยวกับเรา',
-    title: 'สร้างมาเพื่อร้านค้าที่ต้องการความเร็วในการขาย',
-    subtitle:
-      'AstroPOS ช่วยให้ปิดออเดอร์ไวขึ้น เช็กสต็อกแบบเรียลไทม์ และส่งของได้อย่างมั่นใจ',
-    missionTitle: 'พันธกิจของเรา',
-    missionBody:
-      'ทำให้เครื่องมือ POS สมัยใหม่ใช้ง่ายสำหรับธุรกิจขนาดเล็กและกลางในเอเชียตะวันออกเฉียงใต้',
-    visionTitle: 'วิสัยทัศน์ของเรา',
-    visionBody:
-      'ให้ทุกร้านค้าบริหารธุรกิจได้จากระบบเดียวที่ชัดเจนและเชื่อถือได้',
-    founded: 'ก่อตั้งเมื่อ',
-    based: 'ตั้งอยู่ที่',
-    support: 'ซัพพอร์ต',
-    valuesTitle: 'สิ่งที่เราให้ความสำคัญ',
-    value1Title: 'ความเร็ว',
-    value1Body: 'ขั้นตอนทำงานที่เร็วขึ้น ช่วยให้ทีมจัดการออเดอร์ได้มากขึ้นทุกวัน',
-    value2Title: 'ความเสถียร',
-    value2Body: 'ระบบที่ทำงานนิ่ง ใช้ได้ต่อเนื่องแม้ช่วงออเดอร์พุ่ง',
-    value3Title: 'ซัพพอร์ตที่ใช้งานได้จริง',
-    value3Body: 'มีทีมจริงคอยช่วยตั้งค่า เริ่มใช้งาน และแก้ปัญหาหน้างาน',
-    ctaTitle: 'พร้อมโตไปกับ AstroPOS แล้วหรือยัง?',
-    ctaWhatsapp: 'คุยกับฝ่ายขาย',
-    ctaPackages: 'ดูแพ็กเกจ',
-  },
-  la: {
-    badge: 'ກ່ຽວກັບພວກເຮົາ',
-    title: 'ສ້າງມາເພື່ອຮ້ານຄ້າທີ່ຕ້ອງການຄວາມໄວໃນການຂາຍ',
-    subtitle:
-      'AstroPOS ຊ່ວຍໃຫ້ປິດອໍເດີໄດ້ໄວຂຶ້ນ ກວດສະຕັອກແບບເວລາຈິງ ແລະ ສົ່ງຂອງໄດ້ຢ່າງໝັ້ນໃຈ',
-    missionTitle: 'ພາລະກິດຂອງພວກເຮົາ',
-    missionBody:
-      'ເຮັດໃຫ້ເຄື່ອງມື POS ສະໄໝໃໝ່ນຳໃຊ້ງ່າຍ ສຳລັບທຸລະກິດນ້ອຍ-ກາງໃນອາຊີຕາເວັນອອກສຽງໃຕ້',
-    visionTitle: 'ວິໄສທັດຂອງພວກເຮົາ',
-    visionBody:
-      'ໃຫ້ທຸກຮ້ານຄ້າບໍລິຫານທຸລະກິດໄດ້ຈາກລະບົບດຽວທີ່ຊັດເຈນ ແລະ ໜ້າເຊື່ອຖື',
-    founded: 'ເລີ່ມຕົ້ນ',
-    based: 'ຕັ້ງຢູ່',
-    support: 'ຊັບພອດ',
-    valuesTitle: 'ສິ່ງທີ່ພວກເຮົາໃຫ້ຄວາມສຳຄັນ',
-    value1Title: 'ຄວາມໄວ',
-    value1Body: 'ຂັ້ນຕອນການເຮັດວຽກໄວຂຶ້ນ ຊ່ວຍໃຫ້ທີມຈັດການອໍເດີໄດ້ຫຼາຍຂຶ້ນ',
-    value2Title: 'ຄວາມໝັ້ນຄົງ',
-    value2Body: 'ລະບົບເຮັດວຽກນິ່ງ ແມ່ນຍຳ ແມ້ໃນຊ່ວງອໍເດີສູງ',
-    value3Title: 'ຊັບພອດທີ່ນຳໃຊ້ໄດ້ຈິງ',
-    value3Body: 'ມີທີມງານຈິງຊ່ວຍຕັ້ງຄ່າ ເລີ່ມໃຊ້ງານ ແລະ ແກ້ບັນຫາ',
-    ctaTitle: 'ພ້ອມເຕີບໂຕໄປກັບ AstroPOS ຫຼືຍັງ?',
-    ctaWhatsapp: 'ຄຸຍກັບຝ່າຍຂາຍ',
-    ctaPackages: 'ເບິ່ງແພັກເກັດ',
-  },
-} as const;
-
-const c = content[lang];
-
-const whatsappMessage =
-  lang === 'th'
-    ? 'สวัสดีครับ สนใจคุยรายละเอียดการใช้งาน AstroPOS'
-    : lang === 'la'
-      ? 'ສະບາຍດີ ຂ້ອຍສົນໃຈສອບຖາມລາຍລະອຽດການໃຊ້ງານ AstroPOS'
-      : 'Hello, I want to learn more about AstroPOS.';
+const c = fromLang(aboutPageCopy, lang);
+const whatsappMessage = fromLang(aboutWhatsappMessage, lang);
 
 const salesWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.packageSales, whatsappMessage);
 ---

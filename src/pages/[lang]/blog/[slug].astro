@@ -6,6 +6,7 @@ import Footer from '../../../components/sections/Footer.astro';
 import ProductShare from '../../../components/islands/ProductShare';
 import SidebarLiveOrders from '../../../components/islands/SidebarLiveOrders';
 import { getLangFromUrl, languages } from '../../../lib/lang';
+import { blogPostCopy, fromLang } from '../../../data/localizedCopy';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news');
@@ -30,23 +31,7 @@ const relatedPosts = allPosts
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
 
-// Translations
-const strings: Record<string, Record<string, string>> = {
-  shareTitle: { en: 'Share this article', th: 'แชร์บทความนี้', la: 'ແບ່ງປັນບົດຄວາມນີ້' },
-  copy: { en: 'Copy Link', th: 'คัดลอกลิงก์', la: 'ຄັດລອກລິ້ງ' },
-  copied: { en: 'Copied!', th: 'คัดลอกแล้ว!', la: 'ຄັດລອກແລ້ວ!' },
-  back: { en: 'Back to Blog', th: 'กลับไปหน้าบทความ', la: 'ກັບໄປໜ້າບົດຄວາມ' },
-  readNext: { en: 'Read Next', th: 'บทความแนะนำ', la: 'ບົດຄວາມແນະນຳ' },
-  related: { en: 'Related Articles', th: 'บทความที่เกี่ยวข้อง', la: 'ບົດຄວາມທີ່ກ່ຽວຂ້ອງ' },
-  liveTitle: { en: 'Orders Coming In', th: 'ออเดอร์กำลังเข้า', la: 'ອໍເດີກຳລັງເຂົ້າ' },
-  liveSubtitle: { en: 'See orders flow in real-time from every channel.', th: 'ดูออเดอร์ไหลเข้าจากทุกช่องทาง', la: 'ເບິ່ງອໍເດີໄຫລເຂົ້າຈາກທຸກຊ່ອງທາງ' },
-  liveCta: { en: 'Start Free Trial →', th: 'เริ่มทดลองฟรี →', la: 'ເລີ່ມທົດລອງຟຣີ →' },
-  demoBadge: { en: 'TRY IT', th: 'ลองเลย', la: 'ລອງເລີຍ' },
-  demoTitle: { en: 'See It In Action', th: 'ดูการทำงานจริง', la: 'ເບິ່ງການເຮັດວຽກຈິງ' },
-  demoDesc: { en: 'Try our live POS demo.', th: 'ลอง POS Demo สดๆ', la: 'ລອງ POS Demo ສົດໆ' },
-  demoCta: { en: 'Open Demo →', th: 'เปิด Demo →', la: 'ເປີດ Demo →' },
-};
-const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
+const t = fromLang(blogPostCopy, lang);
 ---
 
 <Base title={`${post.data.title} | AstroPOS Blog`}>
@@ -57,7 +42,7 @@ const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
       
       {/* Breadcrumb */}
       <a href={`/${lang}/blog`} class="inline-flex items-center text-gray-700 hover:text-black font-bold mb-8 transition-colors">
-        ← {t('back')}
+        ← {t.back}
       </a>
 
       <div class="grid lg:grid-cols-[1fr_300px] gap-10">
@@ -113,9 +98,9 @@ const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
                 url={Astro.url.href} 
                 title={post.data.title} 
                 translations={{
-                  share: t('shareTitle'),
-                  copy: t('copy'),
-                  copied: t('copied')
+                  share: t.shareTitle,
+                  copy: t.copy,
+                  copied: t.copied
                 }} 
               />
             </div>
@@ -128,15 +113,15 @@ const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
           {/* Animated Live Orders */}
           <SidebarLiveOrders 
             client:visible
-            title={t('liveTitle')}
-            subtitle={t('liveSubtitle')}
-            cta={t('liveCta')}
+            title={t.liveTitle}
+            subtitle={t.liveSubtitle}
+            cta={t.liveCta}
             ctaLink={`/${lang}/packages`}
           />
 
           {/* Related Articles in Sidebar */}
           <div class="border-1 border-[var(--color-border)] bg-[var(--color-bg-card)] p-5 shadow-[2px_2px_0px_0px_var(--color-shadow)]">
-            <h3 class="font-black text-sm uppercase tracking-wider mb-4 text-[var(--color-text)]">{t('related')}</h3>
+            <h3 class="font-black text-sm uppercase tracking-wider mb-4 text-[var(--color-text)]">{t.related}</h3>
             <div class="space-y-4">
               {relatedPosts.slice(0, 3).map((relatedPost) => (
                 <a href={`/${lang}/blog/${relatedPost.slug}`} class="group flex gap-3 hover:bg-gray-50 p-2 -mx-2 rounded transition-colors">
@@ -161,16 +146,16 @@ const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
           {/* Banner Ad 2 - Demo */}
           <div class="border-1 border-black bg-black text-white p-5 shadow-[2px_2px_0px_0px_rgba(163,230,53,1)] relative overflow-hidden">
             <span class="absolute -top-0 -right-1 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">
-              {t('demoBadge')}
+              {t.demoBadge}
             </span>
             <div class="text-3xl mb-2">🖥️</div>
-            <h3 class="text-lg font-black mb-1 leading-tight">{t('demoTitle')}</h3>
-            <p class="text-xs font-bold text-gray-400 mb-3">{t('demoDesc')}</p>
+            <h3 class="text-lg font-black mb-1 leading-tight">{t.demoTitle}</h3>
+            <p class="text-xs font-bold text-gray-400 mb-3">{t.demoDesc}</p>
             <a 
               href={`/${lang}/demo`}
               class="inline-block w-full text-center font-black text-sm py-2 bg-lime-400 text-black border-2 border-lime-400 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              {t('demoCta')}
+              {t.demoCta}
             </a>
           </div>
 
@@ -179,7 +164,7 @@ const t = (key: string) => strings[key]?.[lang] || strings[key]?.['en'] || key;
 
       {/* Read Next - Full Width Below */}
       <div class="border-t-2 border-[var(--color-border)] pt-12 mt-16">
-        <h3 class="text-3xl font-black uppercase mb-8 text-center">{t('readNext')}</h3>
+        <h3 class="text-3xl font-black uppercase mb-8 text-center">{t.readNext}</h3>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {relatedPosts.slice(0, 3).map((relatedPost) => (
             <a href={`/${lang}/blog/${relatedPost.slug}`} class="group block bg-white border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--color-shadow)] transition-all">

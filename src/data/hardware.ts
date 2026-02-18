@@ -1,4 +1,5 @@
 import type { Lang } from '../lib/lang';
+import { fromLang, hardwareGridCopy } from './localizedCopy';
 
 export interface Product {
     id: string;
@@ -92,14 +93,5 @@ export const hardwareProducts: Product[] = [
 ];
 
 export const getHardwareTranslations = (lang: Lang) => {
-    return {
-        tabs: {
-            all: { en: 'All Items', th: 'ทั้งหมด', la: 'ທັງໝົດ' }[lang],
-            printer: { en: 'Printers', th: 'เครื่องพิมพ์', la: 'ເຄື່ອງພິມ' }[lang],
-            scanner: { en: 'Scanners', th: 'สแกนเนอร์', la: 'ສະແກນເນີ' }[lang],
-            supplies: { en: 'Supplies', th: 'อุปกรณ์สิ้นเปลือง', la: 'ອຸປະກອນສິ້ນເປືອງ' }[lang],
-        },
-        price: { en: 'Price', th: 'ราคา', la: 'ລາຄາ' }[lang],
-        buyNow: { en: 'View Details', th: 'ดูรายละเอียด', la: 'ເບິ່ງລາຍລະອຽດ' }[lang],
-    };
+    return fromLang(hardwareGridCopy, lang);
 };

@@ -6,65 +6,15 @@ import HardwareGrid from '../../components/islands/HardwareGrid';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
+import { fromLang, hardwareWarrantyClaimMessage, hardwareWarrantyCopy } from '../../data/localizedCopy';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
 }
 
 const lang = getLangFromUrl(Astro.url);
-
-const warrantyContent = {
-  en: {
-    badge: 'Official Warranty',
-    title: 'Protected Purchase. Fast Support.',
-    subtitle: 'Every hardware item includes clear warranty coverage and direct after-sales support.',
-    point1: '1-year replacement for manufacturing defects',
-    point2: 'Guided setup by our team after delivery',
-    point3: 'Fast nationwide shipping and response',
-    claim: 'Claim via WhatsApp',
-    terms: 'View warranty terms',
-    covered: 'Covered:',
-    coveredItems: 'Factory defects, dead-on-arrival, non-user damage',
-    notCovered: 'Not covered:',
-    notCoveredItems: 'Drops, water damage, unauthorized modifications',
-  },
-  th: {
-    badge: 'รับประกันอย่างเป็นทางการ',
-    title: 'ซื้อมั่นใจ มีทีมดูแลหลังการขาย',
-    subtitle: 'อุปกรณ์ทุกชิ้นมีเงื่อนไขรับประกันชัดเจน และมีทีมช่วยเหลือหลังซื้อโดยตรง',
-    point1: 'เปลี่ยนใหม่ภายใน 1 ปี กรณีเสียจากการผลิต',
-    point2: 'มีทีมช่วยแนะนำการติดตั้งหลังรับสินค้า',
-    point3: 'จัดส่งไว พร้อมตอบกลับรวดเร็วทั่วประเทศ',
-    claim: 'เคลมผ่าน WhatsApp',
-    terms: 'ดูเงื่อนไขการรับประกัน',
-    covered: 'ครอบคลุม:',
-    coveredItems: 'ความเสียหายจากการผลิต, สินค้าเสียตั้งแต่เปิดกล่อง, ความผิดปกติที่ไม่เกิดจากผู้ใช้',
-    notCovered: 'ไม่ครอบคลุม:',
-    notCoveredItems: 'ตกกระแทก, โดนน้ำ, ดัดแปลงอุปกรณ์เอง',
-  },
-  la: {
-    badge: 'ຮັບປະກັນທາງການ',
-    title: 'ຊື້ແລ້ວໝັ້ນໃຈ ມີທີມດູແລຫຼັງການຂາຍ',
-    subtitle: 'ອຸປະກອນທຸກຊິ້ນມີເງື່ອນໄຂການຮັບປະກັນຊັດເຈນ ແລະ ມີທີມຊ່ວຍເຫຼືອຫຼັງການຂາຍ',
-    point1: 'ປ່ຽນໃໝ່ໃນ 1 ປີ ກໍລະນີຄວາມຜິດພາດຈາກໂຮງງານ',
-    point2: 'ມີທີມຊ່ວຍແນະນຳການຕິດຕັ້ງຫຼັງຮັບສິນຄ້າ',
-    point3: 'ຈັດສົ່ງໄວ ແລະ ຕອບກັບຮວດເລັວທົ່ວປະເທດ',
-    claim: 'ເຄລມຜ່ານ WhatsApp',
-    terms: 'ເບິ່ງເງື່ອນໄຂການຮັບປະກັນ',
-    covered: 'ຄຸ້ມຄອງ:',
-    coveredItems: 'ຄວາມເສຍຫາຍຈາກໂຮງງານ, ສິນຄ້າເສຍຕັ້ງແຕ່ເປີດກ່ອງ, ຄວາມຜິດປົກກະຕິທີ່ບໍ່ໄດ້ເກີດຈາກຜູ້ໃຊ້',
-    notCovered: 'ບໍ່ຄຸ້ມຄອງ:',
-    notCoveredItems: 'ຕົກກະແທກ, ໂດນນ້ຳ, ດັດແປງອຸປະກອນເອງ',
-  },
-} as const;
-
-const wc = warrantyContent[lang];
-const warrantyClaimMessage =
-  lang === 'th'
-    ? 'สวัสดีครับ ต้องการแจ้งเคลมอุปกรณ์ฮาร์ดแวร์ AstroPOS'
-    : lang === 'la'
-      ? 'ສະບາຍດີ ຕ້ອງການແຈ້ງເຄລມອຸປະກອນ Hardware AstroPOS'
-      : 'Hello, I need to claim warranty for AstroPOS hardware.';
+const wc = fromLang(hardwareWarrantyCopy, lang);
+const warrantyClaimMessage = fromLang(hardwareWarrantyClaimMessage, lang);
 const warrantyClaimLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupport, warrantyClaimMessage);
 ---
 
@@ -120,7 +70,7 @@ const warrantyClaimLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSuppor
           </div>
 
           <aside class="bg-black text-white p-6 border-1 border-black shadow-[2px_2px_0px_0px_black]">
-            <p class="text-sm font-semibold opacity-80 mb-4">Warranty Support</p>
+            <p class="text-sm font-semibold opacity-80 mb-4">{wc.supportLabel}</p>
             <p class="text-lg font-black">+{storeSettings.whatsapp.paymentSupport}</p>
             <p class="text-sm font-semibold mt-1 mb-6">{storeSettings.emails.support}</p>
 

@@ -1,8 +1,10 @@
 ---
 import { getLangFromUrl } from '../../lib/lang';
 import { t } from '../../data/i18n';
+import { footerHelpCenterCopy, fromLang } from '../../data/localizedCopy';
 
 const lang = getLangFromUrl(Astro.url);
+const helpCenterLabel = fromLang(footerHelpCenterCopy, lang);
 ---
 
 <footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)]">
@@ -11,7 +13,7 @@ const lang = getLangFromUrl(Astro.url);
     
     <div class="flex flex-wrap justify-center gap-6 text-sm font-semibold">
       <a href={`/${lang}/help`} class="hover:underline underline-offset-4 decoration-2">
-        {lang === 'th' ? 'ช่วยเหลือ' : lang === 'la' ? 'ຊ່ວຍເຫຼືອ' : 'Help Center'}
+        {helpCenterLabel}
       </a>
       <a href={`/${lang}/about`} class="hover:underline underline-offset-4 decoration-2">
         {t('footer.about', lang)}
