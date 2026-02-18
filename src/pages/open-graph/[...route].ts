@@ -86,30 +86,10 @@ const route = await OGImageRoute({
                 size: [300], // Large size for product image
             },
             fonts: [
-                {
-                    name: 'Noto Sans Thai',
-                    data: getFont('NotoSansThai-Black.ttf'),
-                    weight: 900,
-                    style: 'normal',
-                },
-                {
-                    name: 'Noto Sans Thai',
-                    data: getFont('NotoSansThai-Regular.ttf'),
-                    weight: 400,
-                    style: 'normal',
-                },
-                {
-                    name: 'Noto Sans Lao',
-                    data: getFont('NotoSansLao-Black.ttf'),
-                    weight: 900,
-                    style: 'normal',
-                },
-                {
-                    name: 'Noto Sans Lao',
-                    data: getFont('NotoSansLao-Regular.ttf'),
-                    weight: 400,
-                    style: 'normal',
-                },
+                process.cwd() + '/public/fonts/NotoSansThai-Black.ttf',
+                process.cwd() + '/public/fonts/NotoSansThai-Regular.ttf',
+                process.cwd() + '/public/fonts/NotoSansLao-Black.ttf',
+                process.cwd() + '/public/fonts/NotoSansLao-Regular.ttf',
             ],
         };
     },
