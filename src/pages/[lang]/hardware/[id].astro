@@ -6,6 +6,7 @@ import { hardwareProducts } from '../../../data/hardware';
 import { languages } from '../../../lib/lang';
 import { t } from '../../../data/i18n';
 import { Check, Star, ArrowLeft, Share2 } from 'lucide-react';
+import ProductShare from '../../../components/islands/ProductShare';
 
 export async function getStaticPaths() {
   const paths = [];
@@ -25,8 +26,11 @@ const { product } = Astro.props;
 
 // WhatsApp Logic
 const currentUrl = Astro.url.href;
+// WhatsApp Link Preview works best when the URL is the first thing or distinct.
+// However, for a "Buy" message, we usually want the context first.
+// We'll put the link clearly at the end.
 const whatsappMessage = encodeURIComponent(
-  `Hello AstroPOS, I'm interested in: ${product.name[lang]} (${product.price.toLocaleString()} THB).\nLink: ${currentUrl}`
+  `I'm interested in: ${product.name[lang]}\nPrice: ${product.price.toLocaleString()} THB\n\n${currentUrl}`
 );
 const whatsappLink = `https://wa.me/8562059083986?text=${whatsappMessage}`;
 
@@ -36,6 +40,9 @@ const translations = {
     specs: { en: 'Specifications', th: 'ข้อมูลจำเพาะ', la: 'ຂໍ້ມູນຈຳເພາະ' },
     buy: { en: 'Buy via WhatsApp', th: 'สั่งซื้อผ่าน WhatsApp', la: 'ສັ່ງຊື້ຜ່ານ WhatsApp' },
     includes: { en: 'What\'s in the box', th: 'อุปกรณ์ในกล่อง', la: 'ອຸປະກອນໃນກ່ອງ' },
+    'share.title': { en: 'Share this product', th: 'แชร์สินค้า', la: 'ແບ່ງປັນສິນຄ້າ' },
+    'share.copy': { en: 'Copy Link', th: 'คัดลอกลิงก์', la: 'ຄັດລອກລິ້ງ' },
+    'share.copied': { en: 'Copied!', th: 'คัดลอกแล้ว!', la: 'ຄັດລອກແລ້ວ!' },
 };
 
 const txt = (key) => translations[key][lang];
@@ -113,13 +120,24 @@ const txt = (key) => translations[key][lang];
                 <a 
                     href={whatsappLink}
                     target="_blank"
-                    class="w-full bg-lime-400 hover:bg-lime-300 text-black border-2 border-black font-black text-xl py-4 flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all uppercase rounded-lg"
+                    class="w-full bg-lime-400 hover:bg-lime-300 text-black border-2 border-black font-black text-xl py-4 flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all uppercase"
                 >
                     <Share2 size={24} /> {txt('buy')}
                 </a>
                 <p class="text-center text-xs font-bold text-gray-400 uppercase tracking-widest">
                     Secure Payment • Fast Shipping • 1 Year Warranty
                 </p>
+
+                <ProductShare 
+                    client:idle
+                    url={currentUrl} 
+                    title={product.name[lang]} 
+                    translations={{
+                        share: txt('share.title'),
+                        copy: txt('share.copy'),
+                        copied: txt('share.copied')
+                    }} 
+                />
             </div>
         </div>
       </div>
