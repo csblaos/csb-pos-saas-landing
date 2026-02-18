@@ -63,27 +63,27 @@ const route = await OGImageRoute({
         const productImagePath = await downloadImage(product.image, product.id);
 
         return {
-            title: product.name[lang],
-            description: product.description[lang],
-            bgGradient: [[20, 20, 20]], // Dark gray background
-            border: { color: [163, 230, 53], width: 20 }, // Lime border
-            padding: 40,
+            title: '', // User requested to remove large text
+            description: '', // User requested to remove description
+            bgGradient: [[10, 10, 10]], // Darker, premium black background
+            border: { color: [163, 230, 53], width: 20 }, // Signature Lime Green Border
+            padding: 20, // Reduce padding to maximize image space
             font: {
                 title: {
-                    size: 60,
+                    size: 0, // Hide title
                     families: ['Noto Sans Thai', 'Noto Sans Lao', 'Inter'],
                     weight: 'Black',
-                    color: [255, 255, 255],
+                    color: [0, 0, 0, 0], // Transparent
                 },
                 description: {
-                    size: 30,
+                    size: 0, // Hide description
                     families: ['Noto Sans Thai', 'Noto Sans Lao', 'Inter'],
-                    color: [200, 200, 200],
+                    color: [0, 0, 0, 0], // Transparent
                 }
             },
             logo: {
                 path: productImagePath,
-                size: [300], // Large size for product image
+                size: [550], // Maximize product image size (vertical height of card is ~630px)
             },
             fonts: [
                 process.cwd() + '/public/fonts/NotoSansThai-Black.ttf',
