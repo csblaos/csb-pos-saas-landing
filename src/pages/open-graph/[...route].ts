@@ -2,6 +2,9 @@ import { OGImageRoute } from 'astro-og-canvas';
 import { hardwareProducts } from '../../data/hardware';
 import { languages } from '../../lib/lang';
 
+import fs from 'fs';
+import path from 'path';
+
 type Product = typeof hardwareProducts[0];
 type Lang = keyof typeof languages;
 
@@ -13,6 +16,10 @@ hardwareProducts.forEach(product => {
         pages[`${lang}/hardware/${product.id}`] = { product, lang: lang as Lang };
     });
 });
+
+const getFont = (filename: string) => {
+    return fs.readFileSync(path.join(process.cwd(), 'public/fonts', filename));
+};
 
 // @ts-ignore
 const route = await OGImageRoute({
@@ -47,10 +54,30 @@ const route = await OGImageRoute({
         };
     },
     fonts: [
-        process.cwd() + '/public/fonts/NotoSansThai-Black.ttf',
-        process.cwd() + '/public/fonts/NotoSansThai-Regular.ttf',
-        process.cwd() + '/public/fonts/NotoSansLao-Black.ttf',
-        process.cwd() + '/public/fonts/NotoSansLao-Regular.ttf',
+        {
+            name: 'Noto Sans Thai',
+            data: getFont('NotoSansThai-Black.ttf'),
+            weight: 900,
+            style: 'normal',
+        },
+        {
+            name: 'Noto Sans Thai',
+            data: getFont('NotoSansThai-Regular.ttf'),
+            weight: 400,
+            style: 'normal',
+        },
+        {
+            name: 'Noto Sans Lao',
+            data: getFont('NotoSansLao-Black.ttf'),
+            weight: 900,
+            style: 'normal',
+        },
+        {
+            name: 'Noto Sans Lao',
+            data: getFont('NotoSansLao-Regular.ttf'),
+            weight: 400,
+            style: 'normal',
+        },
     ],
 } as any);
 
