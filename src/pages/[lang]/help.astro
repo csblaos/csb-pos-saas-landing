@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import Navbar from '../../components/sections/Navbar.astro';
 import Footer from '../../components/sections/Footer.astro';
-import Button from '../../components/common/Button.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
@@ -22,19 +21,19 @@ const categories = [
     icon: Book,
     title: categoryCopy[0].title,
     desc: categoryCopy[0].desc,
-    color: 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
+    color: 'bg-blue-100 text-blue-600'
   },
   {
     icon: Video,
     title: categoryCopy[1].title,
     desc: categoryCopy[1].desc,
-    color: 'bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300'
+    color: 'bg-pink-100 text-pink-600'
   },
   {
     icon: MessageCircle,
     title: categoryCopy[2].title,
     desc: categoryCopy[2].desc,
-    color: 'bg-lime-100 dark:bg-lime-900 text-lime-700 dark:text-lime-300'
+    color: 'bg-lime-100 text-lime-700'
   }
 ];
 
@@ -48,7 +47,7 @@ const supportMessage = helpCopy.supportMessage;
 const supportWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupport, supportMessage);
 ---
 
-<Base title="Help Center | AstroPOS">
+<Base seoKey="help">
   <Navbar />
 
   <main class="py-20 min-h-screen">
@@ -66,9 +65,9 @@ const supportWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupp
           <input 
             type="text" 
             placeholder={helpCopy.searchPlaceholder}
-            class="w-full p-4 pl-12 border-2 border-[var(--color-border)] rounded-none shadow-[4px_4px_0px_0px_var(--color-shadow)] focus:outline-none focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_var(--color-shadow)] transition-all bg-[var(--color-bg)] text-[var(--color-text)] font-bold"
+            class="w-full p-4 pl-12 border-1 border-[var(--color-border)] rounded-none shadow-[2px_2px_0px_0px_var(--color-shadow)] focus:outline-none focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_var(--color-shadow)] transition-all bg-[var(--color-bg)] text-[var(--color-text)] font-bold"
           />
-          <Search class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={24} />
+          <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={24} />
         </div>
       </div>
     </div>
@@ -78,8 +77,8 @@ const supportWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupp
       <!-- Quick Categories -->
       <div class="grid md:grid-cols-3 gap-8 mb-20">
         {categories.map((cat) => (
-          <div class="p-8 border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all cursor-pointer group">
-            <div class={`w-12 h-12 ${cat.color} rounded-none flex items-center justify-center mb-4 border-2 border-transparent group-hover:border-[var(--color-border)]`}>
+          <div class="p-8 border-1 border-[var(--color-border)] bg-[var(--color-bg-card)] hover:-translate-y-1 hover:shadow-[2px_2px_0px_0px_var(--color-shadow)] transition-all cursor-pointer group">
+            <div class={`w-12 h-12 ${cat.color} rounded-none flex items-center justify-center mb-4 border-1 border-transparent group-hover:border-[var(--color-border)]`}>
               <cat.icon size={24} />
             </div>
             <h3 class="text-xl font-black mb-2">{cat.title}</h3>
@@ -95,12 +94,12 @@ const supportWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupp
         </h2>
         <div class="space-y-4">
           {faqs.map((f) => (
-             <details class="group bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] open:shadow-[4px_4px_0px_0px_var(--color-shadow)] open:mb-4 transition-all duration-200">
+             <details class="group bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] open:shadow-[2px_2px_0px_0px_var(--color-shadow)] open:mb-4 transition-all duration-200">
                <summary class="flex justify-between items-center p-6 font-bold cursor-pointer list-none text-[var(--color-text)]">
                  <span>{f.q}</span>
                  <span class="transform group-open:rotate-180 transition-transform">▼</span>
                </summary>
-               <div class="px-6 pb-6 text-gray-600 dark:text-gray-300 font-medium leading-relaxed border-t-2 border-[var(--color-border)] pt-4 bg-[var(--color-bg)]/50">
+               <div class="px-6 pb-6 text-gray-600 font-medium leading-relaxed border-t-2 border-[var(--color-border)] pt-4 bg-[var(--color-bg)]/50">
                  {f.a}
                </div>
              </details>
@@ -109,19 +108,51 @@ const supportWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupp
       </div>
 
       <!-- Contact Support -->
-      <div class="bg-black text-white p-12 border-2 border-black shadow-[8px_8px_0px_0px_var(--color-shadow)] text-center dark:bg-white dark:text-black">
-        <h2 class="text-3xl font-black mb-6">
-          {helpCopy.stuckTitle}
-        </h2>
-        <div class="flex flex-col md:flex-row justify-center gap-6">
-          <Button href={supportWhatsappLink} variant="primary" class="flex gap-2 items-center justify-center">
-             <MessageCircle size={20} /> {helpCopy.chatSupport}
-          </Button>
-          <Button href={`mailto:${storeSettings.emails.support}`} class="bg-white text-black border-2 border-black hover:bg-gray-100 dark:bg-black dark:text-white dark:border-white flex gap-2 items-center justify-center">
-             <Mail size={20} /> {helpCopy.emailUs}
-          </Button>
+      <section class="relative overflow-hidden border-1 border-black bg-[var(--color-bg-card)] p-6 md:p-10 shadow-[2px_2px_0px_0px_black]">
+        <div class="absolute -top-10 -right-8 w-32 h-32 bg-lime-300 border-1 border-black rotate-12 opacity-80"></div>
+        <div class="absolute -bottom-8 -left-8 w-24 h-24 bg-pink-300 border-1 border-black -rotate-12 opacity-80"></div>
+
+        <div class="relative grid lg:grid-cols-[1.1fr_1fr] gap-8 items-start">
+          <div>
+            <span class="inline-flex items-center px-3 py-1 text-xs font-black uppercase bg-black text-white border border-black">
+              Support
+            </span>
+            <h2 class="mt-4 text-3xl md:text-4xl font-black uppercase text-[var(--color-text)]">
+              {helpCopy.stuckTitle}
+            </h2>
+            <p class="mt-3 text-sm md:text-base font-semibold text-gray-700">
+              {storeSettings.emails.support}
+            </p>
+            <p class="text-sm md:text-base font-semibold text-gray-700">
+              +{storeSettings.whatsapp.paymentSupport}
+            </p>
+          </div>
+
+          <div class="grid gap-3">
+            <a
+              href={supportWhatsappLink}
+              class="group flex items-center justify-between w-full px-5 py-4 bg-lime-400 text-black border-1 border-black shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_black] transition-all"
+            >
+              <span class="inline-flex items-center gap-3 font-black uppercase">
+                <MessageCircle size={20} />
+                {helpCopy.chatSupport}
+              </span>
+              <span class="text-xs font-black uppercase opacity-80">WhatsApp</span>
+            </a>
+
+            <a
+              href={`mailto:${storeSettings.emails.support}`}
+              class="group flex items-center justify-between w-full px-5 py-4 bg-white text-black border-1 border-black shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_black] transition-all"
+            >
+              <span class="inline-flex items-center gap-3 font-black uppercase">
+                <Mail size={20} />
+                {helpCopy.emailUs}
+              </span>
+              <span class="text-xs font-black uppercase opacity-80">Email</span>
+            </a>
+          </div>
         </div>
-      </div>
+      </section>
 
     </div>
   </main>

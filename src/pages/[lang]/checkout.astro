@@ -17,7 +17,7 @@ const confirmPaymentMessage = `I have transferred the payment for ${planName} pl
 const confirmPaymentWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupport, confirmPaymentMessage);
 ---
 
-<Base title={`Checkout - ${planName} Plan | AstroPOS`}>
+<Base seoKey="checkout" title={`Checkout - ${planName} Plan | AstroPOS`} noindex={true}>
   <Navbar />
   
   <main class="min-h-[80vh] flex items-center justify-center bg-[#f0f0f0] dark:bg-gray-900 py-20 px-4">

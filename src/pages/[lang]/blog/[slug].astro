@@ -34,7 +34,13 @@ const relatedPosts = allPosts
 const t = fromLang(blogPostCopy, lang);
 ---
 
-<Base title={`${post.data.title} | AstroPOS Blog`}>
+<Base
+  seoKey="blog"
+  title={`${post.data.title} | AstroPOS Blog`}
+  description={post.data.description}
+  image={post.data.image ?? '/images/og/home.png'}
+  ogType="article"
+>
   <Navbar />
   
   <main class="py-8 md:py-12 min-h-screen">

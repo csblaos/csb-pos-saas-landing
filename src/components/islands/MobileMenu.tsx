@@ -26,6 +26,7 @@ function isPathActive(currentPath: string, targetPath: string, exact = false) {
 export default function MobileMenu({ lang }: MobileMenuProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const demoHref = `/${lang}/demo`;
 
     useEffect(() => {
         setMounted(true);
@@ -51,6 +52,8 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
         { label: t('nav.about', lang), href: `/${lang}/about` },
         { label: t('nav.blog', lang), href: `/${lang}/blog` },
     ];
+
+    const isDemoActive = mounted && isPathActive(window.location.pathname, demoHref, true);
 
     const menuOverlay = (
         <div className="fixed inset-0 z-[200] bg-[var(--color-bg)] flex flex-col animate-fade-in text-[var(--color-text)] overflow-y-auto">
@@ -99,9 +102,13 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
                 {/* Primary CTA: Demo */}
                 <div className="mt-4 pt-4 border-t-2 border-black/5">
                     <a
-                        href={`/${lang}/demo`}
+                        href={demoHref}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-center gap-3 p-3 text-lg font-semibold bg-white text-black border-1 border-black shadow-[2px_2px_0px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:scale-[0.98] transition-all uppercase tracking-tight"
+                        className={`flex items-center justify-center gap-3 p-3 text-lg font-semibold text-black border-1 border-black transition-all uppercase tracking-tight ${
+                            isDemoActive
+                                ? 'bg-lime-400 shadow-[2px_2px_0px_0px_black] -translate-y-[2px]'
+                                : 'bg-white shadow-[2px_2px_0px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:scale-[0.98]'
+                        }`}
                     >
                         ▶ {t('nav.demo', lang)}
                     </a>

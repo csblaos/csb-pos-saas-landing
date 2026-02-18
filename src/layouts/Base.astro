@@ -2,48 +2,80 @@
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import { getLangFromUrl } from '../lib/lang';
-import { t } from '../data/i18n';
 import ScrollToTop from '../components/islands/ScrollToTop';
+import { buildDefaultSchemas, resolveSeo } from '../lib/seo';
+import type { SeoPageKey } from '../data/seo/pages';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
   image?: string;
+  seoKey?: SeoPageKey;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
 }
 
 const lang = getLangFromUrl(Astro.url);
 
-const { 
-  title, 
-  description = t('hero.subheadline', lang), 
-  image = "/og-image.jpg" 
-} = Astro.props;
+const {
+  title,
+  description,
+  image,
+  seoKey,
+  noindex = false,
+  ogType = 'website'
+} = Astro.props as Props;
+
+const seo = resolveSeo({
+  lang,
+  pathname: Astro.url.pathname,
+  pageKey: seoKey,
+  title,
+  description,
+  image,
+  noindex,
+  ogType
+});
+
+const schemaPayloads = buildDefaultSchemas(lang).map((item) => JSON.stringify(item));
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
+    <meta name="description" content={seo.description} />
+    <meta name="robots" content={seo.robots} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={seo.canonical} />
+    {seo.alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={seo.xDefault} />
     <meta name="generator" content={Astro.generator} />
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="og:type" content={seo.ogType} />
+    <meta property="og:site_name" content={seo.siteName} />
+    <meta property="og:locale" content={seo.locale} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:image" content={new URL(seo.image, Astro.url).toString()} />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url.href} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={seo.canonical} />
+    <meta name="twitter:title" content={seo.title} />
+    <meta name="twitter:description" content={seo.description} />
+    <meta name="twitter:image" content={new URL(seo.image, Astro.url).toString()} />
 
-    <title>{title}</title>
+    <title>{seo.title}</title>
+
+    {schemaPayloads.map((schemaJson) => (
+      <script type="application/ld+json" set:html={schemaJson}></script>
+    ))}
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

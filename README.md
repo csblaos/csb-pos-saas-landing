@@ -1,65 +1,110 @@
-# AstroPOS - SaaS Landing Page
+# AstroPOS Landing
 
-A high-performance, Neo-Brutalist landing page for an Online POS system. Built with Astro, Tailwind CSS, and React.
+Static marketing website for AstroPOS, built with Astro + React islands.
 
-## 🚀 Quick Start
+## What this project includes
 
-1.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
+- Multi-language routes: `en`, `th`, `la`
+- Pricing/package lead form with WhatsApp CTA flow
+- Hardware catalog and product detail pages
+- Blog (Astro content collections)
+- Dynamic Open Graph image route for hardware products
+- Centralized SEO system (canonical, hreflang, OG/Twitter, robots, JSON-LD)
 
-2.  **Start development server**:
-    ```bash
-    npm run dev
-    ```
+## Stack
 
-3.  **Build for production**:
-    ```bash
-    npm run build
-    ```
+- Astro (SSG)
+- React (islands)
+- Tailwind CSS v4
+- Lucide React
+- astro-og-canvas
+- Astro sitemap integration
 
-## 🛠 Tech Stack
+## Quick start
 
--   **Framework**: [Astro](https://astro.build/) (Static Site Generation)
--   **Styling**: [Tailwind CSS](https://tailwindcss.com/) (v4 via Vite plugin)
--   **Interactivity**: React (Astro Islands)
--   **Icons**: Lucide React
--   **Content**: MDX (Content Collections)
+1. Install dependencies:
+```bash
+npm install
+```
 
-## 📂 Project Structure
+2. Run development server:
+```bash
+npm run dev
+```
 
--   `src/pages/`: Route components (Home, Packages, Services, Demo, News).
--   `src/components/common/`: Reusable UI (Buttons, Cards, Badges).
--   `src/components/sections/`: Page sections (Hero, Features, Pricing).
--   `src/components/islands/`: Interactive React components (DemoPreview, PricingSelect).
--   `src/layouts/`: Global layouts (Base.astro).
--   `src/content/news/`: Blog posts in Markdown/MDX.
+3. Build production output:
+```bash
+npm run build
+```
 
-## 🌍 Deployment
+4. Preview production build:
+```bash
+npm run preview
+```
 
-This project is 100% static and can be deployed anywhere.
+## Scripts
 
-### Cloudflare Pages (Recommended)
-1.  Connect your GitHub repo.
-2.  Build command: `npm run build`
-3.  Output directory: `dist`
+- `npm run dev` - start local dev server
+- `npm run build` - generate static site in `dist/`
+- `npm run preview` - preview built site
 
-### Vercel
-1.  Import project.
-2.  Framework preset: `Astro`
-3.  Deploy.
+## Project structure
 
-## 🎨 Design System
+- `src/pages/` - route pages
+- `src/layouts/Base.astro` - global layout and SEO rendering
+- `src/components/sections/` - Astro sections
+- `src/components/islands/` - interactive React components
+- `src/data/i18n.ts` - key/value translation strings
+- `src/data/localizedCopy.ts` - structured localized content
+- `src/data/seo/` - centralized SEO presets and config
+- `src/lib/lang.ts` - language routing helpers
+- `src/lib/seo.ts` - SEO resolver and schema helpers
+- `src/content/news/` - blog content
+- `public/` - static assets, fonts, robots, OG images
 
--   **Style**: Neo-Brutalism
--   **Primary Color**: Lime (`#a3e635`)
--   **Secondary Color**: Pink (`#f472b6`)
--   **Borders**: 2px-4px solid black
--   **Shadows**: Hard black offsets
+## SEO system
 
-## 📝 SEO & Analytics
+SEO is centralized and managed in one place:
 
--   **Sitemap**: Automatically generated at `/sitemap-index.xml`.
--   **Robots.txt**: Included in `public/`.
--   **Schema.org**: Implemented via semantic HTML and head tags.
+- `src/data/seo/site.ts` - domain, default image, locale map
+- `src/data/seo/pages.ts` - per-page localized SEO defaults
+- `src/lib/seo.ts` - resolves final SEO metadata for each page
+
+`Base.astro` auto-renders:
+
+- `title`, `description`
+- `canonical`
+- `alternate hreflang` + `x-default`
+- Open Graph and Twitter tags
+- `robots`
+- default JSON-LD (`Organization`, `WebSite`)
+
+Read full guide: `src/data/seo/README.md`
+
+## i18n system
+
+There are two translation layers:
+
+- `src/data/i18n.ts` via `t(key, lang)`
+- `src/data/localizedCopy.ts` via `fromLang(...)`
+
+Read full guide for adding a new language: `src/data/i18n.README.md`
+
+## Open Graph images
+
+Dynamic OG route:
+
+- `src/pages/open-graph/[...route].ts`
+
+Used for hardware product share images. Font files are loaded from `public/fonts/`.
+
+## Deployment
+
+This site is fully static. Deploy `dist/` to any static host.
+
+Recommended settings:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+
+Works well on Cloudflare Pages, Vercel, Netlify, and similar platforms.

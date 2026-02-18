@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Check, Gift, X } from 'lucide-react';
 import type { Lang } from '../../lib/lang';
 import { t } from '../../data/i18n';
@@ -33,6 +33,7 @@ const plans = [
 export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
     const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+    const [isModalAnimatedIn, setIsModalAnimatedIn] = useState(false);
     const [leadForm, setLeadForm] = useState({ contactName: '', storeName: '', phone: '' });
     const [showNameError, setShowNameError] = useState(false);
     const formCopy = fromLang(pricingLeadFormCopy, lang);
@@ -68,15 +69,23 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
     };
 
     const openLeadForm = (planId: string) => {
+        setIsModalAnimatedIn(false);
         setSelectedPlanId(planId);
         setLeadForm({ contactName: '', storeName: '', phone: '' });
         setShowNameError(false);
     };
 
     const closeLeadForm = () => {
+        setIsModalAnimatedIn(false);
         setSelectedPlanId(null);
         setShowNameError(false);
     };
+
+    useEffect(() => {
+        if (!selectedPlanId) return;
+        const rafId = window.requestAnimationFrame(() => setIsModalAnimatedIn(true));
+        return () => window.cancelAnimationFrame(rafId);
+    }, [selectedPlanId]);
 
     const handleSendWithDetails = () => {
         if (!selectedPlanId) return;
@@ -95,6 +104,15 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
         const link = getWhatsAppLink(selectedPlanId);
         window.open(link, '_blank', 'noopener,noreferrer');
         closeLeadForm();
+    };
+
+    const sanitizePhoneInput = (value: string) => {
+        const cleaned = value.replace(/[^\d+]/g, '');
+        const plusCount = (cleaned.match(/\+/g) || []).length;
+        if (plusCount <= 1 && (plusCount === 0 || cleaned.startsWith('+'))) {
+            return cleaned;
+        }
+        return cleaned.replace(/\+/g, '');
     };
 
     const selectedPlan = selectedPlanId ? getPlanById(selectedPlanId) : null;
@@ -204,11 +222,17 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
 
             {selectedPlan && selectedPlanMeta && (
                 <div className="fixed inset-0 z-[200]" onClick={closeLeadForm} role="dialog" aria-modal="true">
-                    <div className="fixed inset-0 h-dvh w-screen bg-black/60" />
+                    <div
+                        className={`fixed inset-0 h-dvh w-screen bg-black/60 transition-opacity duration-300 ease-out motion-reduce:transition-none ${
+                            isModalAnimatedIn ? 'opacity-100' : 'opacity-0'
+                        }`}
+                    />
 
                     <div className="relative flex h-full w-full items-center justify-center p-4">
                         <div
-                            className="relative w-full max-w-lg bg-white border-2 border-black shadow-[6px_6px_0px_0px_black] p-5 md:p-6"
+                            className={`relative w-full max-w-lg bg-white border-2 border-black shadow-[6px_6px_0px_0px_black] p-5 md:p-6 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                                isModalAnimatedIn ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
+                            }`}
                             onClick={(event) => event.stopPropagation()}
                         >
                             <div className="flex items-start justify-between gap-4">
@@ -282,8 +306,18 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                             <label className="block">
                                 <span className="text-xs font-black uppercase">{formCopy.phone}</span>
                                 <input
+                                    type="tel"
+                                    inputMode="tel"
+                                    autoComplete="tel"
+                                    enterKeyHint="done"
+                                    pattern="[0-9+]*"
                                     value={leadForm.phone}
-                                    onChange={(e) => setLeadForm((prev) => ({ ...prev, phone: e.target.value }))}
+                                    onChange={(e) =>
+                                        setLeadForm((prev) => ({
+                                            ...prev,
+                                            phone: sanitizePhoneInput(e.target.value),
+                                        }))
+                                    }
                                     placeholder={formCopy.phonePlaceholder}
                                     className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
                                 />

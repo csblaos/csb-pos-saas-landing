@@ -5,6 +5,7 @@ import { getLangFromUrl } from '../../lib/lang';
 import { t } from '../../data/i18n';
 
 const lang = getLangFromUrl(Astro.url);
+const demoHref = `/${lang}/demo`;
 
 function normalizePath(path: string) {
   if (!path) return '/';
@@ -19,6 +20,8 @@ function isPathActive(currentPath: string, targetPath: string, exact = false) {
   if (exact) return current === target;
   return current === target || current.startsWith(`${target}/`);
 }
+
+const isDemoActive = isPathActive(Astro.url.pathname, demoHref, true);
 ---
 
 <nav class="sticky top-0 z-[100] w-full border-b-2 border-[var(--color-border)] bg-[var(--color-bg-card)]/80 backdrop-blur-md transition-colors duration-300">
@@ -64,8 +67,14 @@ function isPathActive(currentPath: string, targetPath: string, exact = false) {
 
       <div class="hidden sm:flex items-center gap-3">
         <a 
-          href={`/${lang}/demo`} 
-          class="inline-flex items-center gap-1.5 text-sm font-semibold px-2 py-2 bg-white border-1 border-black shadow-[2px_2px_0px_0px_black] hover:shadow-[1px_1px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all duration-150 text-black"
+          href={demoHref}
+          class={`
+            inline-flex items-center gap-1.5 text-sm font-semibold px-2 py-2 border-1 border-black transition-all duration-150 text-black
+            ${isDemoActive
+              ? 'bg-lime-400 shadow-[2px_2px_0px_0px_black] -translate-y-[2px]'
+              : 'bg-white shadow-[2px_2px_0px_0px_black] hover:shadow-[1px_1px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px]'
+            }
+          `}
         >
           ▶ {t('nav.demo', lang)}
         </a>
