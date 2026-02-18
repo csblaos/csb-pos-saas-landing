@@ -18,7 +18,7 @@ hardwareProducts.forEach(product => {
 const route = await OGImageRoute({
     param: 'route',
     pages,
-    getImageOptions: (path, page) => {
+    getImageOptions: (path: any, page: any) => {
         // Cast page to the correct type since astro-og-canvas might not infer it perfectly with the dynamic pages object
         const { product, lang } = page as { product: Product; lang: Lang };
         return {
@@ -30,22 +30,28 @@ const route = await OGImageRoute({
             font: {
                 title: {
                     size: 80,
-                    families: ['Inter'],
+                    families: ['Noto Sans Thai', 'Noto Sans Lao', 'Inter'],
                     weight: 'Black',
                     color: [255, 255, 255],
                 },
                 description: {
                     size: 40,
-                    families: ['Inter'],
+                    families: ['Noto Sans Thai', 'Noto Sans Lao', 'Inter'],
                     color: [200, 200, 200],
                 }
             },
             logo: {
-                path: './public/favicon.svg', // Assuming favicon exists, or we can use a custom solid color shape
+                path: './public/favicon.svg',
                 size: [100],
             },
         };
     },
-});
+    fonts: [
+        process.cwd() + '/public/fonts/NotoSansThai-Black.ttf',
+        process.cwd() + '/public/fonts/NotoSansThai-Regular.ttf',
+        process.cwd() + '/public/fonts/NotoSansLao-Black.ttf',
+        process.cwd() + '/public/fonts/NotoSansLao-Regular.ttf',
+    ],
+} as any);
 
 export const { getStaticPaths, GET } = route;

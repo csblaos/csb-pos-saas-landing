@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://astropos.demo/sitemap-index.xml
+Sitemap: https://www.codesabai.com/sitemap-index.xml
