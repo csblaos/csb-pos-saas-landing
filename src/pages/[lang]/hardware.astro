@@ -5,24 +5,79 @@ import Footer from '../../components/sections/Footer.astro';
 import HardwareGrid from '../../components/islands/HardwareGrid';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
+import { buildWhatsAppLink, storeSettings } from '../../data/store';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
 }
 
 const lang = getLangFromUrl(Astro.url);
+
+const warrantyContent = {
+  en: {
+    badge: 'Official Warranty',
+    title: 'Protected Purchase. Fast Support.',
+    subtitle: 'Every hardware item includes clear warranty coverage and direct after-sales support.',
+    point1: '1-year replacement for manufacturing defects',
+    point2: 'Guided setup by our team after delivery',
+    point3: 'Fast nationwide shipping and response',
+    claim: 'Claim via WhatsApp',
+    terms: 'View warranty terms',
+    covered: 'Covered:',
+    coveredItems: 'Factory defects, dead-on-arrival, non-user damage',
+    notCovered: 'Not covered:',
+    notCoveredItems: 'Drops, water damage, unauthorized modifications',
+  },
+  th: {
+    badge: 'รับประกันอย่างเป็นทางการ',
+    title: 'ซื้อมั่นใจ มีทีมดูแลหลังการขาย',
+    subtitle: 'อุปกรณ์ทุกชิ้นมีเงื่อนไขรับประกันชัดเจน และมีทีมช่วยเหลือหลังซื้อโดยตรง',
+    point1: 'เปลี่ยนใหม่ภายใน 1 ปี กรณีเสียจากการผลิต',
+    point2: 'มีทีมช่วยแนะนำการติดตั้งหลังรับสินค้า',
+    point3: 'จัดส่งไว พร้อมตอบกลับรวดเร็วทั่วประเทศ',
+    claim: 'เคลมผ่าน WhatsApp',
+    terms: 'ดูเงื่อนไขการรับประกัน',
+    covered: 'ครอบคลุม:',
+    coveredItems: 'ความเสียหายจากการผลิต, สินค้าเสียตั้งแต่เปิดกล่อง, ความผิดปกติที่ไม่เกิดจากผู้ใช้',
+    notCovered: 'ไม่ครอบคลุม:',
+    notCoveredItems: 'ตกกระแทก, โดนน้ำ, ดัดแปลงอุปกรณ์เอง',
+  },
+  la: {
+    badge: 'ຮັບປະກັນທາງການ',
+    title: 'ຊື້ແລ້ວໝັ້ນໃຈ ມີທີມດູແລຫຼັງການຂາຍ',
+    subtitle: 'ອຸປະກອນທຸກຊິ້ນມີເງື່ອນໄຂການຮັບປະກັນຊັດເຈນ ແລະ ມີທີມຊ່ວຍເຫຼືອຫຼັງການຂາຍ',
+    point1: 'ປ່ຽນໃໝ່ໃນ 1 ປີ ກໍລະນີຄວາມຜິດພາດຈາກໂຮງງານ',
+    point2: 'ມີທີມຊ່ວຍແນະນຳການຕິດຕັ້ງຫຼັງຮັບສິນຄ້າ',
+    point3: 'ຈັດສົ່ງໄວ ແລະ ຕອບກັບຮວດເລັວທົ່ວປະເທດ',
+    claim: 'ເຄລມຜ່ານ WhatsApp',
+    terms: 'ເບິ່ງເງື່ອນໄຂການຮັບປະກັນ',
+    covered: 'ຄຸ້ມຄອງ:',
+    coveredItems: 'ຄວາມເສຍຫາຍຈາກໂຮງງານ, ສິນຄ້າເສຍຕັ້ງແຕ່ເປີດກ່ອງ, ຄວາມຜິດປົກກະຕິທີ່ບໍ່ໄດ້ເກີດຈາກຜູ້ໃຊ້',
+    notCovered: 'ບໍ່ຄຸ້ມຄອງ:',
+    notCoveredItems: 'ຕົກກະແທກ, ໂດນນ້ຳ, ດັດແປງອຸປະກອນເອງ',
+  },
+} as const;
+
+const wc = warrantyContent[lang];
+const warrantyClaimMessage =
+  lang === 'th'
+    ? 'สวัสดีครับ ต้องการแจ้งเคลมอุปกรณ์ฮาร์ดแวร์ AstroPOS'
+    : lang === 'la'
+      ? 'ສະບາຍດີ ຕ້ອງການແຈ້ງເຄລມອຸປະກອນ Hardware AstroPOS'
+      : 'Hello, I need to claim warranty for AstroPOS hardware.';
+const warrantyClaimLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupport, warrantyClaimMessage);
 ---
 
 <Base title={`Hardware Shop - AstroPOS`} image="/images/og/og-hardware.png">
   <Navbar />
   
-  <main class="py-20">
+  <main class="py-12 md:py-20">
     <!-- Hero Header -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
-      <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-16 text-center">
+      <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6">
         {t('hardware.hero.title', lang)} <span class="bg-lime-400 px-2 border-2 border-black shadow-[4px_4px_0px_0px_black] text-black inline-block transform -rotate-2">{t('hardware.hero.title.highlight', lang)}</span>
       </h1>
-      <p class="text-xl md:text-2xl font-bold text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+      <p class="text-lg md:text-xl font-semibold text-gray-600 max-w-2xl mx-auto">
         {t('hardware.hero.subtitle', lang)}
       </p>
     </div>
@@ -33,24 +88,61 @@ const lang = getLangFromUrl(Astro.url);
     </div>
 
     <!-- Warranty Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
-        <div class="grid md:grid-cols-3 gap-8 text-center bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] p-12 shadow-[8px_8px_0px_0px_var(--color-shadow)]">
-            <div>
-                <div class="text-4xl mb-4">🛡️</div>
-                <h3 class="text-xl font-black uppercase mb-2">{t('hardware.warranty.title', lang)}</h3>
-                <p class="text-sm font-medium opacity-70">{t('hardware.warranty.desc', lang)}</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-18 md:mt-24">
+      <section class="relative bg-lime-100 border-1 border-black p-6 md:p-10 shadow-[2px_2px_0px_0px_black]">
+        <span class="inline-block mb-5 px-3 py-1 bg-black text-white text-xs md:text-sm font-black uppercase border-1 border-black">
+          {wc.badge}
+        </span>
+
+        <div class="grid lg:grid-cols-[1.3fr_1fr] gap-8 items-start">
+          <div>
+            <h2 class="text-2xl md:text-4xl font-black uppercase text-black leading-tight">
+              {wc.title}
+            </h2>
+            <p class="mt-3 text-sm md:text-base font-semibold text-black/80">
+              {wc.subtitle}
+            </p>
+
+            <ul class="mt-6 grid sm:grid-cols-2 gap-3">
+              <li class="bg-white border-1 border-black px-4 py-3 text-sm font-semibold shadow-[2px_2px_0px_0px_black]">✅ {wc.point1}</li>
+              <li class="bg-white border-1 border-black px-4 py-3 text-sm font-semibold shadow-[2px_2px_0px_0px_black]">✅ {wc.point2}</li>
+              <li class="bg-white border-1 border-black px-4 py-3 text-sm font-semibold shadow-[2px_2px_0px_0px_black] sm:col-span-2">✅ {wc.point3}</li>
+            </ul>
+
+            <div class="mt-6 grid sm:grid-cols-2 gap-3">
+              <p class="text-xs md:text-sm font-semibold text-black/80">
+                <span class="font-black text-black">{wc.covered}</span> {wc.coveredItems}
+              </p>
+              <p class="text-xs md:text-sm font-semibold text-black/80">
+                <span class="font-black text-black">{wc.notCovered}</span> {wc.notCoveredItems}
+              </p>
             </div>
-            <div>
-                <div class="text-4xl mb-4">🚀</div>
-                <h3 class="text-xl font-black uppercase mb-2">{t('hardware.shipping.title', lang)}</h3>
-                <p class="text-sm font-medium opacity-70">{t('hardware.shipping.desc', lang)}</p>
+          </div>
+
+          <aside class="bg-black text-white p-6 border-1 border-black shadow-[2px_2px_0px_0px_black]">
+            <p class="text-sm font-semibold opacity-80 mb-4">Warranty Support</p>
+            <p class="text-lg font-black">+{storeSettings.whatsapp.paymentSupport}</p>
+            <p class="text-sm font-semibold mt-1 mb-6">{storeSettings.emails.support}</p>
+
+            <div class="space-y-3">
+              <a
+                href={warrantyClaimLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block w-full text-center bg-lime-400 text-black font-black uppercase px-4 py-3 border-1 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                {wc.claim}
+              </a>
+              <a
+                href={`/${lang}/help`}
+                class="block w-full text-center bg-transparent text-white font-black uppercase px-4 py-3 border-1 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                {wc.terms}
+              </a>
             </div>
-            <div>
-                <div class="text-4xl mb-4">💬</div>
-                <h3 class="text-xl font-black uppercase mb-2">{t('hardware.setup.title', lang)}</h3>
-                <p class="text-sm font-medium opacity-70">{t('hardware.setup.desc', lang)}</p>
-            </div>
+          </aside>
         </div>
+      </section>
     </div>
   </main>
   

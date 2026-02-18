@@ -74,6 +74,40 @@ const {
           window.location.replace(`/${storedLang}/`);
         }
       }
+
+      // Restore scroll position after switching language.
+      if (typeof sessionStorage !== 'undefined') {
+        const raw = sessionStorage.getItem('__lang_scroll_restore__');
+        if (raw) {
+          sessionStorage.removeItem('__lang_scroll_restore__');
+          try {
+            const restoreData = JSON.parse(raw);
+            const currentPathWithQuery = window.location.pathname + window.location.search;
+            const age = Date.now() - Number(restoreData?.ts || 0);
+
+            if (restoreData?.toPath === currentPathWithQuery && age >= 0 && age < 15000) {
+              const restoreScroll = () => {
+                const maxScrollable = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+                const ratio = Number(restoreData?.ratio || 0);
+                let targetY = Number(restoreData?.y || 0);
+
+                if (maxScrollable > 0 && ratio > 0) {
+                  targetY = ratio * maxScrollable;
+                }
+
+                targetY = Math.max(0, Math.min(targetY, maxScrollable));
+                window.scrollTo(0, targetY);
+              };
+
+              restoreScroll();
+              requestAnimationFrame(() => requestAnimationFrame(restoreScroll));
+              window.addEventListener('load', () => setTimeout(restoreScroll, 0), { once: true });
+            }
+          } catch {
+            // Ignore malformed restore payload.
+          }
+        }
+      }
     </script>
   </head>
   <body class="bg-[var(--color-bg)] text-[var(--color-text)] min-h-screen flex flex-col font-sans relative overflow-x-hidden">

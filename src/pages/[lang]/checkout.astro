@@ -4,6 +4,7 @@ import Navbar from '../../components/sections/Navbar.astro';
 import Button from '../../components/common/Button.astro';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { getLangFromUrl, languages } from '../../lib/lang';
+import { buildWhatsAppLink, storeSettings } from '../../data/store';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -12,6 +13,8 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const { plan } = Astro.url.searchParams;
 const planName = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : 'Pro';
+const confirmPaymentMessage = `I have transferred the payment for ${planName} plan.`;
+const confirmPaymentWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupport, confirmPaymentMessage);
 ---
 
 <Base title={`Checkout - ${planName} Plan | AstroPOS`}>
@@ -55,7 +58,7 @@ const planName = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : 'Pro';
           
           <div class="text-center">
             <a 
-              href={`https://wa.me/8562012345678?text=I%20have%20transferred%20the%20payment%20for%20${planName}%20plan.`}
+              href={confirmPaymentWhatsappLink}
               target="_blank"
               class="inline-flex items-center gap-2 bg-[#25D366] text-white px-8 py-4 font-bold border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_black] dark:shadow-[4px_4px_0px_0px_white] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_black] dark:hover:shadow-[2px_2px_0px_0px_white] transition-all"
             >

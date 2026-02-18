@@ -89,10 +89,10 @@ const testimonials: Testimonial[] = [
 <section class="py-20 border-t-2 border-black bg-yellow-400 dark:bg-yellow-500 text-black">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16 px-4">
-      <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
+      <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4">
         {t('testimonials.title', lang)}
       </h2>
-      <p class="text-xl font-bold font-mono">
+      <p class="text-lg md:text-xl font-semibold text-gray-700">
         {t('testimonials.subtitle', lang)}
       </p>
     </div>
@@ -101,7 +101,7 @@ const testimonials: Testimonial[] = [
     <TestimonialCarousel client:load lang={lang} testimonials={testimonials} />
 
     <div class="mt-16 text-center">
-      <div class="inline-block bg-black text-white px-8 py-4 text-2xl font-black border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+      <div class="inline-block bg-black text-white px-8 py-4 text-2xl font-black border-1 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
         4.9 / 5.0 RATING
       </div>
     </div>

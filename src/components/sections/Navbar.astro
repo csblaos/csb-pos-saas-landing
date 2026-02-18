@@ -1,7 +1,6 @@
 ---
 import LanguageToggle from '../islands/LanguageToggle';
 import MobileMenu from '../islands/MobileMenu';
-import Button from '../common/Button.astro';
 import { getLangFromUrl } from '../../lib/lang';
 import { t } from '../../data/i18n';
 
@@ -36,6 +35,7 @@ function isPathActive(currentPath: string, targetPath: string, exact = false) {
           { href: `/${lang}/packages`, label: t('nav.packages', lang) },
           { href: `/${lang}/hardware`, label: t('nav.hardware', lang) },
           { href: `/${lang}/solutions`, label: t('nav.solutions', lang) },
+          { href: `/${lang}/about`, label: t('nav.about', lang) },
           { href: `/${lang}/blog`, label: t('nav.blog', lang) },
         ].map((link) => {
           const isActive = isPathActive(Astro.url.pathname, link.href, link.exact);

@@ -58,7 +58,7 @@ export default function SidebarLiveOrders({
     }, []);
 
     return (
-        <div className="border-2 border-black bg-white p-0 shadow-[4px_4px_0px_0px_black] relative overflow-hidden mb-8">
+        <div className="border-1 border-black bg-white p-0 shadow-[2px_2px_0px_0px_black] relative overflow-hidden mb-8">
             {/* Header */}
             <div className="bg-black text-white px-4 py-3">
                 <div className="flex items-center gap-2 mb-1">

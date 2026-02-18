@@ -9,6 +9,7 @@ export const translations = {
     'nav.hardware': 'Shop',
     'nav.blog': 'Blog',
     'nav.demo': 'Demo',
+    'nav.about': 'About',
 
     // Hero Section
     'hero.headline': 'Sell Everywhere.\nManage in One Place.',
@@ -136,6 +137,8 @@ export const translations = {
 
     // Footer
     'footer.copyright': '© 2026 AstroPOS. All rights reserved.',
+    'footer.about': 'About Us',
+    'footer.contact': 'Contact',
     'footer.privacy': 'Privacy',
     'footer.terms': 'Terms',
 
@@ -196,6 +199,7 @@ export const translations = {
     'nav.hardware': 'ร้านค้า',
     'nav.blog': 'บทความ',
     'nav.demo': 'ดูตัวอย่าง',
+    'nav.about': 'เกี่ยวกับเรา',
 
     // Hero Section
     'hero.headline': 'ขายได้ทุกที่\nจัดการง่ายในที่เดียว',
@@ -323,6 +327,8 @@ export const translations = {
 
     // Footer
     'footer.copyright': '© 2026 AstroPOS สงวนลิขสิทธิ์',
+    'footer.about': 'เกี่ยวกับเรา',
+    'footer.contact': 'ติดต่อเรา',
     'footer.privacy': 'นโยบายความเป็นส่วนตัว',
     'footer.terms': 'ข้อตกลงการใช้งาน',
 
@@ -366,7 +372,7 @@ export const translations = {
 
     // Hardware Page
     'hardware.hero.title': 'อุปกรณ์มือโปร สำหรับ',
-    'hardware.hero.title.highlight': 'แม่ค้ามือโปร',
+    'hardware.hero.title.highlight': 'ร้านค้ามือโปร',
     'hardware.hero.subtitle': 'ฮาร์ดแวร์ที่เราคัดมาแล้วว่า "เสถียร" และทำงานร่วมกับ AstroPOS ได้ 100%',
     'hardware.warranty.title': 'รับประกัน 1 ปี',
     'hardware.warranty.desc': 'เสียเปลี่ยนตัวใหม่ให้ทันที',
@@ -383,6 +389,7 @@ export const translations = {
     'nav.hardware': 'ຮ້ານຄ້າ',
     'nav.blog': 'ບົດຄວາມ',
     'nav.demo': 'ເບິ່ງຕົວຢ່າງ',
+    'nav.about': 'ກ່ຽວກັບ',
 
     // Hero Section
     'hero.headline': 'ຂາຍໄດ້ທຸກບ່ອນ\nຈັດການງ່າຍໃນບ່ອນດຽວ',
@@ -419,7 +426,7 @@ export const translations = {
     'howItWorks.step3.desc': 'ພິມໃບປະໜ້າ ຕິດຕາມພັດສະດຸ ຮັບເງິນ',
 
     // Pricing
-    'pricing.title': 'ລາຄາຈິງໃຈ ບໍ່ມີແອບແຝງ',
+    'pricing.title': 'ລາຄາຈິງໃຈ ບໍ່ມີຄ່າໃຊ້ຈ່າຍແອບແຝງ',
     'pricing.subtitle': 'ຄຸ້ມຄ່າການລົງທຶນ ຍົກເລີກເມື່ອໃດກໍໄດ້',
     'pricing.select': 'ເລືອກແພັກເກັດນີ້',
     'pricing.popular': 'ຂາຍດີທີ່ສຸດ',
@@ -487,7 +494,7 @@ export const translations = {
     'solutions.enterprise.cta': 'ຕິດຕໍ່ຝ່າຍຂາຍ',
 
     // Packages Page
-    'packages.title': 'ເລືອກແພັກເກັດທີ່ໃຊ່',
+    'packages.title': 'ເລືອກແພັກເກັດທີ່ເໝາະສົມ',
     'packages.subtitle': 'ລາຄາຍຸຕິທຳ ບໍ່ມີຄ່າໃຊ້ຈ່າຍແອບແຝງ ຍົກເລີກໄດ້ທຸກເມື່ອ',
     'packages.comparison.title': 'ປຽບທຽບຟີເຈີ',
     'packages.comparison.subtitle': 'ເບິ່ງລາຍລະອຽດແຕ່ລະແພັກເກັດແບບທຽບກັນ',
@@ -510,6 +517,8 @@ export const translations = {
 
     // Footer
     'footer.copyright': '© 2026 AstroPOS ສະຫງວນລິຂະສິດ.',
+    'footer.about': 'ກ່ຽວກັບ',
+    'footer.contact': 'ຕິດຕໍ່',
     'footer.privacy': 'ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ',
     'footer.terms': 'ຂໍ້ຕົກລົງການນຳໃຊ້',
 
@@ -549,7 +558,7 @@ export const translations = {
 
     // Hardware Page
     'hardware.hero.title': 'ອຸປະກອນມືອາຊີບ ສຳລັບ',
-    'hardware.hero.title.highlight': 'ແມ່ຄ້າມືອາຊີບ',
+    'hardware.hero.title.highlight': 'ຮ້ານຄ້າມືອາຊີບ',
     'hardware.hero.subtitle': 'ຮາດແວທີ່ເຮົາຄັດມາແລ້ວວ່າ "ສະຖຽນ" ແລະ ເຮັດວຽກຮ່ວມກັບ AstroPOS ໄດ້ 100%',
     'hardware.warranty.title': 'ຮັບປະກັນ 1 ປີ',
     'hardware.warranty.desc': 'ເສຍປ່ຽນຕົວໃໝ່ໃຫ້ທັນທີ',

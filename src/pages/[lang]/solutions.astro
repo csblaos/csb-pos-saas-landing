@@ -6,6 +6,7 @@ import Button from '../../components/common/Button.astro';
 import { MonitorSmartphone, BarChart, Printer, Globe } from 'lucide-react';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
+import { storeSettings } from '../../data/store';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -18,25 +19,25 @@ const services = [
     icon: MonitorSmartphone,
     title: t('solutions.multiChannel', lang),
     desc: t('solutions.multiChannel.desc', lang),
-    color: "bg-blue-100 dark:bg-blue-900"
+    color: "bg-blue-100"
   },
   {
     icon: BarChart,
     title: t('solutions.analytics', lang),
     desc: t('solutions.analytics.desc', lang),
-    color: "bg-green-100 dark:bg-green-900"
+    color: "bg-green-100"
   },
   {
     icon: Printer,
     title: t('solutions.shipping', lang),
     desc: t('solutions.shipping.desc', lang),
-    color: "bg-yellow-100 dark:bg-yellow-900"
+    color: "bg-yellow-100"
   },
   {
     icon: Globe,
     title: t('solutions.freeWebsite', lang),
     desc: t('solutions.freeWebsite.desc', lang),
-    color: "bg-pink-100 dark:bg-pink-900"
+    color: "bg-pink-100"
   }
 ];
 ---
@@ -44,31 +45,31 @@ const services = [
 <Base title="Our Solutions | AstroPOS" image="/images/og/og-solutions.png">
   <Navbar />
   
-  <main class="py-20">
+  <main class="py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <h1 class="text-5xl font-black uppercase mb-6">{t('solutions.title', lang)}</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 font-bold">
+      <div class="text-center max-w-3xl mx-auto mb-8 md:mb-16">
+        <h1 class="text-4xl md:text-5xl font-black uppercase mb-6">{t('solutions.title', lang)}</h1>
+        <p class="text-lg md:text-xl text-gray-600 font-semibold">
           {t('solutions.subtitle', lang)}
         </p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-8 mb-16">
+      <div class="grid md:grid-cols-2 gap-8 mb-8 md:mb-16">
         {services.map((service) => (
-          <div class={`p-8 border-2 border-[var(--color-border)] ${service.color} shadow-[6px_6px_0px_0px_var(--color-shadow)] hover:-translate-y-2 transition-transform`}>
-            <div class="w-16 h-16 bg-white border-2 border-black flex items-center justify-center mb-4 shadow-[2px_2px_0px_0px_black]">
+          <div class={`p-8 border-1 border-[var(--color-border)] bg-white shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-2 transition-transform`}>
+            <div class={`w-16 h-16 ${service.color} border-1 border-black flex items-center justify-center mb-4 shadow-[2px_2px_0px_0px_black]`}>
               <service.icon size={32} class="text-black" />
             </div>
-            <h3 class="text-2xl font-black mb-3 text-black dark:text-white">{service.title}</h3>
-            <p class="text-gray-800 dark:text-gray-200 font-medium leading-relaxed">{service.desc}</p>
+            <h3 class="text-2xl font-black mb-3 text-black">{service.title}</h3>
+            <p class="text-gray-800 font-medium leading-relaxed">{service.desc}</p>
           </div>
         ))}
       </div>
 
-      <div class="bg-black text-white p-12 border-2 border-black shadow-[8px_8px_0px_0px_black] text-center dark:bg-white dark:text-black">
+      <div class="bg-black text-white p-12 border-2 border-black shadow-[8px_8px_0px_0px_black] text-center">
         <h2 class="text-3xl font-black mb-4">{t('solutions.enterprise.title', lang)}</h2>
         <p class="text-lg mb-6 opacity-90">{t('solutions.enterprise.desc', lang)}</p>
-        <Button href="mailto:enterprise@astropos.com" variant="primary">
+        <Button href={`mailto:${storeSettings.emails.enterprise}`} variant="primary">
           {t('solutions.enterprise.cta', lang)}
         </Button>
       </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Check, MessageCircle, ArrowRight, Gift } from 'lucide-react';
+import { Check, Gift } from 'lucide-react';
 import type { Lang } from '../../lib/lang';
 import { t } from '../../data/i18n';
+import { buildWhatsAppLink, storeSettings } from '../../data/store';
 
 const plans = [
     {
@@ -55,7 +56,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
             message = `Hello, I want to subscribe to *${plan.name} Plan* (${formattedPrice} LAK / ${period})${bonus}\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
         }
 
-        return `https://wa.me/8562059083986?text=${encodeURIComponent(message)}`;
+        return buildWhatsAppLink(storeSettings.whatsapp.packageSales, message);
     };
 
     return (
@@ -75,7 +76,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                     <span className={`font-bold ${billingCycle === 'yearly' ? 'text-[var(--color-text)]' : 'text-gray-400'}`}>
                         {t('pricing.yearly', lang)}
                     </span>
-                    <span className="bg-pink-400 text-white text-xs px-2 py-1 font-black border-2 border-black shadow-[2px_2px_0px_0px_black] flex items-center gap-1">
+                    <span className="bg-pink-400 text-white text-xs px-2 py-1 font-black border-1 border-black shadow-[2px_2px_0px_0px_black] flex items-center gap-1">
                         <Gift size={12} /> {t('pricing.2monthsFree', lang)}
                     </span>
                 </div>
@@ -92,13 +93,13 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                         <div
                             key={plan.id}
                             className={`
-                                relative p-6 transition-all border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-[4px_4px_0px_0px_var(--color-shadow)]
+                                relative p-6 transition-all border-1 border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-[2px_2px_0px_0px_var(--color-shadow)]
                                 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] flex flex-col h-full
                                 ${plan.popular ? 'ring-2 ring-offset-4 ring-lime-400' : ''}
                             `}
                         >
                             {plan.popular && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-lime-400 text-black border-2 border-black px-4 py-1 text-sm font-black uppercase shadow-[2px_2px_0px_0px_black]">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-lime-400 text-black border-1 border-black px-4 py-1 text-sm font-black uppercase shadow-[2px_2px_0px_0px_black]">
                                     {t('pricing.popular', lang)}
                                 </div>
                             )}
@@ -111,7 +112,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                 </div>
 
                                 {isYearly && (
-                                    <div className="mt-3 bg-lime-100 border-2 border-lime-400 px-3 py-2 inline-flex items-center gap-1.5">
+                                    <div className="mt-3 bg-lime-100 border-1 border-lime-400 px-3 py-2 inline-flex items-center gap-1.5">
                                         <Gift size={14} className="text-lime-700" />
                                         <span className="text-xs text-lime-800 font-black">
                                             {t('pricing.yearlyBonus', lang)}
@@ -124,7 +125,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                 {plan.features.map((featureKey, i) => (
                                     <li key={i} className="flex items-start gap-2">
                                         <Check size={18} className="text-lime-600 mt-0.5 flex-shrink-0" />
-                                        <span className="font-bold">{t(featureKey, lang)}</span>
+                                        <span className="font-semibold">{t(featureKey, lang)}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -144,7 +145,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                     href={getWhatsAppLink(plan.id)}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-black text-white hover:bg-gray-800 uppercase"
+                                    className="w-full py-3 font-black border-1 border-[var(--color-border)] text-center transition-all bg-black text-white hover:bg-gray-800 uppercase"
                                 >
                                     {t('pricing.getBusiness', lang)}
                                 </a>
@@ -153,7 +154,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                     href={getWhatsAppLink(plan.id)}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full py-3 font-black border-2 border-black text-center transition-all bg-lime-400 text-black hover:bg-lime-300 shadow-[4px_4px_0px_0px_black] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_black] uppercase"
+                                    className="w-full py-3 font-black border-1 border-black text-center transition-all bg-lime-400 text-black hover:bg-lime-300 shadow-[2px_2px_0px_0px_black] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_black] uppercase"
                                 >
                                     {t('pricing.getPro', lang)}
                                 </a>
@@ -164,7 +165,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
             </div>
 
             <div className="text-center">
-                <p className="text-sm text-gray-500 font-bold">
+                <p className="text-sm text-gray-600 font-semibold">
                     {t('pricing.noCreditCard', lang)} • {t('pricing.2monthsFree', lang)} {t('pricing.yearly', lang)}
                 </p>
             </div>

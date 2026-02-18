@@ -1,0 +1,110 @@
+---
+import { getLangFromUrl } from '../../lib/lang';
+import { buildWhatsAppLink, storeSettings } from '../../data/store';
+
+const lang = getLangFromUrl(Astro.url);
+
+const content = {
+  en: {
+    title: 'Need Help Choosing The Right Plan?',
+    subtitle: 'Talk to our team for setup, pricing, and onboarding support.',
+    whatsapp: 'Chat on WhatsApp',
+    demo: 'Open POS Demo',
+    about: 'About AstroPOS',
+    direct: 'Direct Contact',
+    sales: 'Sales',
+    support: 'Support',
+    response: 'Avg. response within 10 minutes',
+  },
+  th: {
+    title: 'ยังไม่แน่ใจว่าแพ็กเกจไหนเหมาะ?',
+    subtitle: 'คุยกับทีมเราได้ทันที เรื่องราคา การติดตั้ง และการเริ่มต้นใช้งาน',
+    whatsapp: 'คุยผ่าน WhatsApp',
+    demo: 'เปิด POS Demo',
+    about: 'รู้จัก AstroPOS',
+    direct: 'ติดต่อโดยตรง',
+    sales: 'ฝ่ายขาย',
+    support: 'ฝ่ายซัพพอร์ต',
+    response: 'ตอบกลับเฉลี่ยภายใน 10 นาที',
+  },
+  la: {
+    title: 'ຍັງບໍ່ແນ່ໃຈວ່າແພັກເກັດໃດເໝາະ?',
+    subtitle: 'ຄຸຍກັບທີມງານໄດ້ທັນທີ ເລື່ອງລາຄາ ການຕິດຕັ້ງ ແລະ ການເລີ່ມໃຊ້ງານ',
+    whatsapp: 'ຄຸຍຜ່ານ WhatsApp',
+    demo: 'ເປີດ POS Demo',
+    about: 'ຮູ້ຈັກ AstroPOS',
+    direct: 'ຕິດຕໍ່ໂດຍກົງ',
+    sales: 'ຝ່າຍຂາຍ',
+    support: 'ຝ່າຍຊັບພອດ',
+    response: 'ຕອບກັບສະເລ່ຍໃນ 10 ນາທີ',
+  },
+} as const;
+
+const c = content[lang];
+
+const message =
+  lang === 'th'
+    ? 'สวัสดีครับ สนใจขอคำแนะนำแพ็กเกจที่เหมาะกับร้านของผม'
+    : lang === 'la'
+      ? 'ສະບາຍດີ ຂ້ອຍສົນໃຈຂໍຄຳແນະນຳແພັກເກັດທີ່ເໝາະກັບຮ້ານຂອງຂ້ອຍ'
+      : 'Hello, I need help choosing the best package for my store.';
+
+const whatsappLink = buildWhatsAppLink(storeSettings.whatsapp.packageSales, message);
+---
+
+<section id="contact" class="py-20 bg-[var(--color-bg-card)] border-y-1 border-[var(--color-border)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="grid lg:grid-cols-[1.3fr_1fr] gap-8 items-stretch">
+      <div class="bg-[var(--color-bg)] border-1 border-[var(--color-border)] p-8 shadow-[2px_2px_0px_0px_var(--color-shadow)]">
+        <h2 class="text-3xl md:text-4xl font-black uppercase text-[var(--color-text)] leading-tight">
+          {c.title}
+        </h2>
+        <p class="mt-4 text-lg font-semibold text-gray-600">
+          {c.subtitle}
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-6 py-3 bg-lime-400 text-black font-black uppercase border-1 border-black shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          >
+            {c.whatsapp}
+          </a>
+          <a
+            href={storeSettings.links.posDemo}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-6 py-3 bg-white text-black font-black uppercase border-1 border-black shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          >
+            {c.demo}
+          </a>
+          <a
+            href={`/${lang}/about`}
+            class="inline-flex items-center justify-center px-6 py-3 bg-black text-white font-black uppercase border-1 border-black shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          >
+            {c.about}
+          </a>
+        </div>
+      </div>
+
+      <aside class="bg-black text-white border-1 border-black p-8 shadow-[2px_2px_0px_0px_black]">
+        <h3 class="text-xl font-black uppercase mb-6">{c.direct}</h3>
+        <div class="space-y-4 text-sm font-semibold">
+          <div>
+            <p class="text-lime-400 uppercase">{c.sales}</p>
+            <p>+{storeSettings.whatsapp.packageSales}</p>
+            <p>{storeSettings.emails.sales}</p>
+          </div>
+          <div>
+            <p class="text-lime-400 uppercase">{c.support}</p>
+            <p>+{storeSettings.whatsapp.paymentSupport}</p>
+            <p>{storeSettings.emails.support}</p>
+          </div>
+          <p class="pt-2 text-gray-300">{c.response}</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

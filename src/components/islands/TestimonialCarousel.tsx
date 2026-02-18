@@ -59,7 +59,7 @@ export default function TestimonialCarousel({ lang, testimonials }: Props) {
             >
                 {testimonials.map((item, index) => (
                     <SwiperSlide key={index}>
-                        <div className="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col h-full min-h-[350px]">
+                        <div className="bg-white border-1 border-black p-8 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col h-full min-h-[350px]">
                             <div className="flex gap-1 mb-6 text-2xl">
                                 {Array.from({ length: item.stars }).map((_, i) => (
                                     <span key={i}>⭐</span>
@@ -70,8 +70,8 @@ export default function TestimonialCarousel({ lang, testimonials }: Props) {
                                 "{t(`testimonials.quote.${item.quote}`, lang)}"
                             </blockquote>
 
-                            <div className="flex items-center gap-4 border-t-2 border-black/10 pt-6 mt-auto">
-                                <div className={`w-14 h-14 rounded-full border-2 border-black overflow-hidden shrink-0 ${item.color}`}>
+                            <div className="flex items-center gap-4 border-t-1 border-black/10 pt-6 mt-auto">
+                                <div className={`w-14 h-14 rounded-full border-1 border-black overflow-hidden shrink-0 ${item.color}`}>
                                     <img
                                         src={item.image}
                                         alt={item.name}
@@ -93,10 +93,10 @@ export default function TestimonialCarousel({ lang, testimonials }: Props) {
             </Swiper>
 
             {/* Custom Navigation Buttons */}
-            <button className="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex w-12 h-12 bg-white border-2 border-black items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+            <button className="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex w-12 h-12 bg-white border-1 border-black items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
             </button>
-            <button className="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex w-12 h-12 bg-white border-2 border-black items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+            <button className="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex w-12 h-12 bg-white border-1 border-black items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
             </button>
 
@@ -107,7 +107,7 @@ export default function TestimonialCarousel({ lang, testimonials }: Props) {
           width: 10px;
           height: 10px;
           border-radius: 0;
-          border: 2px solid #000;
+          border: 1px solid #000;
           margin: 0 6px !important;
         }
         .testimonial-carousel .swiper-pagination-bullet-active {

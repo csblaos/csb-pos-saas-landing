@@ -13,6 +13,12 @@ const lang = getLangFromUrl(Astro.url);
       <a href={`/${lang}/help`} class="hover:underline underline-offset-4 decoration-2">
         {lang === 'th' ? 'ช่วยเหลือ' : lang === 'la' ? 'ຊ່ວຍເຫຼືອ' : 'Help Center'}
       </a>
+      <a href={`/${lang}/about`} class="hover:underline underline-offset-4 decoration-2">
+        {t('footer.about', lang)}
+      </a>
+      <a href={`/${lang}/#contact`} class="hover:underline underline-offset-4 decoration-2">
+        {t('footer.contact', lang)}
+      </a>
       <a href={`/${lang}/privacy`} class="hover:underline underline-offset-4 decoration-2">
         {t('footer.privacy', lang)}
       </a>

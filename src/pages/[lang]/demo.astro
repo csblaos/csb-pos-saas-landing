@@ -4,6 +4,7 @@ import Navbar from '../../components/sections/Navbar.astro';
 import Footer from '../../components/sections/Footer.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
+import { storeSettings } from '../../data/store';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -59,7 +60,7 @@ const heroFeatures = [
             {/* CTA Buttons */}
             <div class="flex flex-col sm:flex-row gap-4 pt-2">
               <a 
-                href="https://pos.codesabai.com" 
+                href={storeSettings.links.posDemo} 
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center gap-2 font-black uppercase tracking-wider text-sm px-6 py-3 bg-lime-400 text-black border-2 border-black shadow-[4px_4px_0px_0px_black] hover:shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all duration-150"
@@ -201,7 +202,7 @@ const heroFeatures = [
         <p class="text-gray-400 font-bold text-lg">{t('demo.cta.readyDesc', lang)}</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <a 
-            href="https://pos.codesabai.com" 
+            href={storeSettings.links.posDemo} 
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center justify-center gap-2 font-black uppercase tracking-wider text-sm px-8 py-4 bg-lime-400 text-black border-2 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[3px] hover:translate-y-[3px] active:shadow-none active:translate-x-[6px] active:translate-y-[6px] transition-all duration-150"

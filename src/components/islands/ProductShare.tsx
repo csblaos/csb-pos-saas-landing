@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Facebook, Twitter, MessageCircle } from 'lucide-react';
+import { Copy, Check, Facebook, MessageCircle } from 'lucide-react';
 
 interface ProductShareProps {
     url: string;
@@ -29,50 +29,47 @@ export default function ProductShare({ url, title, translations }: ProductShareP
             name: 'Facebook',
             icon: Facebook,
             href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-            color: 'hover:text-blue-600'
+            className: 'bg-[#1877F2] text-white border-[#0F4DA8] hover:bg-[#1366D6]'
         },
         {
             name: 'Line',
             icon: MessageCircle, // Lucide doesn't have Line icon, reusing MessageCircle or customized
             href: `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`,
-            color: 'hover:text-green-500'
+            className: 'bg-[#06C755] text-white border-[#059444] hover:bg-[#05B14C]'
         },
         {
-            name: 'Twitter', // X
-            icon: Twitter,
-            href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
-            color: 'hover:text-black'
+            name: 'WhatsApp',
+            icon: MessageCircle,
+            href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
+            className: 'bg-[#25D366] text-white border-[#1EAE56] hover:bg-[#22BF5D]'
         }
     ];
 
     return (
-        <div className="flex flex-col gap-4 p-6 bg-gray-50 border-2 border-dashed border-black/20 rounded-lg mt-8">
-            <h3 className="font-bold uppercase text-sm text-gray-500">{translations.share}</h3>
+        <div className="mt-8 p-6 bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)]">
+            <h3 className="font-black uppercase text-sm text-[var(--color-text)] tracking-wide mb-4">{translations.share}</h3>
 
-            <div className="flex items-center gap-4 flex-wrap">
-                {/* Copy Link Button */}
+            <div className="grid sm:grid-cols-[auto_1fr] gap-3 items-stretch">
                 <button
                     onClick={handleCopy}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-none transition-all font-bold text-sm hover:bg-gray-50 min-w-[140px] justify-center"
+                    className="flex items-center justify-center gap-2 px-5 py-3 bg-white text-black border-1 border-black shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-black text-sm uppercase min-w-[170px]"
                 >
                     {copied ? <Check size={16} className="text-lime-600" /> : <Copy size={16} />}
                     {copied ? translations.copied : translations.copy}
                 </button>
 
-                <div className="w-px h-8 bg-black/10 mx-2"></div>
-
-                {/* Social Icons */}
-                <div className="flex gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {shareLinks.map((link) => (
                         <a
                             key={link.name}
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`p-2 bg-white border-2 border-transparent hover:border-black rounded-full transition-all ${link.color}`}
+                            className={`inline-flex items-center justify-center gap-2 px-4 py-3 border-1 shadow-[2px_2px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-black text-sm uppercase ${link.className}`}
                             aria-label={`Share on ${link.name}`}
                         >
-                            <link.icon size={20} />
+                            <link.icon size={16} />
+                            <span>{link.name}</span>
                         </a>
                     ))}
                 </div>

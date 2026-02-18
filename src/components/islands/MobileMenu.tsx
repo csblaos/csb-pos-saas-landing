@@ -48,6 +48,7 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
         { label: t('nav.packages', lang), href: `/${lang}/packages` },
         { label: t('nav.hardware', lang), href: `/${lang}/hardware` },
         { label: t('nav.solutions', lang), href: `/${lang}/solutions` },
+        { label: t('nav.about', lang), href: `/${lang}/about` },
         { label: t('nav.blog', lang), href: `/${lang}/blog` },
     ];
 

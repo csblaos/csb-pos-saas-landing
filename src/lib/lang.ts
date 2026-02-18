@@ -50,8 +50,24 @@ export function setLang(lang: Lang) {
         newPath += '/';
     }
 
+    const targetPathWithQuery = newPath + currentUrl.search;
+    const targetUrl = targetPathWithQuery + currentUrl.hash;
+
+    if (typeof sessionStorage !== 'undefined') {
+        const doc = document.documentElement;
+        const maxScrollable = Math.max(0, doc.scrollHeight - window.innerHeight);
+        const ratio = maxScrollable > 0 ? window.scrollY / maxScrollable : 0;
+
+        sessionStorage.setItem('__lang_scroll_restore__', JSON.stringify({
+            toPath: targetPathWithQuery,
+            y: window.scrollY,
+            ratio,
+            ts: Date.now()
+        }));
+    }
+
     // Navigate to new path and preserve query params/hash
-    window.location.href = newPath + currentUrl.search + currentUrl.hash;
+    window.location.href = targetUrl;
 }
 
 export function useTranslatedPath(lang: Lang) {

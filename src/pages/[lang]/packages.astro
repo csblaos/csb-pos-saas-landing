@@ -30,21 +30,21 @@ const comparison = [
 <Base title="Packages & Pricing | AstroPOS" image="/images/og/og-packages.png">
   <Navbar />
   
-  <main class="py-20">
+  <main class="py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-      <div class="text-center mb-16">
-        <h1 class="text-5xl font-black uppercase mb-4">{t('packages.title', lang)}</h1>
-        <p class="text-xl text-gray-600 font-bold">{t('packages.subtitle', lang)}</p>
+      <div class="text-center mb-12 md:mb-16">
+        <h1 class="text-4xl md:text-5xl font-black uppercase mb-4">{t('packages.title', lang)}</h1>
+        <p class="text-lg md:text-xl text-gray-600 font-semibold">{t('packages.subtitle', lang)}</p>
       </div>
 
       <PricingSelect client:load lang={lang} />
       
       {/* Neo-Brutalist Feature Comparison Table */}
-      <div id="comparison" class="mt-24 max-w-5xl mx-auto scroll-mt-20">
+      <div id="comparison" class="mt-12 md:mt-24 max-w-5xl mx-auto scroll-mt-20">
         <h2 class="text-3xl md:text-4xl font-black text-center mb-3 uppercase">{t('packages.comparison.title', lang)}</h2>
-        <p class="text-center text-gray-500 font-bold mb-10">{t('packages.comparison.subtitle', lang)}</p>
+        <p class="text-center text-gray-500 font-semibold mb-10">{t('packages.comparison.subtitle', lang)}</p>
         
-        <div class="overflow-x-auto border-2 border-black shadow-[6px_6px_0px_0px_black]">
+        <div class="overflow-x-auto border-1 border-black shadow-[2px_2px_0px_0px_black]">
           <table class="w-full text-left border-collapse bg-white min-w-[600px]">
             <thead>
               <tr class="bg-black text-white">
@@ -72,33 +72,33 @@ const comparison = [
                   {/* Starter */}
                   <td class="p-4 md:p-5 border-r-2 border-black/10 text-center">
                     {row.start === true ? (
-                      <span class="inline-flex items-center justify-center w-7 h-7 bg-lime-400 border-2 border-black text-black text-xs font-black">✓</span>
+                      <span class="inline-flex items-center justify-center w-7 h-7 bg-lime-400 border-1 border-black text-black text-xs font-black">✓</span>
                     ) : row.start === false ? (
-                      <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 border-2 border-gray-300 text-gray-300 text-xs font-black">—</span>
+                      <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 border-1 border-gray-300 text-gray-300 text-xs font-black">—</span>
                     ) : (
-                      <span class="text-sm font-bold">{row.start}</span>
+                      <span class="text-sm font-semibold">{row.start}</span>
                     )}
                   </td>
                   
                   {/* Professional (highlighted column) */}
                   <td class={`p-4 md:p-5 border-r-2 border-black/10 text-center ${i % 2 === 0 ? 'bg-lime-50' : 'bg-lime-50/50'}`}>
                     {row.pro === true ? (
-                      <span class="inline-flex items-center justify-center w-7 h-7 bg-lime-400 border-2 border-black text-black text-xs font-black">✓</span>
+                      <span class="inline-flex items-center justify-center w-7 h-7 bg-lime-400 border-1 border-black text-black text-xs font-black">✓</span>
                     ) : row.pro === false ? (
-                      <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 border-2 border-gray-300 text-gray-300 text-xs font-black">—</span>
+                      <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 border-1 border-gray-300 text-gray-300 text-xs font-black">—</span>
                     ) : (
-                      <span class="text-sm font-black text-lime-700">{row.pro}</span>
+                      <span class="text-sm font-semibold text-lime-700">{row.pro}</span>
                     )}
                   </td>
                   
                   {/* Premium */}
                   <td class="p-4 md:p-5 text-center">
                     {row.biz === true ? (
-                      <span class="inline-flex items-center justify-center w-7 h-7 bg-lime-400 border-2 border-black text-black text-xs font-black">✓</span>
+                      <span class="inline-flex items-center justify-center w-7 h-7 bg-lime-400 border-1 border-black text-black text-xs font-black">✓</span>
                     ) : row.biz === false ? (
-                      <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 border-2 border-gray-300 text-gray-300 text-xs font-black">—</span>
+                      <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 border-1 border-gray-300 text-gray-300 text-xs font-black">—</span>
                     ) : (
-                      <span class="text-sm font-bold">{row.biz}</span>
+                      <span class="text-sm font-semibold">{row.biz}</span>
                     )}
                   </td>
                 </tr>
