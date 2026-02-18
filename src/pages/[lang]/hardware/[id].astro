@@ -46,12 +46,15 @@ const translations = {
 };
 
 const txt = (key) => translations[key][lang];
+
+// Dynamic OG Image
+const ogImage = new URL(`/open-graph/${lang}/hardware/${product.id}.png`, Astro.url);
 ---
 
 <Base 
   title={`${product.name[lang]} - AstroPOS Hardware`}
   description={product.description[lang]}
-  image={product.image}
+  image={ogImage.href}
 >
   <Navbar />
 
