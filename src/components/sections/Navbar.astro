@@ -1,6 +1,5 @@
 ---
 import LanguageToggle from '../islands/LanguageToggle';
-import ThemeToggle from '../islands/ThemeToggle';
 import MobileMenu from '../islands/MobileMenu';
 import Button from '../common/Button.astro';
 import { getLangFromUrl } from '../../lib/lang';
@@ -22,8 +21,8 @@ const lang = getLangFromUrl(Astro.url);
           { href: `/${lang}/`, label: t('nav.home', lang), exact: true },
           { href: `/${lang}/packages`, label: t('nav.packages', lang) },
           { href: `/${lang}/hardware`, label: t('nav.hardware', lang) },
-          { href: `/${lang}/services`, label: t('nav.services', lang) },
-          { href: `/${lang}/news`, label: t('nav.news', lang) },
+          { href: `/${lang}/solutions`, label: t('nav.solutions', lang) },
+          { href: `/${lang}/blog`, label: t('nav.blog', lang) },
         ].map((link) => {
           const isActive = link.exact 
             ? Astro.url.pathname === link.href 
@@ -52,7 +51,6 @@ const lang = getLangFromUrl(Astro.url);
       <LanguageToggle client:load />
 
       <div class="hidden sm:flex items-center gap-3">
-        <ThemeToggle client:load />
         <Button href={`/${lang}/demo`} variant="secondary" class="text-xs px-4 py-2">
           {t('nav.demo', lang)}
         </Button>

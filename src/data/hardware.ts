@@ -8,6 +8,7 @@ export interface Product {
         la: string;
     };
     price: number;
+    priceLak: number;
     description: {
         en: string;
         th: string;
@@ -32,6 +33,7 @@ export const hardwareProducts: Product[] = [
             la: 'ເຄື່ອງພິມໃບປະໜ້າ AstroThermal X1'
         },
         price: 1990,
+        priceLak: 1400000,
         description: {
             en: 'Professional 100x150mm Label Printer. Bluetooth + USB Support. High speed printing.',
             th: 'เครื่องพิมพ์ใบปะหน้ามืออาชีพ 100x150mm รองรับ Bluetooth + USB พิมพ์เร็ว คมชัด',
@@ -54,6 +56,7 @@ export const hardwareProducts: Product[] = [
             la: 'ເຄື່ອງສະແກນບາໂຄດ ScanBolt Pro'
         },
         price: 890,
+        priceLak: 620000,
         description: {
             en: 'Wireless 2D/QR Code Scanner. Long battery life and instant connection.',
             th: 'เครื่องสแกนไร้สาย อ่านได้ทั้ง 2D และ QR Code แบตอึด เชื่อมต่อง่าย',
@@ -71,6 +74,7 @@ export const hardwareProducts: Product[] = [
             la: 'ເຈ້ຍຄວາມຮ້ອນ (ແພັກ 3 ມ້ວນ)'
         },
         price: 250,
+        priceLak: 175000,
         description: {
             en: 'Premium quality thermal paper. Water and oil resistant. 350 labels per roll.',
             th: 'กระดาษความร้อนเกรดพรีเมียม กันน้ำ กันน้ำมัน 350 แผ่นต่อม้วน',

@@ -20,20 +20,26 @@ const lang = getLangFromUrl(Astro.url);
         {t('hero.headline', lang)}
       </h1>
       
-      <p class="text-xl md:text-2xl font-bold text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
+      <p class="text-xl md:text-2xl font-bold text-gray-600 leading-relaxed max-w-lg">
         {t('hero.subheadline', lang)}
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4">
         <Button href={`/${lang}/packages`} class="text-lg px-8 py-4">{t('hero.cta.start', lang)}</Button>
-        <Button href={`/${lang}/demo`} variant="outline" class="text-lg px-8 py-4 dark:text-black dark:bg-white">{t('hero.cta.demo', lang)}</Button>
+        <Button href={`/${lang}/demo`} variant="outline" class="text-lg px-8 py-4">{t('hero.cta.demo', lang)}</Button>
       </div>
       
       <div class="flex items-center gap-4 text-sm font-bold pt-4 text-[var(--color-text)]">
         <div class="flex -space-x-2">
-          <div class="w-10 h-10 rounded-full bg-gray-300 border-2 border-[var(--color-border)]"></div>
-          <div class="w-10 h-10 rounded-full bg-gray-400 border-2 border-[var(--color-border)]"></div>
-          <div class="w-10 h-10 rounded-full bg-gray-500 border-2 border-[var(--color-border)]"></div>
+          <div class="w-10 h-10 rounded-full bg-[#F3BA2F] border-2 border-black flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-30">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.sHI5FTX3NHEvVEktdC52vQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" class="w-full h-full object-cover" alt="Binance" />
+          </div>
+          <div class="w-10 h-10 rounded-full bg-[#00A4EF] border-2 border-black flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-20">
+            <img src="https://esvector.net/home_es/images/stories/logo/es_logo/kbank.jpg" class="w-full h-full object-cover" alt="KBank" />
+          </div>
+          <div class="w-10 h-10 rounded-full bg-gray-300 border-2 border-black flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-10">
+            <img src="https://i.etsystatic.com/27859491/r/il/cafa9a/3021322745/il_1588xN.3021322745_g2g2.jpg" class="w-full h-full object-cover" alt="User" />
+          </div>
         </div>
         <p>{t('hero.trusted', lang)}</p>
       </div>

@@ -5,6 +5,7 @@ import Hero from '../../components/sections/Hero.astro';
 import Features from '../../components/sections/Features.astro';
 import Pricing from '../../components/sections/Pricing.astro';
 import Testimonials from '../../components/sections/Testimonials.astro';
+import Footer from '../../components/sections/Footer.astro';
 import Button from '../../components/common/Button.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
@@ -22,11 +23,38 @@ const faqs = [
 ];
 ---
 
-<Base title="AstroPOS - The Ultimate Sales Machine" image="/images/og/og-home.jpg">
+<Base title="AstroPOS - The Ultimate Sales Machine" image="/images/og/og-home.png">
   <Navbar />
   
   <main>
     <Hero />
+
+    <!-- Business Types -->
+    <section class="py-16 border-y-2 border-[var(--color-border)] bg-[var(--color-bg-card)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+        <h2 class="text-3xl font-black mb-12 uppercase text-[var(--color-text)]">
+          {lang === 'th' ? 'ระบบนี้เหมาะกับใคร?' : lang === 'la' ? 'ລະບົບນີ້ເຫມາະກັບໃຜ?' : 'Who is AstroPOS for?'}
+        </h2>
+        <div class="grid md:grid-cols-3 gap-6">
+           <div class="p-6 bg-[var(--color-bg)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-transform">
+             <div class="text-4xl mb-4">👗</div>
+             <h3 class="text-xl font-black mb-2">{lang === 'th' ? 'ร้านค้าปลีก' : lang === 'la' ? 'ຮ້ານຂາຍຍ່ອຍ' : 'Retail Stores'}</h3>
+             <p class="text-sm opacity-70 font-bold">Fashion, Gadgets, Cosmetics</p>
+           </div>
+           <div class="p-6 bg-[var(--color-bg)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-transform">
+             <div class="text-4xl mb-4">☕</div>
+             <h3 class="text-xl font-black mb-2">{lang === 'th' ? 'ร้านอาหาร & คาเฟ่' : lang === 'la' ? 'ຮ້ານອາຫານ & ຄາເຟ່' : 'Cafe & Restaurant'}</h3>
+             <p class="text-sm opacity-70 font-bold">Coffee, Bakery, Quick Service</p>
+           </div>
+           <div class="p-6 bg-[var(--color-bg)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-transform">
+             <div class="text-4xl mb-4">💅</div>
+             <h3 class="text-xl font-black mb-2">{lang === 'th' ? 'ธุรกิจบริการ' : lang === 'la' ? 'ທຸລະກິດບໍລິການ' : 'Service Business'}</h3>
+             <p class="text-sm opacity-70 font-bold">Salon, Spa, Car Care</p>
+           </div>
+        </div>
+      </div>
+    </section>
+
     <Features />
     
     <!-- How it works -->
@@ -37,17 +65,17 @@ const faqs = [
           <div class="p-6">
             <div class="w-16 h-16 bg-lime-400 border-2 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[4px_4px_0px_0px_var(--color-shadow)] text-black">1</div>
             <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step1', lang)}</h3>
-            <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step1.desc', lang)}</p>
+            <p class="text-gray-600 font-medium">{t('howItWorks.step1.desc', lang)}</p>
           </div>
           <div class="p-6">
             <div class="w-16 h-16 bg-pink-400 border-2 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[4px_4px_0px_0px_var(--color-shadow)] text-black">2</div>
             <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step2', lang)}</h3>
-            <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step2.desc', lang)}</p>
+            <p class="text-gray-600 font-medium">{t('howItWorks.step2.desc', lang)}</p>
           </div>
           <div class="p-6">
             <div class="w-16 h-16 bg-blue-400 border-2 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[4px_4px_0px_0px_var(--color-shadow)] text-black">3</div>
             <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step3', lang)}</h3>
-            <p class="text-gray-600 dark:text-gray-400 font-medium">{t('howItWorks.step3.desc', lang)}</p>
+            <p class="text-gray-600 font-medium">{t('howItWorks.step3.desc', lang)}</p>
           </div>
         </div>
       </div>
@@ -68,7 +96,7 @@ const faqs = [
                  <span>{f.q}</span>
                  <span class="transform group-open:rotate-180 transition-transform">▼</span>
                </summary>
-               <div class="px-6 pb-6 text-gray-600 dark:text-gray-300 font-medium leading-relaxed border-t-2 border-[var(--color-border)] pt-4">
+               <div class="px-6 pb-6 text-gray-600 font-medium leading-relaxed border-t-2 border-[var(--color-border)] pt-4">
                  {f.a}
                </div>
              </details>
@@ -78,26 +106,18 @@ const faqs = [
     </section>
 
     <!-- Final CTA -->
-    <section class="py-24 bg-black text-white text-center dark:bg-white dark:text-black">
+    <section class="py-24 bg-black text-white text-center">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
           STOP WASTING TIME <br/>
-          <span class="text-lime-400 dark:text-lime-600">START SELLING MOORE.</span>
+          <span class="text-lime-400">START SELLING MOORE.</span>
         </h2>
-        <Button href={`/${lang}/packages`} class="bg-lime-400 text-black border-white hover:bg-lime-300 text-xl px-12 py-6 dark:border-black">
+        <Button href={`/${lang}/packages`} class="bg-lime-400 text-black border-white hover:bg-lime-300 text-xl px-12 py-6">
           {t('hero.cta.start', lang)}
         </Button>
       </div>
     </section>
   </main>
   
-  <footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="font-bold text-sm">{t('footer.copyright', lang)}</p>
-      <div class="flex gap-4 text-sm font-bold underline">
-         <a href={`/${lang}/privacy`}>{t('footer.privacy', lang)}</a>
-         <a href={`/${lang}/terms`}>{t('footer.terms', lang)}</a>
-      </div>
-    </div>
-  </footer>
+  <Footer />
 </Base>

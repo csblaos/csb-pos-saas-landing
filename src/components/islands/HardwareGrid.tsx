@@ -15,9 +15,9 @@ export default function HardwareGrid({ lang }: HardwareGridProps) {
         ? hardwareProducts
         : hardwareProducts.filter(p => p.category === filter);
 
-    const handleBuy = (productName: string, price: number) => {
+    const handleBuy = (productName: string, price: number, priceLak: number) => {
         const message = encodeURIComponent(
-            `Hello AstroPOS, I am interested in buying: ${productName} (${price.toLocaleString()} THB). Please provide more details.`
+            `Hello AstroPOS, I am interested in buying: ${productName} (${priceLak.toLocaleString()} LAK / ${price.toLocaleString()} THB). Please provide more details.`
         );
         window.open(`https://wa.me/8562059083986?text=${message}`, '_blank');
     };
@@ -31,7 +31,7 @@ export default function HardwareGrid({ lang }: HardwareGridProps) {
 
     return (
         <div className="flex flex-col gap-12">
-            {/* Category Tabs */}
+            {/* ... (tabs remain the same) ... */}
             <div className="flex flex-wrap justify-center gap-4">
                 {tabs.map((tab) => (
                     <button
@@ -54,14 +54,14 @@ export default function HardwareGrid({ lang }: HardwareGridProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
                 {filteredProducts.map((product) => (
                     <div key={product.id} className="group relative bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col">
-                        {/* Badge */}
+
+                        {/* ... (Badge, Image, Content, Specs remain the same) ... */}
                         {product.badge && (
                             <div className="absolute -top-4 -right-4 bg-yellow-400 border-2 border-black px-4 py-1 font-black text-sm uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-10 rotate-3 group-hover:rotate-6 transition-transform">
                                 {product.badge[lang]}
                             </div>
                         )}
 
-                        {/* Image Area */}
                         <div className="aspect-square border-b-2 border-black overflow-hidden relative bg-gray-100">
                             <img
                                 src={product.image}
@@ -71,7 +71,6 @@ export default function HardwareGrid({ lang }: HardwareGridProps) {
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
                         </div>
 
-                        {/* Content */}
                         <div className="p-6 flex flex-col flex-1">
                             <div className="flex justify-between items-start mb-2">
                                 <h3 className="text-2xl font-black uppercase leading-tight">{product.name[lang]}</h3>
@@ -83,7 +82,6 @@ export default function HardwareGrid({ lang }: HardwareGridProps) {
 
                             <p className="text-gray-600 font-medium mb-4 text-sm flex-1">{product.description[lang]}</p>
 
-                            {/* Specs */}
                             <div className="flex flex-wrap gap-2 mb-6">
                                 {product.specs.map((spec, i) => (
                                     <span key={i} className="text-xs font-bold border border-black px-2 py-1 bg-gray-50 flex items-center gap-1">
@@ -92,11 +90,11 @@ export default function HardwareGrid({ lang }: HardwareGridProps) {
                                 ))}
                             </div>
 
-                            {/* Price & Action */}
                             <div className="pt-4 border-t-2 border-black/10 flex items-center justify-between gap-4 mt-auto">
                                 <div>
                                     <p className="text-xs font-bold text-gray-500 uppercase">{t.price}</p>
-                                    <p className="text-2xl font-black font-mono tracking-tight">฿{product.price.toLocaleString()}</p>
+                                    <p className="text-2xl font-black font-mono tracking-tight">₭{product.priceLak.toLocaleString()}</p>
+                                    <p className="text-xs font-bold text-gray-400">≈ ฿{product.price.toLocaleString()}</p>
                                 </div>
                                 <a
                                     href={`/${lang}/hardware/${product.id}`}

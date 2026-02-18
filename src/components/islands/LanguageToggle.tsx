@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { type Lang, setLang, getLangFromLocalStorage, languages } from '../../lib/lang';
+import { Globe } from 'lucide-react';
 
 export default function LanguageToggle() {
     const [currentLang, setCurrentLang] = useState<Lang>('th');
@@ -58,7 +59,8 @@ export default function LanguageToggle() {
                 onClick={() => setIsOpen(!isOpen)}
                 className="px-3 py-2 font-bold border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)] shadow-[2px_2px_0px_0px_var(--color-shadow)] active:translate-y-[2px] active:shadow-none transition-all flex items-center gap-2 rounded-md"
             >
-                <span>{languages[currentLang]?.flag || languages['th'].flag} {languages[currentLang]?.label?.slice(0, 3).toUpperCase() || 'TH'}</span>
+                <Globe size={20} />
+                <span>{languages[currentLang]?.label?.slice(0, 3).toUpperCase() || 'TH'}</span>
             </button>
 
             {isOpen && (

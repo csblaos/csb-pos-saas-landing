@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { t } from '../../data/i18n';
 import type { Lang } from '../../lib/lang';
-import ThemeToggle from './ThemeToggle';
 
 interface MobileMenuProps {
     lang: Lang;
@@ -33,8 +32,8 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
         { label: t('nav.home', lang), href: `/${lang}/` },
         { label: t('nav.packages', lang), href: `/${lang}/packages` },
         { label: t('nav.hardware', lang), href: `/${lang}/hardware` },
-        { label: t('nav.services', lang), href: `/${lang}/services` },
-        { label: t('nav.news', lang), href: `/${lang}/news` },
+        { label: t('nav.solutions', lang), href: `/${lang}/solutions` },
+        { label: t('nav.blog', lang), href: `/${lang}/blog` },
         { label: t('nav.demo', lang), href: `/${lang}/demo` },
     ];
 
@@ -79,9 +78,8 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
                 {/* Theme Actions */}
                 <div className="mt-8 border-t-2 border-[var(--color-border)] pt-8">
                     <p className="font-bold mb-4 uppercase text-sm text-gray-500">Settings</p>
-                    <div className="flex gap-4 items-center">
-                        <ThemeToggle />
-                        <span className="text-sm font-bold opacity-50">Switch Theme</span>
+                    <div className="absolute bottom-0 left-0 right-0 p-8 border-t-2 border-black/10 bg-gray-50 flex items-center justify-between">
+                        <div className="text-xs font-bold opacity-40 uppercase tracking-widest">AstroPOS Mobile</div>
                     </div>
                 </div>
             </nav>

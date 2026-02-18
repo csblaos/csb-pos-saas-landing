@@ -1,0 +1,7 @@
+    'footer.copyright': '© 2024 AstroPOS ສະຫງວນລິຂະສິດ.',
+    'footer.privacy': 'ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ',
+    'footer.terms': 'ຂໍ້ຕົກລົງການນຳໃຊ້',
+
+    // Testimonials
+    'testimonials.title': 'ສຽງຈາກຜູ້ໃຊ້ງານ',
+    'testimonials.subtitle': 'ເລື່ອງລາວຄວາມສຳເລັດຈາກຮ້ານຄ້າທີ່ເຕີບໂຕໄປກັບເຮົາ',

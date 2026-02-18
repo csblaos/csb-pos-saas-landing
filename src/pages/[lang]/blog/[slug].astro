@@ -1,0 +1,156 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Navbar from '../../../components/sections/Navbar.astro';
+import Footer from '../../../components/sections/Footer.astro';
+import { getLangFromUrl, languages } from '../../../lib/lang';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news');
+  const langs = Object.keys(languages);
+  
+  // Generate paths for every post in every language
+  return langs.flatMap(lang => 
+    posts.map(post => ({
+      params: { lang, slug: post.slug },
+      props: { post },
+    }))
+  );
+}
+
+const { post } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const { Content } = await post.render();
+
+import ProductShare from '../../../components/islands/ProductShare';
+import { getCollection } from 'astro:content';
+
+// Fetch Related Posts
+const allPosts = await getCollection('news');
+const relatedPosts = allPosts
+    .filter(p => p.slug !== post.slug) // Exclude current post
+    .sort(() => 0.5 - Math.random()) // Shuffle
+    .slice(0, 3); // Take 3
+
+// Translations for blog UI
+const strings = {
+  shareTitle: { en: 'Share this article', th: 'แชร์บทความนี้', la: 'ແບ່ງປັນບົດຄວາມນີ້' },
+  copy: { en: 'Copy Link', th: 'คัดลอกลิงก์', la: 'ຄັດລອກລິ້ງ' },
+  copied: { en: 'Copied!', th: 'คัดลอกแล้ว!', la: 'ຄັດລອກແລ້ວ!' },
+  back: { en: 'Back to Blog', th: 'กลับไปหน้าบทความ', la: 'ກັບໄປໜ້າບົດຄວາມ' },
+  ad: { en: 'Advertisement', th: 'พื้นที่โฆษณา', la: 'ພື້ນທີ່ໂຄສະນາ' },
+  readNext: { en: 'Read Next', th: 'บทความแนะนำ', la: 'ບົດຄວາມແນະນຳ' },
+};
+const t = (key) => strings[key][lang];
+---
+
+<Base title={`${post.data.title} | AstroPOS Blog`}>
+  <Navbar />
+  
+  <main class="py-12 md:py-20 bg-[var(--color-bg)] min-h-screen">
+    <div class="container mx-auto px-4 max-w-4xl">
+      
+      {/* Breadcrumb / Back */}
+      <a href={`/${lang}/blog`} class="inline-flex items-center text-gray-500 hover:text-black font-bold mb-8 transition-colors">
+        ← {t('back')}
+      </a>
+
+      {/* Hero Header */}
+      <div class="mb-12">
+         <div class="flex items-center gap-4 mb-6">
+            <span class="bg-lime-300 text-black border-2 border-black px-3 py-1 font-black text-sm uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              {post.data.tags[0]}
+            </span>
+            <span class="font-bold text-gray-500 text-sm">
+              {post.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </span>
+         </div>
+         
+         <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight text-[var(--color-text)] tracking-tight">
+            {post.data.title}
+         </h1>
+
+         <div class="flex items-center gap-3 border-b-2 border-[var(--color-border)] pb-8 mb-8">
+            <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-black overflow-hidden">
+                <img src={`https://ui-avatars.com/api/?name=${post.data.author}&background=random`} alt={post.data.author} />
+            </div>
+            <div>
+                <p class="font-black text-sm">{post.data.author}</p>
+                <p class="text-xs text-gray-500 font-bold">Editor</p>
+            </div>
+         </div>
+
+         {/* Featured Image */}
+         {post.data.image && (
+            <div class="aspect-video w-full border-2 border-black rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-12 relative bg-gray-100">
+                <img 
+                    src={post.data.image} 
+                    alt={post.data.title}
+                    class="w-full h-full object-cover"
+                />
+            </div>
+         )}
+      </div>
+      
+      {/* Content Area */}
+      <article class="prose prose-lg prose-headings:font-black prose-p:font-medium prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-img:border-2 prose-img:border-[var(--color-border)] prose-img:shadow-[4px_4px_0px_0px_var(--color-shadow)] prose-img:rounded-lg prose-a:text-lime-600 prose-a:font-black prose-blockquote:border-l-4 prose-blockquote:border-black prose-blockquote:bg-gray-50 dark:prose-blockquote:bg-gray-900 prose-blockquote:p-6 prose-blockquote:not-italic prose-blockquote:font-bold font-sans text-[var(--color-text)] dark:prose-invert max-w-none">
+        {/* Recommended Ad Placement: Top of Content (optional) */}
+        {/* <div class="w-full h-32 bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center font-bold text-gray-400 mb-8 uppercase tracking-widest">{t('ad')}</div> */}
+        
+        <Content />
+      </article>
+
+      {/* Recommended Ad Placement: Bottom of Content */}
+      <div class="my-16">
+        <p class="text-xs font-bold text-gray-400 uppercase mb-2 text-center tracking-widest">{t('ad')}</p>
+        <div class="w-full h-48 md:h-60 bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center gap-2 rounded-lg">
+            <span class="font-black text-gray-300 text-4xl uppercase">Banner Space</span>
+            <span class="font-bold text-gray-400 text-sm">Recommended Size: 728x90 or Responsive</span>
+        </div>
+      </div>
+
+      {/* Share Section */}
+      <div class="border-t-2 border-[var(--color-border)] pt-12 mt-12 mb-20">
+        <div class="max-w-2xl mx-auto">
+            <ProductShare 
+                client:visible
+                url={Astro.url.href} 
+                title={post.data.title} 
+                translations={{
+                    share: t('shareTitle'),
+                    copy: t('copy'),
+                    copied: t('copied')
+                }} 
+            />
+        </div>
+      </div>
+
+      {/* Read Next Section */}
+      <div class="border-t-2 border-[var(--color-border)] pt-12">
+        <h3 class="text-3xl font-black uppercase mb-8 text-center">{t('readNext')}</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {relatedPosts.slice(0, 3).map((relatedPost) => (
+                <a href={`/${lang}/blog/${relatedPost.slug}`} class="group block bg-white dark:bg-gray-900 border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all">
+                    {relatedPost.data.image && (
+                        <div class="aspect-video overflow-hidden border-b-2 border-[var(--color-border)]">
+                            <img src={relatedPost.data.image} alt={relatedPost.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                    )}
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-lime-600 uppercase mb-2 block">{relatedPost.data.tags[0]}</span>
+                        <h4 class="text-xl font-black leading-tight mb-2 group-hover:text-lime-600 transition-colors line-clamp-2">
+                            {relatedPost.data.title}
+                        </h4>
+                        <p class="text-sm text-gray-500 font-bold">
+                            {relatedPost.data.pubDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        </p>
+                    </div>
+                </a>
+            ))}
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Base>

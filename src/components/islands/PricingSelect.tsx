@@ -8,123 +8,163 @@ const plans = [
         id: 'starter',
         name: 'Starter',
         price: 9,
-        lak: '200,000',
+        priceLak: 200000,
         features: ['pricing.starter.shops', 'pricing.starter.users', 'pricing.starter.reports', 'pricing.starter.channels']
     },
     {
         id: 'pro',
-        name: 'Pro',
+        name: 'Professional',
         price: 19,
-        lak: '420,000',
+        priceLak: 420000,
         popular: true,
         features: ['pricing.pro.shops', 'pricing.pro.users', 'pricing.pro.channels', 'pricing.pro.labels', 'pricing.pro.reports']
     },
     {
         id: 'business',
-        name: 'Business',
+        name: 'Premium',
         price: 49,
-        lak: '1,100,000',
+        priceLak: 1100000,
         features: ['pricing.business.shops', 'pricing.business.users', 'pricing.business.rbac', 'pricing.business.api', 'pricing.business.support']
     }
 ];
 
 export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
-    const [selectedPlan, setSelectedPlan] = useState('pro');
+    const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
     const getWhatsAppLink = (planId: string) => {
         const plan = plans.find(p => p.id === planId);
         if (!plan) return '#';
 
+        const isYearly = billingCycle === 'yearly';
+        const finalPrice = isYearly ? plan.priceLak * 10 : plan.priceLak;
+        const finalUsd = isYearly ? plan.price * 10 : plan.price;
+        const period = isYearly ? t('pricing.yearly', lang) : t('pricing.monthly', lang);
+
+        // Format LAK with commas
+        const formattedPrice = finalPrice.toLocaleString();
+
         // Localized Message
         let message = '';
         if (lang === 'th') {
-            message = `สวัสดี สนใจแพ็กเกจ *${plan.name}* (${plan.price}$)\n\nชื่อร้าน: \nเบอร์โทร: \n\nขอรายละเอียดการชำระเงินด้วยครับ`;
+            message = `สวัสดี สนใจแพ็กเกจ *${plan.name}* (${formattedPrice}₭ / ${period})\n\nชื่อร้าน: \nเบอร์โทร: \n\nขอรายละเอียดการชำระเงินด้วยครับ`;
         } else if (lang === 'la') {
-            message = `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${plan.name}* (${plan.price}$)\n\nຊື່ຮ້ານ: \nເບີໂທ: \n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
+            message = `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${plan.name}* (${formattedPrice}₭ / ${period})\n\nຊື່ຮ້ານ: \nເບີໂທ: \n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
         } else {
-            message = `Hello, I want to subscribe to *${plan.name} Plan* (${plan.price}$).\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
+            message = `Hello, I want to subscribe to *${plan.name} Plan* (${formattedPrice} LAK / ${period}).\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
         }
 
         return `https://wa.me/8562012345678?text=${encodeURIComponent(message)}`;
     };
 
     return (
-        <div className="space-y-8">
-            {/* Plan Selection Grid */}
-            <div className="grid md:grid-cols-3 gap-8">
-                {plans.map((plan) => (
-                    <div
-                        key={plan.id}
-                        onClick={() => setSelectedPlan(plan.id)}
-                        className={`
-              relative p-6 transition-all cursor-pointer card-neo
-              ${selectedPlan === plan.id ? 'ring-2 ring-lime-400 -translate-y-2' : 'hover:-translate-y-1'}
-            `}
-                    >
-                        {plan.popular && (
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-pink-400 text-black border-2 border-black px-3 py-1 text-xs font-bold uppercase shadow-sm">
-                                {t('pricing.popular', lang)}
-                            </div>
-                        )}
-
-                        <div className="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 className="text-2xl font-black text-[var(--color-text)]">{plan.name}</h3>
-                                <p className="text-sm text-gray-500">{t('pricing.perMonth', lang)}</p>
-                            </div>
-                            <div className={`w-6 h-6 rounded-full border-2 border-[var(--color-border)] flex items-center justify-center ${selectedPlan === plan.id ? 'bg-lime-400' : 'bg-[var(--color-bg-card)]'}`}>
-                                {selectedPlan === plan.id && <div className="w-3 h-3 bg-black rounded-full" />}
-                            </div>
-                        </div>
-
-                        <div className="mb-6 text-[var(--color-text)]">
-                            <span className="text-4xl font-black">${plan.price}</span>
-                            <span className="text-sm font-bold text-gray-400 ml-2">≈ ₭{plan.lak}</span>
-                        </div>
-
-                        <ul className="space-y-2 mb-6 text-sm text-[var(--color-text)]">
-                            {plan.features.map((featureKey, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                    <Check size={16} className="text-lime-600" />
-                                    <span className="font-bold">{t(featureKey, lang)}</span>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <button className={`w-full py-2 font-bold border-2 border-[var(--color-border)] text-center transition-colors ${selectedPlan === plan.id ? 'bg-[var(--color-text)] text-[var(--color-bg)]' : 'bg-[var(--color-bg)] text-[var(--color-text)]'}`}>
-                            {t('pricing.select', lang)} {plan.name}
-                        </button>
-                    </div>
-                ))}
+        <div className="space-y-12">
+            {/* Billing Toggle */}
+            <div className="flex justify-center items-center gap-4">
+                <span className={`font-bold ${billingCycle === 'monthly' ? 'text-[var(--color-text)]' : 'text-gray-400'}`}>
+                    {t('pricing.monthly', lang)}
+                </span>
+                <button
+                    onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+                    className="relative w-16 h-8 bg-black dark:bg-white rounded-full transition-colors focus:outline-none ring-2 ring-offset-2 ring-lime-400"
+                >
+                    <div className={`absolute top-1 w-6 h-6 bg-white dark:bg-black rounded-full transition-transform duration-200 ${billingCycle === 'yearly' ? 'left-9' : 'left-1'}`} />
+                </button>
+                <div className="flex items-center gap-2">
+                    <span className={`font-bold ${billingCycle === 'yearly' ? 'text-[var(--color-text)]' : 'text-gray-400'}`}>
+                        {t('pricing.yearly', lang)}
+                    </span>
+                    <span className="bg-pink-500 text-white text-xs px-2 py-1 font-bold rounded-none transform -rotate-3">
+                        {t('pricing.2monthsFree', lang)} 🔥
+                    </span>
+                </div>
             </div>
 
-            {/* Checkout Action Area */}
-            <div className="bg-lime-100 dark:bg-lime-900 border-2 border-[var(--color-border)] p-6 md:p-8 shadow-[6px_6px_0px_0px_var(--color-shadow)] max-w-2xl mx-auto text-center space-y-6">
-                <h3 className="text-2xl font-black text-black dark:text-white">{t('pricing.readyToStart', lang)}</h3>
-                <p className="font-bold text-black dark:text-gray-200">
-                    {t('pricing.youSelected', lang)} <span className="underline decoration-wavy decoration-pink-500 text-xl">{plans.find(p => p.id === selectedPlan)?.name} {t('pricing.plan', lang)}</span>
+            {/* Plan Selection Grid */}
+            <div className="grid md:grid-cols-3 gap-8 items-start">
+                {plans.map((plan) => {
+                    const isYearly = billingCycle === 'yearly';
+                    // Yearly Price = Monthly * 10 (2 Months Free)
+                    const displayPrice = isYearly ? plan.priceLak * 10 : plan.priceLak;
+
+
+                    return (
+                        <div
+                            key={plan.id}
+                            className={`
+                                relative p-6 transition-all border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-[4px_4px_0px_0px_var(--color-shadow)]
+                                hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] flex flex-col h-full
+                                ${plan.popular ? 'ring-2 ring-offset-4 ring-lime-400' : ''}
+                            `}
+                        >
+                            {plan.popular && (
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-lime-400 text-black border-2 border-black px-4 py-1 text-sm font-black uppercase shadow-[2px_2px_0px_0px_black]">
+                                    {t('pricing.popular', lang)}
+                                </div>
+                            )}
+
+                            <div className="mb-6">
+                                <h3 className="text-2xl font-black text-[var(--color-text)] mb-2">{plan.name}</h3>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-4xl font-black">₭{displayPrice.toLocaleString()}</span>
+                                    <span className="text-gray-500 font-bold">/ {isYearly ? t('pricing.perYear', lang) : t('pricing.perMonth', lang)}</span>
+                                </div>
+
+                                {isYearly && (
+                                    <p className="text-xs text-lime-600 font-black mt-2 bg-lime-100 dark:bg-lime-900 inline-block px-2 py-1">
+                                        {t('pricing.save', lang)} ₭{((plan.priceLak * 12) - (plan.priceLak * 10)).toLocaleString()} ({t('pricing.2monthsFree', lang)})
+                                    </p>
+                                )}
+                            </div>
+
+                            <ul className="space-y-3 mb-8 text-sm text-[var(--color-text)] flex-grow">
+                                {plan.features.map((featureKey, i) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                        <Check size={18} className="text-lime-600 mt-0.5 flex-shrink-0" />
+                                        <span className="font-bold">{t(featureKey, lang)}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {/* Direct CTA Buttons */}
+                            {plan.id === 'starter' ? (
+                                <a
+                                    href={getWhatsAppLink(plan.id)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-[var(--color-bg)] hover:bg-gray-100 dark:hover:bg-gray-800 text-[var(--color-text)] uppercase"
+                                >
+                                    {t('pricing.startTrial', lang)}
+                                </a>
+                            ) : plan.id === 'business' ? (
+                                <a
+                                    href={getWhatsAppLink(plan.id)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-black text-white hover:bg-gray-800 uppercase"
+                                >
+                                    {t('pricing.getBusiness', lang)}
+                                </a>
+                            ) : (
+                                <a
+                                    href={getWhatsAppLink(plan.id)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-3 font-black border-2 border-black text-center transition-all bg-lime-400 text-black hover:bg-lime-300 shadow-[4px_4px_0px_0px_black] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_black] uppercase"
+                                >
+                                    {t('pricing.getPro', lang)}
+                                </a>
+                            )}
+
+                            {/* Secondary Link for Pro/Business if Yearly not selected? No, keeping it simple */}
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="text-center">
+                <p className="text-sm text-gray-500 font-bold">
+                    {t('pricing.noCreditCard', lang)} • {t('pricing.2monthsFree', lang)} {t('pricing.yearly', lang)}
                 </p>
-
-                <div className="flex flex-col md:flex-row gap-4 justify-center">
-                    <a
-                        href={getWhatsAppLink(selectedPlan)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-8 py-4 font-bold border-2 border-black shadow-[4px_4px_0px_0px_black] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_black] transition-all"
-                    >
-                        <MessageCircle size={24} />
-                        {t('pricing.confirm', lang)}
-                    </a>
-
-                    <a
-                        href={`/${lang}/checkout?plan=${selectedPlan}`}
-                        className="flex items-center justify-center gap-2 bg-white text-black px-8 py-4 font-bold border-2 border-black shadow-[4px_4px_0px_0px_black] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_black] transition-all"
-                    >
-                        {t('pricing.checkout', lang)}
-                        <ArrowRight size={20} />
-                    </a>
-                </div>
-                <p className="text-xs text-gray-500 font-bold">{t('pricing.noCreditCard', lang)}</p>
             </div>
         </div>
     );

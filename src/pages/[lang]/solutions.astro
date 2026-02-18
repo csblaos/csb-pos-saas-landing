@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Navbar from '../../components/sections/Navbar.astro';
+import Footer from '../../components/sections/Footer.astro';
 import Button from '../../components/common/Button.astro';
 import { MonitorSmartphone, BarChart, Printer, Globe } from 'lucide-react';
 import { getLangFromUrl, languages } from '../../lib/lang';
@@ -15,40 +16,40 @@ const lang = getLangFromUrl(Astro.url);
 const services = [
   {
     icon: MonitorSmartphone,
-    title: t('services.multiChannel', lang),
-    desc: t('services.multiChannel.desc', lang),
+    title: t('solutions.multiChannel', lang),
+    desc: t('solutions.multiChannel.desc', lang),
     color: "bg-blue-100 dark:bg-blue-900"
   },
   {
     icon: BarChart,
-    title: t('services.analytics', lang),
-    desc: t('services.analytics.desc', lang),
+    title: t('solutions.analytics', lang),
+    desc: t('solutions.analytics.desc', lang),
     color: "bg-green-100 dark:bg-green-900"
   },
   {
     icon: Printer,
-    title: t('services.shipping', lang),
-    desc: t('services.shipping.desc', lang),
+    title: t('solutions.shipping', lang),
+    desc: t('solutions.shipping.desc', lang),
     color: "bg-yellow-100 dark:bg-yellow-900"
   },
   {
     icon: Globe,
-    title: t('services.freeWebsite', lang),
-    desc: t('services.freeWebsite.desc', lang),
+    title: t('solutions.freeWebsite', lang),
+    desc: t('solutions.freeWebsite.desc', lang),
     color: "bg-pink-100 dark:bg-pink-900"
   }
 ];
 ---
 
-<Base title="Our Services | AstroPOS" image="/images/og/og-services.jpg">
+<Base title="Our Solutions | AstroPOS" image="/images/og/og-solutions.png">
   <Navbar />
   
   <main class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <h1 class="text-5xl font-black uppercase mb-6">{t('services.title', lang)}</h1>
+        <h1 class="text-5xl font-black uppercase mb-6">{t('solutions.title', lang)}</h1>
         <p class="text-xl text-gray-600 dark:text-gray-300 font-bold">
-          {t('services.subtitle', lang)}
+          {t('solutions.subtitle', lang)}
         </p>
       </div>
 
@@ -65,12 +66,13 @@ const services = [
       </div>
 
       <div class="bg-black text-white p-12 border-2 border-black shadow-[8px_8px_0px_0px_black] text-center dark:bg-white dark:text-black">
-        <h2 class="text-3xl font-black mb-4">{t('services.enterprise.title', lang)}</h2>
-        <p class="text-lg mb-6 opacity-90">{t('services.enterprise.desc', lang)}</p>
+        <h2 class="text-3xl font-black mb-4">{t('solutions.enterprise.title', lang)}</h2>
+        <p class="text-lg mb-6 opacity-90">{t('solutions.enterprise.desc', lang)}</p>
         <Button href="mailto:enterprise@astropos.com" variant="primary">
-          {t('services.enterprise.cta', lang)}
+          {t('solutions.enterprise.cta', lang)}
         </Button>
       </div>
     </div>
   </main>
+  <Footer />
 </Base>

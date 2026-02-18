@@ -1,6 +1,7 @@
 ---
 import { t } from '../../data/i18n';
 import type { Lang } from '../../lib/lang';
+import TestimonialCarousel from '../islands/TestimonialCarousel';
 
 interface Props {
   lang: Lang;
@@ -8,7 +9,17 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const testimonials = [
+interface Testimonial {
+  name: string;
+  role: string;
+  shop: string;
+  quote: string;
+  image: string;
+  stars: number;
+  color: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     name: "Sarah J.",
     role: "Online Seller",
@@ -35,13 +46,49 @@ const testimonials = [
     image: "https://i.pravatar.cc/150?u=a04258114e29026302d",
     stars: 5,
     color: "bg-cyan-400"
+  },
+  {
+    name: "Somchai K.",
+    role: "Retailer",
+    shop: "K-Shop",
+    quote: "game.changer",
+    image: "https://i.pravatar.cc/150?u=somchai",
+    stars: 5,
+    color: "bg-orange-400"
+  },
+  {
+    name: "Linda M.",
+    role: "Store Manager",
+    shop: "Bloom & Co.",
+    quote: "support.team",
+    image: "https://i.pravatar.cc/150?u=linda",
+    stars: 5,
+    color: "bg-purple-400"
+  },
+  {
+    name: "Alex R.",
+    role: "Entrepreneur",
+    shop: "TechHub",
+    quote: "all.in.one",
+    image: "https://i.pravatar.cc/150?u=alex",
+    stars: 5,
+    color: "bg-blue-400"
+  },
+  {
+    name: "Phommachanh S.",
+    role: "Boutique Owner",
+    shop: "Lao Elegance",
+    quote: "business.growth",
+    image: "https://i.pravatar.cc/150?u=phommachanh",
+    stars: 5,
+    color: "bg-emerald-400"
   }
 ];
 ---
 
 <section class="py-20 border-t-2 border-black bg-yellow-400 dark:bg-yellow-500 text-black">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
+    <div class="text-center mb-16 px-4">
       <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
         {t('testimonials.title', lang)}
       </h2>
@@ -50,39 +97,8 @@ const testimonials = [
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {testimonials.map((item) => (
-        <div class="bg-white border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
-          <div class="flex gap-1 mb-6 text-2xl">
-            {Array.from({ length: item.stars }).map(() => (
-              <span>⭐</span>
-            ))}
-          </div>
-          
-          <blockquote class="text-xl font-bold italic mb-8 min-h-[80px]">
-            "{t(`testimonials.quote.${item.quote}`, lang)}"
-          </blockquote>
-
-          <div class="flex items-center gap-4 border-t-2 border-black/10 pt-6">
-            <div class={`w-14 h-14 rounded-full border-2 border-black overflow-hidden shrink-0 ${item.color}`}>
-              <img 
-                src={item.image} 
-                alt={item.name} 
-                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"
-                loading="lazy"
-              />
-            </div>
-            <div>
-              <div class="font-black text-lg uppercase leading-none mb-1">{item.name}</div>
-              <div class="text-sm font-bold opacity-60 flex flex-col">
-                <span>{item.role}</span>
-                <span class="text-xs uppercase tracking-wider">@ {item.shop}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+    {/* Unified Infinity Carousel Island (Desktop 3-up, Mobile 1-up) */}
+    <TestimonialCarousel client:load lang={lang} testimonials={testimonials} />
 
     <div class="mt-16 text-center">
       <div class="inline-block bg-black text-white px-8 py-4 text-2xl font-black border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">

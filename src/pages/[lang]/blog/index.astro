@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import Navbar from '../../../components/sections/Navbar.astro';
+import Footer from '../../../components/sections/Footer.astro';
 import { getCollection } from 'astro:content';
 import { getLangFromUrl, languages } from '../../../lib/lang';
 import { t } from '../../../data/i18n';
@@ -15,12 +16,12 @@ const allNews = await getCollection('news');
 const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Base title="News & Updates | AstroPOS">
+<Base title="Blog & Academy | AstroPOS">
   <Navbar />
   
   <main class="py-20 min-h-screen">
     <div class="container mx-auto px-4 max-w-4xl">
-      <h1 class="text-5xl font-black mb-12 uppercase text-[var(--color-text)]">{t('nav.news', lang)}</h1>
+      <h1 class="text-5xl font-black mb-12 uppercase text-[var(--color-text)]">{t('nav.blog', lang)}</h1>
       
       <div class="grid gap-8">
         {sortedNews.map((post) => (
@@ -35,13 +36,13 @@ const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubD
                    <span class="flex items-center gap-1"><Tag size={14}/> {post.data.tags.join(', ')}</span>
                  </div>
                  <h2 class="text-2xl font-black mb-3">
-                   <a href={`/${lang}/news/${post.slug}`} class="hover:underline decoration-2 underline-offset-4 text-[var(--color-text)]">
+                   <a href={`/${lang}/blog/${post.slug}`} class="hover:underline decoration-2 underline-offset-4 text-[var(--color-text)]">
                      {post.data.title}
                    </a>
                  </h2>
                  <p class="font-medium text-gray-700 dark:text-gray-300 mb-4">{post.data.description}</p>
                </div>
-               <a href={`/${lang}/news/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors">
+               <a href={`/${lang}/blog/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors">
                  Read Article →
                </a>
              </div>
@@ -50,4 +51,5 @@ const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubD
       </div>
     </div>
   </main>
+  <Footer />
 </Base>

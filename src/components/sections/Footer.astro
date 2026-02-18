@@ -1,0 +1,24 @@
+---
+import { getLangFromUrl } from '../../lib/lang';
+import { t } from '../../data/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<footer class="py-12 border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row justify-between items-center gap-6">
+    <p class="font-bold text-sm tracking-tight">{t('footer.copyright', lang)}</p>
+    
+    <div class="flex flex-wrap justify-center gap-6 text-sm font-bold">
+      <a href={`/${lang}/help`} class="hover:underline underline-offset-4 decoration-2">
+        {lang === 'th' ? 'ช่วยเหลือ' : lang === 'la' ? 'ຊ່ວຍເຫຼືອ' : 'Help Center'}
+      </a>
+      <a href={`/${lang}/privacy`} class="hover:underline underline-offset-4 decoration-2">
+        {t('footer.privacy', lang)}
+      </a>
+      <a href={`/${lang}/terms`} class="hover:underline underline-offset-4 decoration-2">
+        {t('footer.terms', lang)}
+      </a>
+    </div>
+  </div>
+</footer>

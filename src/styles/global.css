@@ -24,16 +24,6 @@
     --color-accent: #a3e635;
   }
 
-  .dark {
-    --color-bg: #121212;
-    --color-bg-card: #1e1e1e;
-    --color-text: #ffffff;
-    --color-border: #ffffff;
-    --color-shadow: #ffffff;
-    /* White shadow for Neo-Brutalist Dark Mode */
-    --color-accent: #a3e635;
-  }
-
   body {
     @apply antialiased text-[var(--color-text)] bg-[var(--color-bg)] transition-colors duration-300;
     font-feature-settings: "cv11", "ss01";
@@ -69,13 +59,6 @@
 
   .badge-neo {
     @apply inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-[var(--color-border)] bg-brand-primary text-black shadow-[2px_2px_0px_0px_var(--color-shadow)];
-  }
-
-  /* Utility for forcing black text on light backgrounds even in dark mode */
-  .force-light {
-    --color-text: #000000;
-    --color-border: #000000;
-    --color-shadow: #000000;
   }
 
   /* Background Grid Animation */

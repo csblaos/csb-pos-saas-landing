@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Navbar from '../../components/sections/Navbar.astro';
+import Footer from '../../components/sections/Footer.astro';
 import PricingSelect from '../../components/islands/PricingSelect';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
@@ -21,7 +22,7 @@ const comparison = [
 ];
 ---
 
-<Base title="Packages & Pricing | AstroPOS" image="/images/og/og-packages.jpg">
+<Base title="Packages & Pricing | AstroPOS" image="/images/og/og-packages.png">
   <Navbar />
   
   <main class="py-20">
@@ -42,8 +43,8 @@ const comparison = [
               <tr class="bg-black text-white dark:bg-white dark:text-black">
                 <th class="p-4 border-r border-gray-700">Feature</th>
                 <th class="p-4 border-r border-gray-700 text-center">Starter</th>
-                <th class="p-4 border-r border-gray-700 text-center text-lime-400 dark:text-lime-600">Pro</th>
-                <th class="p-4 text-center">Business</th>
+                <th class="p-4 border-r border-gray-700 text-center text-lime-400 dark:text-lime-600">Professional</th>
+                <th class="p-4 text-center">Premium</th>
               </tr>
             </thead>
             <tbody>
@@ -61,4 +62,5 @@ const comparison = [
       </div>
     </div>
   </main>
+  <Footer />
 </Base>

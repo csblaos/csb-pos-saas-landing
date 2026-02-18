@@ -5,9 +5,9 @@ export const translations = {
     // Navigation
     'nav.home': 'Home',
     'nav.packages': 'Pricing',
-    'nav.services': 'Services',
+    'nav.solutions': 'Solutions',
     'nav.hardware': 'Shop',
-    'nav.news': 'News',
+    'nav.blog': 'Blog',
     'nav.demo': 'Demo',
 
     // Hero Section
@@ -55,6 +55,15 @@ export const translations = {
     'pricing.confirm': 'Apply via WhatsApp',
     'pricing.checkout': 'Go to Checkout',
     'pricing.perMonth': 'Per Month',
+    'pricing.perYear': 'Per Year',
+    'pricing.monthly': 'Monthly',
+    'pricing.yearly': 'Yearly',
+    'pricing.save': 'Save',
+    'pricing.2monthsFree': '2 Months Free',
+    'pricing.startTrial': 'Start 14-Day Free Trial',
+    'pricing.contactSales': 'Contact Sales',
+    'pricing.getPro': 'Get Professional',
+    'pricing.getBusiness': 'Get Premium',
 
     // Package Features (Starter)
     'pricing.starter.shops': '1 Shop',
@@ -85,20 +94,20 @@ export const translations = {
     'faq.q3': 'Do you support thermal printers?',
     'faq.a3': 'Absolutely. We support all standard 100x150mm thermal printers via Bluetooth or USB.',
 
-    // Services Page
-    'services.title': 'More Than Just a POS',
-    'services.subtitle': 'We provide a complete ecosystem for modern social sellers.',
-    'services.multiChannel': 'Multi-Channel Sync',
-    'services.multiChannel.desc': 'Connect Facebook Page, Line OA, and TikTok Shop in one dashboard. Reply to chats and create orders without switching apps.',
-    'services.analytics': 'Advanced Analytics',
-    'services.analytics.desc': 'Know your best selling products, peak hours, and customer retention rates. Export reports to Excel easily.',
-    'services.shipping': 'Instant Shipping Labels',
-    'services.shipping.desc': 'Generate Flash/Kerry/J&T tracking numbers instantly. Print 100x150mm labels via Bluetooth or USB.',
-    'services.freeWebsite': 'Free Shop Website',
-    'services.freeWebsite.desc': 'Get a free [yourname].astropos.shop website for customers to browse catalog and self-checkout.',
-    'services.enterprise.title': 'Need a Custom Solution?',
-    'services.enterprise.desc': 'We offer API integrations, white-label solutions, and dedicated support for enterprise clients.',
-    'services.enterprise.cta': 'Contact Enterprise Sales',
+    // Solutions Page
+    'solutions.title': 'More Than Just a POS',
+    'solutions.subtitle': 'We provide a complete ecosystem for modern social sellers.',
+    'solutions.multiChannel': 'Multi-Channel Sync',
+    'solutions.multiChannel.desc': 'Connect Facebook Page, Line OA, and TikTok Shop in one dashboard. Reply to chats and create orders without switching apps.',
+    'solutions.analytics': 'Advanced Analytics',
+    'solutions.analytics.desc': 'Know your best selling products, peak hours, and customer retention rates. Export reports to Excel easily.',
+    'solutions.shipping': 'Instant Shipping Labels',
+    'solutions.shipping.desc': 'Generate Flash/Kerry/J&T tracking numbers instantly. Print 100x150mm labels via Bluetooth or USB.',
+    'solutions.freeWebsite': 'Free Shop Website',
+    'solutions.freeWebsite.desc': 'Get a free [yourname].astropos.shop website for customers to browse catalog and self-checkout.',
+    'solutions.enterprise.title': 'Need a Custom Solution?',
+    'solutions.enterprise.desc': 'We offer API integrations, white-label solutions, and dedicated support for enterprise clients.',
+    'solutions.enterprise.cta': 'Contact Enterprise Sales',
 
     // Packages Page
     'packages.title': 'Choose Your Weapon',
@@ -130,14 +139,25 @@ export const translations = {
     'hardware.shipping.desc': 'Nationwide delivery within 2-3 days.',
     'hardware.setup.title': 'Remote Setup',
     'hardware.setup.desc': 'We help you set up remotely via TeamViewer.',
+
+    // Testimonials
+    'testimonials.title': 'Loved by Sellers',
+    'testimonials.subtitle': 'Success stories from shops growing with us.',
+    'testimonials.quote.best.pos.ever': 'Best POS I have ever used. Setup in 5 minutes!',
+    'testimonials.quote.saved.my.time': 'Used to spend 4 hours on accounting. Now just 30 mins.',
+    'testimonials.quote.easy.to.use': 'Even my grandma can use it. Super fast and stable.',
+    'testimonials.quote.game.changer': 'A real game changer for our social media sales!',
+    'testimonials.quote.support.team': 'Top-notch support. They helped me with everything.',
+    'testimonials.quote.all.in.one': 'Finally, an all-in-one system that actually works.',
+    'testimonials.quote.business.growth': 'Our revenue increased by 30% since we switched to AstroPOS.',
   },
   th: {
     // Navigation
     'nav.home': 'หน้าหลัก',
     'nav.packages': 'ราคา',
-    'nav.services': 'บริการ',
+    'nav.solutions': 'โซลูชัน',
     'nav.hardware': 'ร้านค้า',
-    'nav.news': 'บทความ',
+    'nav.blog': 'บทความ',
     'nav.demo': 'ลองใช้ระบบ',
 
     // Hero Section
@@ -185,6 +205,15 @@ export const translations = {
     'pricing.confirm': 'สมัครผ่าน WhatsApp',
     'pricing.checkout': 'ไปชำระเงิน',
     'pricing.perMonth': 'ต่อเดือน',
+    'pricing.perYear': 'ต่อปี',
+    'pricing.monthly': 'รายเดือน',
+    'pricing.yearly': 'รายปี',
+    'pricing.save': 'ประหยัด',
+    'pricing.2monthsFree': 'ฟรี 2 เดือน',
+    'pricing.startTrial': 'เริ่มทดลองใช้ฟรี 14 วัน',
+    'pricing.contactSales': 'ติดต่อฝ่ายขาย',
+    'pricing.getPro': 'สมัคร Professional',
+    'pricing.getBusiness': 'สมัคร Premium',
 
     // Package Features (Starter)
     'pricing.starter.shops': '1 ร้านค้า',
@@ -215,20 +244,20 @@ export const translations = {
     'faq.q3': 'รองรับเครื่องพิมพ์ความร้อนไหม?',
     'faq.a3': 'รองรับครับ เครื่องพิมพ์ความร้อน 100x150mm ทุกรุ่น ทั้งแบบ Bluetooth และ USB',
 
-    // Services Page
-    'services.title': 'มากกว่าแค่ระบบ POS',
-    'services.subtitle': 'เราให้บริการระบบครบวงจรสำหรับร้านค้าออนไลน์ยุคใหม่',
-    'services.multiChannel': 'เชื่อมต่อหลายช่องทาง',
-    'services.multiChannel.desc': 'เชื่อม Facebook Page, Line OA และ TikTok Shop ในแดชบอร์ดเดียว ตอบแชทและสร้างออเดอร์โดยไม่ต้องสลับแอป',
-    'services.analytics': 'วิเคราะห์ข้อมูลขั้นสูง',
-    'services.analytics.desc': 'รู้ว่าสินค้าไหนขายดี ช่วงเวลาไหนยอดขายสูง และอัตราลูกค้าประจำ ส่งออกรายงานเป็น Excel ได้ง่าย',
-    'services.shipping': 'พิมพ์ใบปะหน้าทันที',
-    'services.shipping.desc': 'สร้างเลขพัสดุ Flash/Kerry/J&T ได้ทันที พิมพ์ใบปะหน้า 100x150mm ผ่าน Bluetooth หรือ USB',
-    'services.freeWebsite': 'เว็บไซต์ร้านค้าฟรี',
-    'services.freeWebsite.desc': 'รับเว็บไซต์ [ชื่อคุณ].astropos.shop ฟรี ให้ลูกค้าดูสินค้าและชำระเงินเองได้',
-    'services.enterprise.title': 'ต้องการโซลูชันพิเศษ?',
-    'services.enterprise.desc': 'เรามี API integration, white-label solution และทีมซัพพอร์ตเฉพาะสำหรับองค์กรขนาดใหญ่',
-    'services.enterprise.cta': 'ติดต่อฝ่ายองค์กร',
+    // Solutions Page
+    'solutions.title': 'มากกว่าแค่ระบบ POS',
+    'solutions.subtitle': 'เราให้บริการระบบครบวงจรสำหรับร้านค้าออนไลน์ยุคใหม่',
+    'solutions.multiChannel': 'เชื่อมต่อหลายช่องทาง',
+    'solutions.multiChannel.desc': 'เชื่อม Facebook Page, Line OA และ TikTok Shop ในแดชบอร์ดเดียว ตอบแชทและสร้างออเดอร์โดยไม่ต้องสลับแอป',
+    'solutions.analytics': 'วิเคราะห์ข้อมูลขั้นสูง',
+    'solutions.analytics.desc': 'รู้ว่าสินค้าไหนขายดี ช่วงเวลาไหนยอดขายสูง และอัตราลูกค้าประจำ ส่งออกรายงานเป็น Excel ได้ง่าย',
+    'solutions.shipping': 'พิมพ์ใบปะหน้าทันที',
+    'solutions.shipping.desc': 'สร้างเลขพัสดุ Flash/Kerry/J&T ได้ทันที พิมพ์ใบปะหน้า 100x150mm ผ่าน Bluetooth หรือ USB',
+    'solutions.freeWebsite': 'เว็บไซต์ร้านค้าฟรี',
+    'solutions.freeWebsite.desc': 'รับเว็บไซต์ [ชื่อคุณ].astropos.shop ฟรี ให้ลูกค้าดูสินค้าและชำระเงินเองได้',
+    'solutions.enterprise.title': 'ต้องการโซลูชันพิเศษ?',
+    'solutions.enterprise.desc': 'เรามี API integration, white-label solution และทีมซัพพอร์ตเฉพาะสำหรับองค์กรขนาดใหญ่',
+    'solutions.enterprise.cta': 'ติดต่อฝ่ายองค์กร',
 
     // Packages Page
     'packages.title': 'เลือกแพ็กเกจที่ใช่',
@@ -252,6 +281,10 @@ export const translations = {
     'testimonials.quote.best.pos.ever': 'นี่คือระบบ POS ที่ดีที่สุดเท่าที่เคยใช้มา ติดตั้งเสร็จใน 5 นาที!',
     'testimonials.quote.saved.my.time': 'เมื่อก่อนเสียวันละ 4 ชม. ทำบัญชี ตอนนี้เหลือแค่ 30 นาทีเอง',
     'testimonials.quote.easy.to.use': 'ขนาดอาม่ายังใช้เป็น ง่ายและเร็วมากๆ ระบบเสถียรสุดๆ',
+    'testimonials.quote.game.changer': 'เปลี่ยนวิธีการขายออนไลน์ของเราไปเลย ยอดขายปังขึ้นมาก!',
+    'testimonials.quote.support.team': 'ทีมซัพพอร์ตดูแลดีมาก ตอบไว ช่วยเหลือทุกขั้นตอนเลย',
+    'testimonials.quote.all.in.one': 'ในที่สุดก็เจอระบบที่จบทุกอย่างได้ในที่เดียวจริงๆ',
+    'testimonials.quote.business.growth': 'ยอดขายเราโตขึ้น 30% ตั้งแต่เปลี่ยนมาใช้ AstroPOS ครับ',
 
     // Demo
     'demo.title': 'ลองเล่นให้เห็นกับตา',
@@ -272,9 +305,9 @@ export const translations = {
     // Navigation
     'nav.home': 'ໜ້າຫຼັກ',
     'nav.packages': 'ລາຄາ',
-    'nav.services': 'ບໍລິການ',
+    'nav.solutions': 'ລະບົບຂອງເຮົາ',
     'nav.hardware': 'ຮ້ານຄ້າ',
-    'nav.news': 'ຂ່າວສານ',
+    'nav.blog': 'ບົດຄວາມ',
     'nav.demo': 'ທົດລອງໃຊ້',
 
     // Hero Section
@@ -322,6 +355,15 @@ export const translations = {
     'pricing.confirm': 'ສະໝັກຜ່ານ WhatsApp',
     'pricing.checkout': 'ໄປຊຳລະເງິນ',
     'pricing.perMonth': 'ຕໍ່ເດືອນ',
+    'pricing.perYear': 'ຕໍ່ປີ',
+    'pricing.monthly': 'ລາຍເດືອນ',
+    'pricing.yearly': 'ລາຍປີ',
+    'pricing.save': 'ປະຢັດ',
+    'pricing.2monthsFree': 'ຟຣີ 2 ເດືອນ',
+    'pricing.startTrial': 'ລອງໃຊ້ຟຣີ 14 ວັນ',
+    'pricing.contactSales': 'ຕິດຕໍ່ຝ່າຍຂາຍ',
+    'pricing.getPro': 'ສະໝັກ Professional',
+    'pricing.getBusiness': 'ສະໝັກ Premium',
 
     // Package Features (Starter)
     'pricing.starter.shops': '1 ຮ້ານຄ້າ',
@@ -352,20 +394,20 @@ export const translations = {
     'faq.q3': 'ຮອງຮັບເຄື່ອງພິມຄວາມຮ້ອນບໍ?',
     'faq.a3': 'ຮອງຮັບແດ່ ເຄື່ອງພິມຄວາມຮ້ອນ 100x150mm ທຸກຮຸ່ນ ທັງແບບ Bluetooth ແລະ USB',
 
-    // Services Page
-    'services.title': 'ຫຼາຍກວ່າແຄ່ລະບົບ POS',
-    'services.subtitle': 'ເຮົາໃຫ້ບໍລິການລະບົບຄົບວົງຈອນສຳລັບຮ້ານຄ້າອອນລາຍຍຸກໃໝ່',
-    'services.multiChannel': 'ເຊື່ອມຕໍ່ຫຼາຍຊ່ອງທາງ',
-    'services.multiChannel.desc': 'ເຊື່ອມ Facebook Page, Line OA ແລະ TikTok Shop ໃນແດັຊບອດດຽວ ຕອບແຊັດ ແລະ ສ້າງອໍເດີໂດຍບໍ່ຕ້ອງສະຫຼັບແອັບ',
-    'services.analytics': 'ວິເຄາະຂໍ້ມູນຂັ້ນສູງ',
-    'services.analytics.desc': 'ຮູ້ວ່າສິນຄ້າໃດຂາຍດີ ຊ່ວງເວລາໃດຍອດຂາຍສູງ ແລະ ອັດຕາລູກຄ້າປະຈຳ ສົ່ງອອກລາຍງານເປັນ Excel ໄດ້ງ່າຍ',
-    'services.shipping': 'ພິມໃບປະໜ້າທັນທີ',
-    'services.shipping.desc': 'ສ້າງເລກພັດສະດຸ Flash/Kerry/J&T ໄດ້ທັນທີ ພິມໃບປະໜ້າ 100x150mm ຜ່ານ Bluetooth ຫຼື USB',
-    'services.freeWebsite': 'ເວັບໄຊຮ້ານຄ້າຟຣີ',
-    'services.freeWebsite.desc': 'ຮັບເວັບໄຊ [ຊື່ເຈົ້າ].astropos.shop ຟຣີ ໃຫ້ລູກຄ້າເບິ່ງສິນຄ້າ ແລະ ຊຳລະເງິນເອງໄດ້',
-    'services.enterprise.title': 'ຕ້ອງການໂຊລູຊັນພິເສດ?',
-    'services.enterprise.desc': 'ເຮົາມີ API integration, white-label solution ແລະ ທີມຊັບພອດເຉພາະສຳລັບອົງກອນຂະໜາດໃຫຍ່',
-    'services.enterprise.cta': 'ຕິດຕໍ່ຝ່າຍອົງກອນ',
+    // Solutions Page
+    'solutions.title': 'ຫຼາຍກວ່າແຄ່ລະບົບ POS',
+    'solutions.subtitle': 'ເຮົາໃຫ້ບໍລິການລະບົບຄົບວົງຈອນສຳລັບຮ້ານຄ້າອອນລາຍຍຸກໃໝ່',
+    'solutions.multiChannel': 'ເຊື່ອມຕໍ່ຫຼາຍຊ່ອງທາງ',
+    'solutions.multiChannel.desc': 'ເຊື່ອມ Facebook Page, Line OA ແລະ TikTok Shop ໃນແດັຊບອດດຽວ ຕອບແຊັດ ແລະ ສ້າງອໍເດີໂດຍບໍ່ຕ້ອງສະຫຼັບແອັບ',
+    'solutions.analytics': 'ວິເຄາະຂໍ້ມູນຂັ້ນສູງ',
+    'solutions.analytics.desc': 'ຮູ້ວ່າສິນຄ້າໃດຂາຍດີ ຊ່ວງເວລາໃດຍອດຂາຍສູງ ແລະ ອັດຕາລູກຄ້າປະຈຳ ສົ່ງອອກລາຍງານເປັນ Excel ໄດ້ງ່າຍ',
+    'solutions.shipping': 'ພິມໃບປະໜ້າທັນທີ',
+    'solutions.shipping.desc': 'ສ້າງເລກພັດສະດຸ Flash/Kerry/J&T ໄດ້ທັນທີ ພິມໃບປະໜ້າ 100x150mm ຜ່ານ Bluetooth ຫຼື USB',
+    'solutions.freeWebsite': 'ເວັບໄຊຮ້ານຄ້າຟຣີ',
+    'solutions.freeWebsite.desc': 'ຮັບເວັບໄຊ [ຊື່ເຈົ້າ].astropos.shop ຟຣີ ໃຫ້ລູກຄ້າເບິ່ງສິນຄ້າ ແລະ ຊຳລະເງິນເອງໄດ້',
+    'solutions.enterprise.title': 'ຕ້ອງການໂຊລູຊັນພິເສດ?',
+    'solutions.enterprise.desc': 'ເຮົາມີ API integration, white-label solution ແລະ ທີມຊັບພອດເຉພາະສຳລັບອົງກອນຂະໜາດໃຫຍ່',
+    'solutions.enterprise.cta': 'ຕິດຕໍ່ຝ່າຍຂາຍ',
 
     // Packages Page
     'packages.title': 'ເລືອກແພັກເກັດທີ່ໃຊ່',
@@ -404,6 +446,10 @@ export const translations = {
     'hardware.shipping.desc': 'ຮອດມືພາຍໃນ 2-3 ວັນທຳການ',
     'hardware.setup.title': 'ຕິດຕັ້ງຟຣີ',
     'hardware.setup.desc': 'ເຮົາຊ່ວຍຕັ້ງຄ່າຜ່ານ TeamViewer ໃຫ້ຟຣີ',
+    'testimonials.quote.game.changer': 'ປ່ຽນວິທີການຂາຍອອນລາຍຂອງເຮົາໄປເລີຍ ຍອດຂາຍເພີ່ມຂຶ້ນຫຼາຍ!',
+    'testimonials.quote.support.team': 'ທີມງານຊ່ວຍເຫຼືອດີຫຼາຍ ຕອບໄວ ຊ່ວยເຫຼືອທຸກຂັ້ນຕອນ',
+    'testimonials.quote.all.in.one': 'ໃນທີ່ສຸດກໍໄດ້ພົບລະບົບທີ່ຄົບທຸກຢ່າງໃນບ່ອນດຽວແທ້ໆ',
+    'testimonials.quote.business.growth': 'ຍອດຂາຍເຮົາເພີ່ມຂຶ້ນ 30% ຕັ້ງແຕ່ປ່ຽນມາໃຊ້ AstroPOS',
   }
 };
 
