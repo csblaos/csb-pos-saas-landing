@@ -68,7 +68,7 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
                                 key={index}
                                 href={item.href}
                                 onClick={() => setIsOpen(false)}
-                                className={`group flex items-center justify-between p-4 text-xl font-black border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-shadow)] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_var(--color-shadow)] transition-all ${isActive
+                                className={`group flex items-center justify-between p-3 text-lg font-bold border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_var(--color-shadow)] transition-all ${isActive
                                     ? 'bg-lime-400 text-black'
                                     : 'bg-[var(--color-bg-card)] hover:bg-lime-300 hover:text-black'
                                     }`}
@@ -85,7 +85,7 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
                     <a
                         href={`/${lang}/demo`}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-center gap-3 p-4 text-xl font-black bg-white text-black border-2 border-black shadow-[6px_6px_0px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:scale-[0.98] transition-all uppercase tracking-tight"
+                        className="flex items-center justify-center gap-3 p-3 text-lg font-bold bg-white text-black border-1 border-black shadow-[2px_2px_0px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:scale-[0.98] transition-all uppercase tracking-tight"
                     >
                         ▶ {t('nav.demo', lang)}
                     </a>
