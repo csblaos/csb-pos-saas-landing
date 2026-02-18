@@ -48,7 +48,7 @@ const translations = {
 const txt = (key) => translations[key][lang];
 
 // Dynamic OG Image
-const ogImage = new URL(`/open-graph/${lang}/hardware/${product.id}.png`, Astro.url);
+const ogImage = new URL(`/open-graph/${lang}/hardware/${product.id}.png?v=2`, Astro.url);
 ---
 
 <Base 
