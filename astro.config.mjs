@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://astropos.demo', // Replace with actual domain
+  site: 'https://www.codesabai.com', // Replace with actual domain
   vite: {
     plugins: [tailwindcss()]
   },
