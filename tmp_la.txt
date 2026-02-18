@@ -1,4 +1,4 @@
-    'footer.copyright': '© 2024 AstroPOS ສະຫງວນລິຂະສິດ.',
+    'footer.copyright': '© 2026 AstroPOS ສະຫງວນລິຂະສິດ.',
     'footer.privacy': 'ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ',
     'footer.terms': 'ຂໍ້ຕົກລົງການນຳໃຊ້',
 

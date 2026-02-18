@@ -86,7 +86,7 @@ export default function MobileMenu({ lang }: MobileMenuProps) {
 
             {/* Footer Decoration */}
             <div className="p-4 text-center text-xs font-bold border-t-2 border-[var(--color-border)] bg-[var(--color-bg-card)] shrink-0">
-                © 2024 AstroPOS
+                © 2026 AstroPOS
             </div>
         </div>
     );

@@ -53,7 +53,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
             message = `Hello, I want to subscribe to *${plan.name} Plan* (${formattedPrice} LAK / ${period}).\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
         }
 
-        return `https://wa.me/8562012345678?text=${encodeURIComponent(message)}`;
+        return `https://wa.me/8562059083986?text=${encodeURIComponent(message)}`;
     };
 
     return (
