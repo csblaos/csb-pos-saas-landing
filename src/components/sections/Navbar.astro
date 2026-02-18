@@ -35,7 +35,7 @@ const lang = getLangFromUrl(Astro.url);
                 px-3 py-1 transition-all duration-200 border-2 
                 ${isActive 
                   ? 'bg-lime-400 text-black border-black shadow-[2px_2px_0px_0px_black] -translate-y-[2px]' 
-                  : 'border-transparent hover:border-black/20 hover:bg-gray-100 dark:hover:bg-white/10 hover:-translate-y-[1px]'
+                  : 'border-transparent hover:border-black/20 hover:bg-gray-100 hover:-translate-y-[1px]'
                 }
               `}
             >
@@ -51,9 +51,12 @@ const lang = getLangFromUrl(Astro.url);
       <LanguageToggle client:load />
 
       <div class="hidden sm:flex items-center gap-3">
-        <Button href={`/${lang}/demo`} variant="secondary" class="text-xs px-4 py-2">
-          {t('nav.demo', lang)}
-        </Button>
+        <a 
+          href={`/${lang}/demo`} 
+          class="inline-flex items-center gap-1.5 text-sm font-black px-5 py-2 bg-white border-2 border-black shadow-[3px_3px_0px_0px_black] hover:shadow-[1px_1px_0px_0px_black] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all duration-150 text-black"
+        >
+          ▶ {t('nav.demo', lang)}
+        </a>
       </div>
       
       {/* Mobile Menu */}

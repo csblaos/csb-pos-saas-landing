@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, MessageCircle, ArrowRight } from 'lucide-react';
+import { Check, MessageCircle, ArrowRight, Gift } from 'lucide-react';
 import type { Lang } from '../../lib/lang';
 import { t } from '../../data/i18n';
 
@@ -36,9 +36,11 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
         if (!plan) return '#';
 
         const isYearly = billingCycle === 'yearly';
-        const finalPrice = isYearly ? plan.priceLak * 10 : plan.priceLak;
-        const finalUsd = isYearly ? plan.price * 10 : plan.price;
+        // Yearly = full price × 12 months (bonus: get 14 months)
+        const finalPrice = isYearly ? plan.priceLak * 12 : plan.priceLak;
+        const finalUsd = isYearly ? plan.price * 12 : plan.price;
         const period = isYearly ? t('pricing.yearly', lang) : t('pricing.monthly', lang);
+        const bonus = isYearly ? ` (${t('pricing.yearlyBonus', lang)})` : '';
 
         // Format LAK with commas
         const formattedPrice = finalPrice.toLocaleString();
@@ -46,11 +48,11 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
         // Localized Message
         let message = '';
         if (lang === 'th') {
-            message = `สวัสดี สนใจแพ็กเกจ *${plan.name}* (${formattedPrice}₭ / ${period})\n\nชื่อร้าน: \nเบอร์โทร: \n\nขอรายละเอียดการชำระเงินด้วยครับ`;
+            message = `สวัสดี สนใจแพ็กเกจ *${plan.name}* (${formattedPrice}₭ / ${period})${bonus}\n\nชื่อร้าน: \nเบอร์โทร: \n\nขอรายละเอียดการชำระเงินด้วยครับ`;
         } else if (lang === 'la') {
-            message = `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${plan.name}* (${formattedPrice}₭ / ${period})\n\nຊື່ຮ້ານ: \nເບີໂທ: \n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
+            message = `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${plan.name}* (${formattedPrice}₭ / ${period})${bonus}\n\nຊື່ຮ້ານ: \nເບີໂທ: \n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
         } else {
-            message = `Hello, I want to subscribe to *${plan.name} Plan* (${formattedPrice} LAK / ${period}).\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
+            message = `Hello, I want to subscribe to *${plan.name} Plan* (${formattedPrice} LAK / ${period})${bonus}\n\nMy Shop: \nPhone: \n\nPlease send me payment details.`;
         }
 
         return `https://wa.me/8562059083986?text=${encodeURIComponent(message)}`;
@@ -65,16 +67,16 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                 </span>
                 <button
                     onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
-                    className="relative w-16 h-8 bg-black dark:bg-white rounded-full transition-colors focus:outline-none ring-2 ring-offset-2 ring-lime-400"
+                    className="relative w-16 h-8 bg-black rounded-full transition-colors focus:outline-none ring-2 ring-offset-2 ring-lime-400"
                 >
-                    <div className={`absolute top-1 w-6 h-6 bg-white dark:bg-black rounded-full transition-transform duration-200 ${billingCycle === 'yearly' ? 'left-9' : 'left-1'}`} />
+                    <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-transform duration-200 ${billingCycle === 'yearly' ? 'left-9' : 'left-1'}`} />
                 </button>
                 <div className="flex items-center gap-2">
                     <span className={`font-bold ${billingCycle === 'yearly' ? 'text-[var(--color-text)]' : 'text-gray-400'}`}>
                         {t('pricing.yearly', lang)}
                     </span>
-                    <span className="bg-pink-500 text-white text-xs px-2 py-1 font-bold rounded-none transform -rotate-3">
-                        {t('pricing.2monthsFree', lang)} 🔥
+                    <span className="bg-pink-400 text-white text-xs px-2 py-1 font-black border-2 border-black shadow-[2px_2px_0px_0px_black] flex items-center gap-1">
+                        <Gift size={12} /> {t('pricing.2monthsFree', lang)}
                     </span>
                 </div>
             </div>
@@ -83,9 +85,8 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
             <div className="grid md:grid-cols-3 gap-8 items-start">
                 {plans.map((plan) => {
                     const isYearly = billingCycle === 'yearly';
-                    // Yearly Price = Monthly * 10 (2 Months Free)
-                    const displayPrice = isYearly ? plan.priceLak * 10 : plan.priceLak;
-
+                    // Yearly = full price × 12 (pay 12 months, get 14 months)
+                    const displayPrice = isYearly ? plan.priceLak * 12 : plan.priceLak;
 
                     return (
                         <div
@@ -110,9 +111,12 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                 </div>
 
                                 {isYearly && (
-                                    <p className="text-xs text-lime-600 font-black mt-2 bg-lime-100 dark:bg-lime-900 inline-block px-2 py-1">
-                                        {t('pricing.save', lang)} ₭{((plan.priceLak * 12) - (plan.priceLak * 10)).toLocaleString()} ({t('pricing.2monthsFree', lang)})
-                                    </p>
+                                    <div className="mt-3 bg-lime-100 border-2 border-lime-400 px-3 py-2 inline-flex items-center gap-1.5">
+                                        <Gift size={14} className="text-lime-700" />
+                                        <span className="text-xs text-lime-800 font-black">
+                                            {t('pricing.yearlyBonus', lang)}
+                                        </span>
+                                    </div>
                                 )}
                             </div>
 
@@ -131,7 +135,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                     href={getWhatsAppLink(plan.id)}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-[var(--color-bg)] hover:bg-gray-100 dark:hover:bg-gray-800 text-[var(--color-text)] uppercase"
+                                    className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-[var(--color-bg)] hover:bg-gray-100 text-[var(--color-text)] uppercase"
                                 >
                                     {t('pricing.startTrial', lang)}
                                 </a>
@@ -154,8 +158,6 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                     {t('pricing.getPro', lang)}
                                 </a>
                             )}
-
-                            {/* Secondary Link for Pro/Business if Yearly not selected? No, keeping it simple */}
                         </div>
                     );
                 })}
