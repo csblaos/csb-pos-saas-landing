@@ -5,6 +5,7 @@ import Footer from '../../components/sections/Footer.astro';
 import PricingSelect from '../../components/islands/PricingSelect';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
+import { getPackageComparisonRows } from '../../data/packages';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -12,19 +13,7 @@ export async function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 
-// Feature comparison rows: value can be true, false, or a string
-const comparison = [
-  { feature: t('packages.comparison.users', lang),    start: '1-2',      pro: '3-5',                                          biz: t('packages.comparison.unlimited', lang) },
-  { feature: t('packages.comparison.channels', lang),  start: 'Facebook', pro: t('packages.comparison.allChannels', lang),      biz: t('packages.comparison.allApi', lang) },
-  { feature: t('packages.comparison.stock', lang),     start: true,       pro: true,                                           biz: true },
-  { feature: t('packages.comparison.printer', lang),   start: false,      pro: true,                                           biz: true },
-  { feature: t('packages.comparison.reports', lang),   start: t('packages.comparison.basic', lang), pro: t('packages.comparison.advanced', lang), biz: t('packages.comparison.realtime', lang) },
-  { feature: t('packages.comparison.orders', lang),    start: '100/mo',   pro: t('packages.comparison.unlimited', lang),        biz: t('packages.comparison.unlimited', lang) },
-  { feature: t('packages.comparison.domain', lang),    start: false,      pro: false,                                          biz: true },
-  { feature: t('packages.comparison.support', lang),   start: false,      pro: true,                                           biz: 'VIP 24/7' },
-  { feature: t('packages.comparison.api', lang),       start: false,      pro: false,                                          biz: true },
-  { feature: t('packages.comparison.training', lang),  start: false,      pro: true,                                           biz: '1-on-1' },
-];
+const comparison = getPackageComparisonRows(lang);
 ---
 
 <Base seoKey="packages">

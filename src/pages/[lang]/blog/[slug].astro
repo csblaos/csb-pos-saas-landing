@@ -4,9 +4,10 @@ import Base from '../../../layouts/Base.astro';
 import Navbar from '../../../components/sections/Navbar.astro';
 import Footer from '../../../components/sections/Footer.astro';
 import ProductShare from '../../../components/islands/ProductShare';
-import SidebarLiveOrders from '../../../components/islands/SidebarLiveOrders';
+import SidebarAdCard from '../../../components/sections/SidebarAdCard.astro';
 import { getLangFromUrl, languages } from '../../../lib/lang';
 import { blogPostCopy, fromLang } from '../../../data/localizedCopy';
+import { adsConfig } from '../../../config/ads';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news');
@@ -115,16 +116,6 @@ const t = fromLang(blogPostCopy, lang);
 
         {/* Sidebar */}
         <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-          
-          {/* Animated Live Orders */}
-          <SidebarLiveOrders 
-            client:visible
-            title={t.liveTitle}
-            subtitle={t.liveSubtitle}
-            cta={t.liveCta}
-            ctaLink={`/${lang}/packages`}
-          />
-
           {/* Related Articles in Sidebar */}
           <div class="border-1 border-[var(--color-border)] bg-[var(--color-bg-card)] p-5 shadow-[2px_2px_0px_0px_var(--color-shadow)]">
             <h3 class="font-black text-sm uppercase tracking-wider mb-4 text-[var(--color-text)]">{t.related}</h3>
@@ -149,21 +140,7 @@ const t = fromLang(blogPostCopy, lang);
             </div>
           </div>
 
-          {/* Banner Ad 2 - Demo */}
-          <div class="border-1 border-black bg-black text-white p-5 shadow-[2px_2px_0px_0px_rgba(163,230,53,1)] relative overflow-hidden">
-            <span class="absolute -top-0 -right-1 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">
-              {t.demoBadge}
-            </span>
-            <div class="text-3xl mb-2">🖥️</div>
-            <h3 class="text-lg font-black mb-1 leading-tight">{t.demoTitle}</h3>
-            <p class="text-xs font-bold text-gray-400 mb-3">{t.demoDesc}</p>
-            <a 
-              href={`/${lang}/demo`}
-              class="inline-block w-full text-center font-black text-sm py-2 bg-lime-400 text-black border-2 border-lime-400 shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-            >
-              {t.demoCta}
-            </a>
-          </div>
+          <SidebarAdCard lang={lang} count={adsConfig.sidebar.detailPageCount} />
 
         </aside>
       </div>

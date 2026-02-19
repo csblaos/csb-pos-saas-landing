@@ -10,8 +10,7 @@ export type SeoPageKey =
     | 'help'
     | 'privacy'
     | 'terms'
-    | 'demo'
-    | 'checkout';
+    | 'demo';
 
 type LocalizedSeoContent = {
     title: string;
@@ -189,23 +188,6 @@ export const seoPages: SeoPageMap = {
         la: {
             title: 'ສາທິດ AstroPOS | ທົດລອງປະສົບການ POS',
             description: 'ເບິ່ງການເຮັດວຽກຈິງຂອງ AstroPOS ກ່ອນເລືອກແພັກເກດ',
-            image: '/images/og/home.png'
-        }
-    },
-    checkout: {
-        en: {
-            title: 'Checkout | AstroPOS',
-            description: 'Complete your AstroPOS order and confirm payment securely.',
-            image: '/images/og/home.png'
-        },
-        th: {
-            title: 'ชำระเงิน | AstroPOS',
-            description: 'ยืนยันคำสั่งซื้อและชำระเงินสำหรับแพ็กเกจ AstroPOS',
-            image: '/images/og/home.png'
-        },
-        la: {
-            title: 'ຊຳລະເງິນ | AstroPOS',
-            description: 'ຢືນຢັນຄຳສັ່ງຊື້ ແລະ ຊຳລະເງິນຢ່າງປອດໄພ',
             image: '/images/og/home.png'
         }
     }

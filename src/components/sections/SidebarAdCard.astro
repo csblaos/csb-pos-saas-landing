@@ -1,0 +1,347 @@
+---
+import { getCollection } from 'astro:content';
+import type { Lang } from '../../lib/lang';
+import { adsConfig } from '../../config/ads';
+
+interface Props {
+  lang: string;
+  count?: number;
+}
+
+const { lang, count = adsConfig.sidebar.listPageCount } = Astro.props as Props;
+const safeLang: Lang = lang === 'th' || lang === 'la' || lang === 'en' ? lang : 'en';
+
+const allAds = await getCollection('ads');
+const sidebarAds = allAds
+  .filter((ad) => ad.data.active && ad.data.placements.includes(adsConfig.sidebar.placement))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map((ad) => {
+    const localized = ad.data.content[safeLang] ?? ad.data.content.en;
+    return {
+      id: ad.id,
+      tier: ad.data.tier,
+      displayMode: ad.data.displayMode,
+      type: ad.data.type,
+      style: ad.data.style,
+      badge: localized.badge,
+      title: localized.title,
+      desc: localized.desc,
+      cta: localized.cta,
+      href: ad.data.ctaUrl.replace('{lang}', safeLang),
+      bannerImage: ad.data.bannerImage ?? null,
+    };
+  });
+
+const slotCount = Math.max(1, Math.min(count, sidebarAds.length));
+const fallbackAds = sidebarAds.slice(0, slotCount);
+const containerId = `blog-sidebar-ads-${safeLang}`;
+const sidebarWeights = adsConfig.sidebar.weights;
+const sidebarStorageKey = adsConfig.sidebar.storageKey;
+---
+
+{fallbackAds.length > 0 && (
+  <>
+    <div id={containerId} class="space-y-6">
+      {fallbackAds.map((fallbackAd) => {
+        const fallbackIsExternal = /^https?:\/\//.test(fallbackAd.href);
+        const fallbackIsImageOnly = fallbackAd.displayMode === 'image-only' && Boolean(fallbackAd.bannerImage);
+
+        return (
+          <div
+            data-ad-card
+            class={`ad-card border-1 p-4 relative overflow-hidden min-h-[280px] ${fallbackIsImageOnly ? 'ad-card--image-only' : ''}`}
+            data-ad-style={fallbackAd.style}
+          >
+            <span data-ad-badge class={`ad-badge absolute -top-0 -right-1 text-[10px] font-black px-2 py-0.5 uppercase tracking-wider ${fallbackIsImageOnly ? 'hidden' : ''}`}>
+              {fallbackAd.badge}
+            </span>
+
+            <div data-ad-meta class={`mb-3 flex items-center justify-between gap-2 ${fallbackIsImageOnly ? 'hidden' : ''}`}>
+              <div class="w-9 h-9 bg-lime-400 text-black border-1 border-black flex items-center justify-center font-black text-xs shrink-0">AD</div>
+              <span data-ad-type class="ad-type text-[10px] font-black uppercase tracking-wide">{fallbackAd.type}</span>
+            </div>
+
+            <div
+              data-ad-image-wrap
+              class={`ad-image-wrap mb-3 border-1 border-black overflow-hidden ${fallbackAd.bannerImage ? '' : 'hidden'}`}
+            >
+              <img
+                data-ad-image
+                src={fallbackAd.bannerImage ?? ''}
+                alt={fallbackAd.title}
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+                class="w-full h-28 object-cover"
+              />
+            </div>
+
+            <a
+              data-ad-image-link
+              href={fallbackAd.href}
+              target={fallbackIsExternal ? '_blank' : undefined}
+              rel={fallbackIsExternal ? 'noopener noreferrer sponsored' : undefined}
+              class={`ad-image-link block border-1 border-black overflow-hidden ${fallbackIsImageOnly ? '' : 'hidden'}`}
+            >
+              <img
+                data-ad-image-only
+                src={fallbackAd.bannerImage ?? ''}
+                alt={fallbackAd.title}
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+                class="w-full h-64 object-cover"
+              />
+            </a>
+
+            <h3 data-ad-title class={`text-lg font-black mb-1 leading-tight ${fallbackIsImageOnly ? 'hidden' : ''}`}>{fallbackAd.title}</h3>
+            <p data-ad-desc class={`ad-desc text-xs font-bold mb-3 ${fallbackIsImageOnly ? 'hidden' : ''}`}>{fallbackAd.desc}</p>
+            <a
+              data-ad-cta
+              href={fallbackAd.href}
+              target={fallbackIsExternal ? '_blank' : undefined}
+              rel={fallbackIsExternal ? 'noopener noreferrer sponsored' : undefined}
+              class={`ad-cta inline-block w-full text-center font-black text-sm py-2 border-2 transition-all ${fallbackIsImageOnly ? 'hidden' : ''}`}
+            >
+              {fallbackAd.cta}
+            </a>
+          </div>
+        );
+      })}
+    </div>
+
+    <script is:inline define:vars={{ ads: sidebarAds, containerId, slotCount, weights: sidebarWeights, storageKey: sidebarStorageKey }}>
+
+      const getWeight = (tier) => weights[tier] ?? 1;
+      const isExternal = (href) => /^https?:\/\//.test(href);
+
+      const setLinkAttrs = (el, href) => {
+        if (!el) return;
+        el.setAttribute('href', href);
+        if (isExternal(href)) {
+          el.setAttribute('target', '_blank');
+          el.setAttribute('rel', 'noopener noreferrer sponsored');
+        } else {
+          el.removeAttribute('target');
+          el.removeAttribute('rel');
+        }
+      };
+
+      const pickWeighted = (items) => {
+        const total = items.reduce((sum, item) => sum + getWeight(item.tier), 0);
+        let roll = Math.random() * total;
+        for (const item of items) {
+          roll -= getWeight(item.tier);
+          if (roll <= 0) return item;
+        }
+        return items[0];
+      };
+
+      const pickMultipleWeighted = (items, count, excludedIds) => {
+        const selected = [];
+        let available = [...items];
+
+        for (let i = 0; i < count; i += 1) {
+          if (available.length === 0) break;
+          let pool = available.filter((item) => !excludedIds.has(item.id));
+          if (pool.length === 0) pool = available;
+
+          const chosen = pickWeighted(pool);
+          selected.push(chosen);
+          available = available.filter((item) => item.id !== chosen.id);
+        }
+
+        return selected;
+      };
+
+      const container = document.getElementById(containerId);
+      const cards = container ? Array.from(container.querySelectorAll('[data-ad-card]')) : [];
+
+      if (cards.length > 0 && Array.isArray(ads) && ads.length > 0) {
+        let previousIds = [];
+        try {
+          const raw = localStorage.getItem(storageKey);
+          previousIds = raw ? JSON.parse(raw) : [];
+          if (!Array.isArray(previousIds)) previousIds = [];
+        } catch {
+          previousIds = [];
+        }
+
+        const selectedAds = pickMultipleWeighted(ads, Math.min(slotCount, cards.length), new Set(previousIds));
+
+        cards.forEach((card, index) => {
+          const selected = selectedAds[index];
+          if (!selected) {
+            card.classList.add('hidden');
+            return;
+          }
+
+          const badgeEl = card.querySelector('[data-ad-badge]');
+          const titleEl = card.querySelector('[data-ad-title]');
+          const descEl = card.querySelector('[data-ad-desc]');
+          const ctaEl = card.querySelector('[data-ad-cta]');
+          const typeEl = card.querySelector('[data-ad-type]');
+          const metaEl = card.querySelector('[data-ad-meta]');
+          const imageWrapEl = card.querySelector('[data-ad-image-wrap]');
+          const imageEl = card.querySelector('[data-ad-image]');
+          const imageLinkEl = card.querySelector('[data-ad-image-link]');
+          const imageOnlyEl = card.querySelector('[data-ad-image-only]');
+          const imageOnlyMode = selected.displayMode === 'image-only' && !!selected.bannerImage;
+
+          card.setAttribute('data-ad-style', selected.style);
+          card.classList.toggle('ad-card--image-only', imageOnlyMode);
+
+          if (badgeEl) {
+            badgeEl.textContent = selected.badge;
+            badgeEl.classList.toggle('hidden', imageOnlyMode);
+          }
+          if (titleEl) {
+            titleEl.textContent = selected.title;
+            titleEl.classList.toggle('hidden', imageOnlyMode);
+          }
+          if (descEl) {
+            descEl.textContent = selected.desc;
+            descEl.classList.toggle('hidden', imageOnlyMode);
+          }
+          if (metaEl) metaEl.classList.toggle('hidden', imageOnlyMode);
+          if (typeEl) typeEl.textContent = String(selected.type).replace('-', ' ');
+
+          if (ctaEl) {
+            ctaEl.textContent = selected.cta;
+            ctaEl.classList.toggle('hidden', imageOnlyMode);
+            setLinkAttrs(ctaEl, selected.href);
+          }
+
+          if (imageWrapEl && imageEl) {
+            if (selected.bannerImage && !imageOnlyMode) {
+              imageEl.setAttribute('src', selected.bannerImage);
+              imageEl.setAttribute('alt', selected.title);
+              imageWrapEl.classList.remove('hidden');
+            } else {
+              imageWrapEl.classList.add('hidden');
+            }
+          }
+
+          if (imageLinkEl && imageOnlyEl) {
+            if (imageOnlyMode && selected.bannerImage) {
+              imageOnlyEl.setAttribute('src', selected.bannerImage);
+              imageOnlyEl.setAttribute('alt', selected.title);
+              imageLinkEl.classList.remove('hidden');
+              setLinkAttrs(imageLinkEl, selected.href);
+            } else {
+              imageLinkEl.classList.add('hidden');
+            }
+          }
+        });
+
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(selectedAds.map((ad) => ad.id)));
+        } catch {}
+      }
+    </script>
+
+    <style>
+      .ad-card {
+        border-color: #000;
+      }
+      .ad-card.ad-card--image-only {
+        padding: 0;
+        min-height: auto;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+      }
+      .ad-card .ad-image-link {
+        box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+      }
+
+      .ad-card[data-ad-style="neo-dark"] {
+        background: #000;
+        color: #fff;
+        box-shadow: 2px 2px 0 0 rgba(163, 230, 53, 1);
+      }
+      .ad-card[data-ad-style="neo-dark"] .ad-badge {
+        background: #f97316;
+        color: #fff;
+      }
+      .ad-card[data-ad-style="neo-dark"] .ad-type {
+        color: #a3e635;
+      }
+      .ad-card[data-ad-style="neo-dark"] .ad-desc {
+        color: #d1d5db;
+      }
+      .ad-card[data-ad-style="neo-dark"] .ad-cta {
+        background: #a3e635;
+        color: #000;
+        border-color: #a3e635;
+        box-shadow: 3px 3px 0 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .ad-card[data-ad-style="neo-light"] {
+        background: #fff;
+        color: #000;
+        box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+      }
+      .ad-card[data-ad-style="neo-light"] .ad-badge {
+        background: #a3e635;
+        color: #000;
+      }
+      .ad-card[data-ad-style="neo-light"] .ad-type {
+        color: #4b5563;
+      }
+      .ad-card[data-ad-style="neo-light"] .ad-desc {
+        color: #4b5563;
+      }
+      .ad-card[data-ad-style="neo-light"] .ad-cta {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+        box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .ad-card[data-ad-style="neo-gradient"] {
+        background: linear-gradient(135deg, #fde68a 0%, #f9a8d4 100%);
+        color: #111827;
+        box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+      }
+      .ad-card[data-ad-style="neo-gradient"] .ad-badge {
+        background: #111827;
+        color: #fff;
+      }
+      .ad-card[data-ad-style="neo-gradient"] .ad-type {
+        color: #7c2d12;
+      }
+      .ad-card[data-ad-style="neo-gradient"] .ad-desc {
+        color: #374151;
+      }
+      .ad-card[data-ad-style="neo-gradient"] .ad-cta {
+        background: #111827;
+        color: #fff;
+        border-color: #111827;
+        box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .ad-card[data-ad-style="neo-blue"] {
+        background: #0f172a;
+        color: #e2e8f0;
+        box-shadow: 2px 2px 0 0 rgba(59, 130, 246, 1);
+      }
+      .ad-card[data-ad-style="neo-blue"] .ad-badge {
+        background: #3b82f6;
+        color: #fff;
+      }
+      .ad-card[data-ad-style="neo-blue"] .ad-type {
+        color: #93c5fd;
+      }
+      .ad-card[data-ad-style="neo-blue"] .ad-desc {
+        color: #cbd5e1;
+      }
+      .ad-card[data-ad-style="neo-blue"] .ad-cta {
+        background: #38bdf8;
+        color: #0f172a;
+        border-color: #38bdf8;
+        box-shadow: 3px 3px 0 0 rgba(56, 189, 248, 0.25);
+      }
+    </style>
+  </>
+)}

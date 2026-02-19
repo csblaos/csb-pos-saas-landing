@@ -1,12 +1,13 @@
 import type { Lang } from '../../lib/lang';
+import { appConfig } from '../../config/app';
+
+const locales = Object.fromEntries(
+    Object.entries(appConfig.i18n.languages).map(([lang, value]) => [lang, value.locale])
+) as Record<Lang, string>;
 
 export const seoSite = {
-    name: 'AstroPOS',
-    domain: 'https://www.codesabai.com',
-    defaultImage: '/images/og/home.png',
-    locales: {
-        en: 'en_US',
-        th: 'th_TH',
-        la: 'lo_LA'
-    } as Record<Lang, string>
+    name: appConfig.site.name,
+    domain: appConfig.site.domain,
+    defaultImage: appConfig.site.defaultImage,
+    locales
 } as const;

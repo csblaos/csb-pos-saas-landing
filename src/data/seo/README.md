@@ -43,7 +43,7 @@ Dynamic page with overrides:
 Noindex page:
 
 ```astro
-<Base seoKey="checkout" noindex={true}>
+<Base seoKey="demo" noindex={true}>
 ```
 
 ## Add a new page preset

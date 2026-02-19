@@ -2,8 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import Navbar from '../../components/sections/Navbar.astro';
 import Footer from '../../components/sections/Footer.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
-import { t } from '../../data/i18n';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
 import { fromLang, helpCategoriesCopy, helpPageCopy } from '../../data/localizedCopy';
 import { Search, Book, Video, MessageCircle, Mail } from 'lucide-react';
@@ -35,12 +35,6 @@ const categories = [
     desc: categoryCopy[2].desc,
     color: 'bg-lime-100 text-lime-700'
   }
-];
-
-const faqs = [
-  { q: t('faq.q1', lang), a: t('faq.a1', lang) },
-  { q: t('faq.q2', lang), a: t('faq.a2', lang) },
-  { q: t('faq.q3', lang), a: t('faq.a3', lang) },
 ];
 
 const supportMessage = helpCopy.supportMessage;
@@ -88,24 +82,7 @@ const supportWhatsappLink = buildWhatsAppLink(storeSettings.whatsapp.paymentSupp
       </div>
 
       <!-- FAQ Section -->
-      <div class="max-w-3xl mx-auto mb-20">
-        <h2 class="text-3xl font-black mb-8 text-center uppercase">
-          {t('faq.title', lang)}
-        </h2>
-        <div class="space-y-4">
-          {faqs.map((f) => (
-             <details class="group bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] open:shadow-[2px_2px_0px_0px_var(--color-shadow)] open:mb-4 transition-all duration-200">
-               <summary class="flex justify-between items-center p-6 font-bold cursor-pointer list-none text-[var(--color-text)]">
-                 <span>{f.q}</span>
-                 <span class="transform group-open:rotate-180 transition-transform">▼</span>
-               </summary>
-               <div class="px-6 pb-6 text-gray-600 font-medium leading-relaxed border-t-2 border-[var(--color-border)] pt-4 bg-[var(--color-bg)]/50">
-                 {f.a}
-               </div>
-             </details>
-          ))}
-        </div>
-      </div>
+      <FaqSection lang={lang} variant="2col" />
 
       <!-- Contact Support -->
       <section class="relative overflow-hidden border-1 border-black bg-[var(--color-bg-card)] p-6 md:p-10 shadow-[2px_2px_0px_0px_black]">

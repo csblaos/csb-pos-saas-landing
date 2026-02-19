@@ -5,11 +5,14 @@ import Hero from '../../components/sections/Hero.astro';
 import Features from '../../components/sections/Features.astro';
 import Pricing from '../../components/sections/Pricing.astro';
 import Testimonials from '../../components/sections/Testimonials.astro';
+import SocialProof from '../../components/sections/SocialProof.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
 import ContactSection from '../../components/sections/ContactSection.astro';
 import Footer from '../../components/sections/Footer.astro';
 import { getLangFromUrl, languages } from '../../lib/lang';
 import { t } from '../../data/i18n';
-import { fromLang, homeBusinessTypeCopy } from '../../data/localizedCopy';
+import { fromLang, homeBusinessTypeCopy, homePainPointsCopy } from '../../data/localizedCopy';
+import { ClipboardPaste, ShieldCheck, Truck, Store, Coffee, Sparkles } from 'lucide-react';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map(lang => ({ params: { lang } }));
@@ -17,11 +20,29 @@ export async function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const businessType = fromLang(homeBusinessTypeCopy, lang);
-
-const faqs = [
-  { q: t('faq.q1', lang), a: t('faq.a1', lang) },
-  { q: t('faq.q2', lang), a: t('faq.a2', lang) },
-  { q: t('faq.q3', lang), a: t('faq.a3', lang) },
+const painPoints = fromLang(homePainPointsCopy, lang);
+const howItWorksSteps = [
+  {
+    number: '01',
+    icon: ClipboardPaste,
+    badge: 'bg-lime-300',
+    title: t('howItWorks.step1', lang).replace(/^\d+\.\s*/, ''),
+    desc: t('howItWorks.step1.desc', lang),
+  },
+  {
+    number: '02',
+    icon: ShieldCheck,
+    badge: 'bg-pink-300',
+    title: t('howItWorks.step2', lang).replace(/^\d+\.\s*/, ''),
+    desc: t('howItWorks.step2.desc', lang),
+  },
+  {
+    number: '03',
+    icon: Truck,
+    badge: 'bg-blue-300',
+    title: t('howItWorks.step3', lang).replace(/^\d+\.\s*/, ''),
+    desc: t('howItWorks.step3.desc', lang),
+  },
 ];
 ---
 
@@ -32,27 +53,94 @@ const faqs = [
     <Hero />
 
     <!-- Business Types -->
-    <section class="py-16 border-y-0 border-[var(--color-border)] bg-[var(--color-bg-card)]">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
-        <h2 class="text-3xl font-black mb-12 uppercase text-[var(--color-text)]">
-          {businessType.title}
-        </h2>
-        <div class="grid md:grid-cols-3 gap-6">
-           <div class="p-6 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-transform">
-             <div class="text-4xl mb-4">👗</div>
-             <h3 class="text-xl font-black mb-2">{businessType.retail}</h3>
-             <p class="text-sm opacity-70 font-bold">Fashion, Gadgets, Cosmetics</p>
-           </div>
-           <div class="p-6 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-transform">
-             <div class="text-4xl mb-4">☕</div>
-             <h3 class="text-xl font-black mb-2">{businessType.cafe}</h3>
-             <p class="text-sm opacity-70 font-bold">Coffee, Bakery, Quick Service</p>
-           </div>
-           <div class="p-6 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-transform">
-             <div class="text-4xl mb-4">💅</div>
-             <h3 class="text-xl font-black mb-2">{businessType.service}</h3>
-             <p class="text-sm opacity-70 font-bold">Salon, Spa, Car Care</p>
-           </div>
+    <section class="py-20 border-y-1 border-[var(--color-border)] bg-[var(--color-bg-card)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+          <h2 class="text-3xl md:text-5xl font-black uppercase text-[var(--color-text)]">
+            {businessType.title}
+          </h2>
+          <p class="text-base md:text-lg font-medium text-gray-700">
+            Built for real stores selling from chat, social, and walk-in.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="group relative p-6 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all">
+            <div class="absolute top-0 left-0 h-1 w-full bg-lime-400"></div>
+            <div class="inline-flex w-12 h-12 items-center justify-center bg-lime-100 border-1 border-lime-300 text-lime-700 rounded-lg">
+              <Store size={24} stroke-width={2.2} />
+            </div>
+            <h3 class="text-xl font-black mt-4 mb-2 text-[var(--color-text)]">{businessType.retail}</h3>
+            <p class="text-sm font-medium text-gray-700">Fashion, gadgets, cosmetics, and multi-category online shops.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-[11px] font-black uppercase px-2 py-1 bg-lime-100 border border-lime-300 text-lime-800">Retail</span>
+              <span class="text-[11px] font-black uppercase px-2 py-1 bg-gray-100 border border-gray-200 text-gray-700">Fast SKU</span>
+            </div>
+          </article>
+
+          <article class="group relative p-6 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all">
+            <div class="absolute top-0 left-0 h-1 w-full bg-pink-400"></div>
+            <div class="inline-flex w-12 h-12 items-center justify-center bg-pink-100 border-1 border-pink-300 text-pink-700 rounded-lg">
+              <Coffee size={24} stroke-width={2.2} />
+            </div>
+            <h3 class="text-xl font-black mt-4 mb-2 text-[var(--color-text)]">{businessType.cafe}</h3>
+            <p class="text-sm font-medium text-gray-700">Coffee, bakery, and quick-service teams handling rush-hour orders.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-[11px] font-black uppercase px-2 py-1 bg-pink-100 border border-pink-300 text-pink-800">Food</span>
+              <span class="text-[11px] font-black uppercase px-2 py-1 bg-gray-100 border border-gray-200 text-gray-700">Speed Ops</span>
+            </div>
+          </article>
+
+          <article class="group relative p-6 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--color-shadow)] transition-all sm:col-span-2 lg:col-span-1">
+            <div class="absolute top-0 left-0 h-1 w-full bg-blue-400"></div>
+            <div class="inline-flex w-12 h-12 items-center justify-center bg-blue-100 border-1 border-blue-300 text-blue-700 rounded-lg">
+              <Sparkles size={24} stroke-width={2.2} />
+            </div>
+            <h3 class="text-xl font-black mt-4 mb-2 text-[var(--color-text)]">{businessType.service}</h3>
+            <p class="text-sm font-medium text-gray-700">Salon, spa, and service shops tracking bookings, sales, and repeat clients.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-[11px] font-black uppercase px-2 py-1 bg-blue-100 border border-blue-300 text-blue-800">Service</span>
+              <span class="text-[11px] font-black uppercase px-2 py-1 bg-gray-100 border border-gray-200 text-gray-700">Repeat</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily pain points -->
+    <section class="py-20 border-b-1 border-[var(--color-border)] bg-[var(--color-bg)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="text-center max-w-4xl mx-auto mb-12 space-y-4">
+          <h2 class="text-3xl md:text-5xl font-black text-[var(--color-text)]">
+            {painPoints.title}
+          </h2>
+          <p class="text-base md:text-lg text-gray-700 font-medium leading-relaxed">
+            {painPoints.subtitle}
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {painPoints.problems.map((problem, index) => (
+            <article class="p-6 bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)]">
+              <div class="inline-flex w-8 h-8 items-center justify-center bg-black text-white font-black mb-4">
+                {index + 1}
+              </div>
+              <h3 class="text-xl font-black mb-2 text-[var(--color-text)]">{problem.title}</h3>
+              <p class="text-gray-700 font-medium leading-relaxed">{problem.desc}</p>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-10 p-8 bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] text-center">
+          <h3 class="text-2xl md:text-3xl font-black mb-3 text-[var(--color-text)]">{painPoints.transitionTitle}</h3>
+          <p class="text-gray-700 font-medium max-w-3xl mx-auto mb-6 leading-relaxed">{painPoints.transitionBody}</p>
+          <a
+            href="#features"
+            data-features-cta="true"
+            class="inline-block bg-lime-400 text-black text-sm md:text-base font-black uppercase tracking-wide px-6 py-3 border-1 border-black shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px] transition-transform"
+          >
+            {painPoints.transitionCta}
+          </a>
         </div>
       </div>
     </section>
@@ -60,54 +148,379 @@ const faqs = [
     <Features />
     
     <!-- How it works -->
-    <section class="py-20 bg-[var(--color-bg-card)] border-y-0 border-[var(--color-border)]">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
-        <h2 class="text-4xl font-black mb-12 uppercase text-[var(--color-text)]">{t('howItWorks.title', lang)}</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="p-6">
-            <div class="w-16 h-16 bg-lime-400 border-1 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[2px_2px_0px_0px_var(--color-shadow)] text-black">1</div>
-            <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step1', lang)}</h3>
-            <p class="text-gray-600 font-medium">{t('howItWorks.step1.desc', lang)}</p>
+    <section id="how-it-works" class="py-20 bg-[var(--color-bg-card)] border-y-1 border-[var(--color-border)] overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+          <!-- <p class="inline-block px-4 py-1 text-xs md:text-sm font-black bg-black text-white border-1 border-[var(--color-border)]">
+            01 · 02 · 03
+          </p> -->
+          <h2 class="text-4xl md:text-5xl font-black uppercase text-[var(--color-text)]">{t('howItWorks.title', lang)}</h2>
+        </div>
+
+        <div class="relative mt-12 mb-14 p-4 md:p-8 border-1 border-[var(--color-border)] bg-[var(--color-bg)] shadow-[2px_2px_0px_0px_var(--color-shadow)] overflow-hidden">
+          <div class="hiw-grid-bg hidden md:block absolute inset-0 pointer-events-none"></div>
+          
+          <div class="md:hidden mb-4">
+            <div class="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-wide">
+              <span class="px-2 py-1 bg-white border border-blue-100 text-[#1877F2] rounded inline-flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                1 Facebook
+              </span>
+              <span class="px-2 py-1 bg-white border border-green-100 text-[#25D366] rounded inline-flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.83 9.83 0 0 1 6.988 2.898 9.83 9.83 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+                2 WhatsApp
+              </span>
+              <span class="px-2 py-1 bg-white border border-orange-100 text-orange-500 rounded inline-flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 320 512" aria-hidden="true"><path d="M208 96c26.5 0 48-21.5 48-48S234.5 0 208 0s-48 21.5-48 48 21.5 48 48 48zm94.5 149.1l-23.3-11.8-9.7-29.4c-14.7-44.6-55.7-75.8-102.2-75.9-36-.1-55.9 10.1-93.3 25.2-21.6 8.7-39.3 25.2-49.7 46.2L17.6 213c-7.8 15.8-1.5 35 14.2 42.9 15.6 7.9 34.6 1.5 42.5-14.3L81 228c3.5-7 9.3-12.5 16.5-15.4l26.8-10.8-15.2 60.7c-5.2 20.8.4 42.9 14.9 58.8l59.9 65.4c7.2 7.9 12.3 17.4 14.9 27.7l18.3 73.3c4.3 17.1 21.7 27.6 38.8 23.3 17.1-4.3 27.6-21.7 23.3-38.8l-22.2-89c-2.6-10.3-7.7-19.9-14.9-27.7l-45.5-49.7 17.2-68.7 5.5 16.5c5.3 16.1 16.7 29.4 31.7 37l23.3 11.8c15.6 7.9 34.6 1.5 42.5-14.3 7.7-15.7 1.4-35.1-14.3-43zM73.6 385.8c-3.2 8.1-8 15.4-14.2 21.5l-50 50.1c-12.5 12.5-12.5 32.8 0 45.3s32.7 12.5 45.2 0l59.4-59.4c6.1-6.1 10.9-13.4 14.2-21.5l13.5-33.8c-55.3-60.3-38.7-41.8-47.4-53.7l-20.7 51.5z"/></svg>
+                3 Walk-in
+              </span>
+            </div>
+            <div class="relative mt-3 h-9 overflow-hidden">
+              <div class="hiw-mobile-message hiw-mobile-message--fb absolute left-1/2 -translate-x-1/2 bg-white rounded-lg shadow-sm px-3 py-1.5 flex items-center gap-2 border border-blue-100 text-[11px] font-bold text-slate-600">
+                <span class="w-2 h-2 rounded-full bg-[#1877F2]"></span> Facebook order
+              </div>
+              <div class="hiw-mobile-message hiw-mobile-message--wa absolute left-1/2 -translate-x-1/2 bg-white rounded-lg shadow-sm px-3 py-1.5 flex items-center gap-2 border border-green-100 text-[11px] font-bold text-slate-600">
+                <span class="w-2 h-2 rounded-full bg-[#25D366]"></span> WhatsApp order
+              </div>
+              <div class="hiw-mobile-message hiw-mobile-message--wi absolute left-1/2 -translate-x-1/2 bg-white rounded-lg shadow-sm px-3 py-1.5 flex items-center gap-2 border border-orange-100 text-[11px] font-bold text-slate-600">
+                <span class="w-2 h-2 rounded-full bg-orange-500"></span> Walk-in order
+              </div>
+            </div>
           </div>
-          <div class="p-6">
-            <div class="w-16 h-16 bg-pink-400 border-1 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[2px_2px_0px_0px_var(--color-shadow)] text-black">2</div>
-            <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step2', lang)}</h3>
-            <p class="text-gray-600 font-medium">{t('howItWorks.step2.desc', lang)}</p>
+
+          <div class="relative flex items-center justify-center md:justify-between gap-4 md:gap-8 min-h-[220px] md:min-h-[320px]">
+            <div class="hidden md:flex flex-col gap-12 relative z-10">
+              <div class="relative">
+                <div class="w-16 h-16 bg-white rounded-2xl shadow-md border border-blue-100 flex items-center justify-center relative z-20">
+                  <svg class="w-8 h-8 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </div>
+                <div class="absolute inset-0 rounded-2xl bg-blue-500/20 animate-ping-slow"></div>
+                <p class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[11px] font-bold text-gray-500 whitespace-nowrap">1 Facebook</p>
+              </div>
+              <div class="relative">
+                <div class="w-16 h-16 bg-white rounded-2xl shadow-md border border-green-100 flex items-center justify-center relative z-20">
+                  <svg class="w-8 h-8 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.83 9.83 0 0 1 6.988 2.898 9.83 9.83 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+                </div>
+                <div class="absolute inset-0 rounded-2xl bg-green-500/20 animate-ping-slow animation-delay-700"></div>
+                <p class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[11px] font-bold text-gray-500 whitespace-nowrap">2 WhatsApp</p>
+              </div>
+              <div class="relative">
+                <div class="w-16 h-16 bg-white rounded-2xl shadow-md border border-orange-100 flex items-center justify-center relative z-20">
+                  <svg class="w-7 h-7 text-orange-500" fill="currentColor" viewBox="0 0 320 512" aria-hidden="true"><path d="M208 96c26.5 0 48-21.5 48-48S234.5 0 208 0s-48 21.5-48 48 21.5 48 48 48zm94.5 149.1l-23.3-11.8-9.7-29.4c-14.7-44.6-55.7-75.8-102.2-75.9-36-.1-55.9 10.1-93.3 25.2-21.6 8.7-39.3 25.2-49.7 46.2L17.6 213c-7.8 15.8-1.5 35 14.2 42.9 15.6 7.9 34.6 1.5 42.5-14.3L81 228c3.5-7 9.3-12.5 16.5-15.4l26.8-10.8-15.2 60.7c-5.2 20.8.4 42.9 14.9 58.8l59.9 65.4c7.2 7.9 12.3 17.4 14.9 27.7l18.3 73.3c4.3 17.1 21.7 27.6 38.8 23.3 17.1-4.3 27.6-21.7 23.3-38.8l-22.2-89c-2.6-10.3-7.7-19.9-14.9-27.7l-45.5-49.7 17.2-68.7 5.5 16.5c5.3 16.1 16.7 29.4 31.7 37l23.3 11.8c15.6 7.9 34.6 1.5 42.5-14.3 7.7-15.7 1.4-35.1-14.3-43zM73.6 385.8c-3.2 8.1-8 15.4-14.2 21.5l-50 50.1c-12.5 12.5-12.5 32.8 0 45.3s32.7 12.5 45.2 0l59.4-59.4c6.1-6.1 10.9-13.4 14.2-21.5l13.5-33.8c-55.3-60.3-38.7-41.8-47.4-53.7l-20.7 51.5z"/></svg>
+                </div>
+                <div class="absolute inset-0 rounded-2xl bg-orange-500/20 animate-ping-slow animation-delay-1400"></div>
+                <p class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[11px] font-bold text-gray-500 whitespace-nowrap">3 Walk-in</p>
+              </div>
+            </div>
+
+            <div class="hidden md:block absolute left-28 right-[280px] top-8 bottom-8 pointer-events-none">
+              <div class="hiw-message hiw-message--fb absolute top-0 left-0 bg-white rounded-lg shadow-md p-2 flex items-center gap-2 border border-blue-100 w-32" style="--flow-distance: 250px;">
+                <span class="w-6 h-6 rounded-full bg-blue-100 text-[#1877F2] inline-flex items-center justify-center">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </span>
+                <span class="h-2 w-16 bg-slate-100 rounded"></span>
+              </div>
+              <div class="hiw-message hiw-message--wa absolute top-[96px] left-0 bg-white rounded-lg shadow-md p-2 flex items-center gap-2 border border-green-100 w-32" style="--flow-distance: 250px;">
+                <span class="w-6 h-6 rounded-full bg-green-100 text-[#25D366] inline-flex items-center justify-center">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.83 9.83 0 0 1 6.988 2.898 9.83 9.83 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+                </span>
+                <span class="h-2 w-16 bg-slate-100 rounded"></span>
+              </div>
+              <div class="hiw-message hiw-message--wi absolute top-[192px] left-0 bg-white rounded-lg shadow-md p-2 flex items-center gap-2 border border-orange-100 w-32" style="--flow-distance: 250px;">
+                <span class="w-6 h-6 rounded-full bg-orange-100 text-orange-500 inline-flex items-center justify-center">
+                  <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 320 512" aria-hidden="true"><path d="M208 96c26.5 0 48-21.5 48-48S234.5 0 208 0s-48 21.5-48 48 21.5 48 48 48zm94.5 149.1l-23.3-11.8-9.7-29.4c-14.7-44.6-55.7-75.8-102.2-75.9-36-.1-55.9 10.1-93.3 25.2-21.6 8.7-39.3 25.2-49.7 46.2L17.6 213c-7.8 15.8-1.5 35 14.2 42.9 15.6 7.9 34.6 1.5 42.5-14.3L81 228c3.5-7 9.3-12.5 16.5-15.4l26.8-10.8-15.2 60.7c-5.2 20.8.4 42.9 14.9 58.8l59.9 65.4c7.2 7.9 12.3 17.4 14.9 27.7l18.3 73.3c4.3 17.1 21.7 27.6 38.8 23.3 17.1-4.3 27.6-21.7 23.3-38.8l-22.2-89c-2.6-10.3-7.7-19.9-14.9-27.7l-45.5-49.7 17.2-68.7 5.5 16.5c5.3 16.1 16.7 29.4 31.7 37l23.3 11.8c15.6 7.9 34.6 1.5 42.5-14.3 7.7-15.7 1.4-35.1-14.3-43zM73.6 385.8c-3.2 8.1-8 15.4-14.2 21.5l-50 50.1c-12.5 12.5-12.5 32.8 0 45.3s32.7 12.5 45.2 0l59.4-59.4c6.1-6.1 10.9-13.4 14.2-21.5l13.5-33.8c-55.3-60.3-38.7-41.8-47.4-53.7l-20.7 51.5z"/></svg>
+                </span>
+                <span class="h-2 w-16 bg-slate-100 rounded"></span>
+              </div>
+            </div>
+
+            <div class="relative z-20 w-full max-w-[280px] bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-[320px]">
+              <div class="h-10 bg-slate-900 flex items-center px-4 gap-2">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span class="ml-auto text-[10px] text-slate-400 font-mono">POS_V3</span>
+              </div>
+              <div class="flex-1 p-4 bg-slate-50">
+                <div class="bg-white p-3 rounded border border-slate-100 shadow-sm flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <div class="space-y-1">
+                      <span class="block w-[72px] h-2 bg-slate-200 rounded"></span>
+                      <span class="block w-10 h-1.5 bg-slate-100 rounded"></span>
+                    </div>
+                  </div>
+                  <span class="px-1.5 h-4 bg-blue-50 rounded text-[9px] text-blue-600 inline-flex items-center font-bold">NEW</span>
+                </div>
+
+                <div class="relative mt-3 h-36">
+                  <div class="hiw-order hiw-order--fb absolute left-0 right-0 top-0 bg-white p-3 rounded border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <div class="space-y-1">
+                        <span class="block w-20 h-2 bg-slate-200 rounded"></span>
+                        <span class="block w-12 h-1.5 bg-slate-100 rounded"></span>
+                      </div>
+                    </div>
+                    <span class="w-5 h-5 bg-blue-50 rounded text-blue-600 inline-flex items-center justify-center">
+                      <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </span>
+                  </div>
+                  <div class="hiw-order hiw-order--wa absolute left-0 right-0 top-12 bg-white p-3 rounded border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                      <div class="space-y-1">
+                        <span class="block w-16 h-2 bg-slate-200 rounded"></span>
+                        <span class="block w-10 h-1.5 bg-slate-100 rounded"></span>
+                      </div>
+                    </div>
+                    <span class="w-5 h-5 bg-green-50 rounded text-green-600 inline-flex items-center justify-center">
+                      <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.83 9.83 0 0 1 6.988 2.898 9.83 9.83 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+                    </span>
+                  </div>
+                  <div class="hiw-order hiw-order--wi absolute left-0 right-0 top-24 bg-white p-3 rounded border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                      <div class="space-y-1">
+                        <span class="block w-14 h-2 bg-slate-200 rounded"></span>
+                        <span class="block w-9 h-1.5 bg-slate-100 rounded"></span>
+                      </div>
+                    </div>
+                    <span class="w-5 h-5 bg-orange-50 rounded text-orange-600 inline-flex items-center justify-center">
+                      <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 320 512" aria-hidden="true"><path d="M208 96c26.5 0 48-21.5 48-48S234.5 0 208 0s-48 21.5-48 48 21.5 48 48 48zm94.5 149.1l-23.3-11.8-9.7-29.4c-14.7-44.6-55.7-75.8-102.2-75.9-36-.1-55.9 10.1-93.3 25.2-21.6 8.7-39.3 25.2-49.7 46.2L17.6 213c-7.8 15.8-1.5 35 14.2 42.9 15.6 7.9 34.6 1.5 42.5-14.3L81 228c3.5-7 9.3-12.5 16.5-15.4l26.8-10.8-15.2 60.7c-5.2 20.8.4 42.9 14.9 58.8l59.9 65.4c7.2 7.9 12.3 17.4 14.9 27.7l18.3 73.3c4.3 17.1 21.7 27.6 38.8 23.3 17.1-4.3 27.6-21.7 23.3-38.8l-22.2-89c-2.6-10.3-7.7-19.9-14.9-27.7l-45.5-49.7 17.2-68.7 5.5 16.5c5.3 16.1 16.7 29.4 31.7 37l23.3 11.8c15.6 7.9 34.6 1.5 42.5-14.3 7.7-15.7 1.4-35.1-14.3-43zM73.6 385.8c-3.2 8.1-8 15.4-14.2 21.5l-50 50.1c-12.5 12.5-12.5 32.8 0 45.3s32.7 12.5 45.2 0l59.4-59.4c6.1-6.1 10.9-13.4 14.2-21.5l13.5-33.8c-55.3-60.3-38.7-41.8-47.4-53.7l-20.7 51.5z"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="h-10 border-t border-slate-200 flex items-center justify-between px-4 bg-white">
+                <span class="w-16 h-2 bg-slate-200 rounded"></span>
+                <span class="w-8 h-2 bg-slate-200 rounded"></span>
+              </div>
+            </div>
           </div>
-          <div class="p-6">
-            <div class="w-16 h-16 bg-blue-400 border-1 border-[var(--color-border)] flex items-center justify-center text-3xl font-black mx-auto mb-4 shadow-[2px_2px_0px_0px_var(--color-shadow)] text-black">3</div>
-            <h3 class="text-2xl font-bold mb-2 text-[var(--color-text)]">{t('howItWorks.step3', lang)}</h3>
-            <p class="text-gray-600 font-medium">{t('howItWorks.step3.desc', lang)}</p>
+        </div>
+
+        <div class="relative mt-12 md:mt-14">
+
+          <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
+            {howItWorksSteps.map((step, index) => (
+              <article
+                class={`hiw-card relative p-6 md:p-8 bg-[var(--color-bg)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] ${index === 1 ? 'hiw-card--raised' : ''}`}
+              >
+                <div class="relative z-10 flex items-center justify-between mb-6">
+                  <span class="inline-flex items-center justify-center w-16 h-16 text-2xl font-black border-1 border-[var(--color-border)] bg-black text-white shadow-[2px_2px_0px_0px_var(--color-shadow)]">
+                    {step.number}
+                  </span>
+                  <span class={`inline-flex items-center justify-center w-11 h-11 border-1 border-[var(--color-border)] text-black ${step.badge}`}>
+                    <step.icon size={20} strokeWidth={2.2} />
+                  </span>
+                </div>
+
+                <h3 class="text-2xl font-black mb-3 text-[var(--color-text)]">{step.title}</h3>
+                <p class="text-gray-700 font-medium leading-relaxed">{step.desc}</p>
+              </article>
+            ))}
           </div>
+        </div>
+
+        <div class="mt-10 text-center">
+          <a
+            href={`/${lang}/demo`}
+            class="inline-block bg-lime-400 text-black text-sm md:text-base font-black uppercase tracking-wide px-6 py-3 border-1 border-black shadow-[2px_2px_0px_0px_var(--color-shadow)] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px] transition-transform"
+          >
+            {t('hero.cta.demo', lang)}
+          </a>
         </div>
       </div>
     </section>
 
+    <style>
+      #how-it-works .hiw-card {
+        transition: transform 220ms ease;
+      }
+
+      #how-it-works .hiw-card:hover {
+        transform: translateY(-4px);
+      }
+
+      @media (min-width: 768px) {
+        #how-it-works .hiw-card--raised {
+          transform: translateY(-14px);
+        }
+
+        #how-it-works .hiw-card--raised:hover {
+          transform: translateY(-18px);
+        }
+      }
+
+      #how-it-works .hiw-grid-bg {
+        background-image:
+          linear-gradient(to right, rgb(241 245 249) 1px, transparent 1px),
+          linear-gradient(to bottom, rgb(241 245 249) 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: 0.6;
+      }
+
+      #how-it-works .animate-ping-slow {
+        animation: hiwPing 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      #how-it-works .animation-delay-700 {
+        animation-delay: 700ms;
+      }
+
+      #how-it-works .animation-delay-1400 {
+        animation-delay: 1400ms;
+      }
+
+      #how-it-works .hiw-message {
+        opacity: 0;
+        transform: translateX(0) scale(0.85);
+      }
+
+      #how-it-works .hiw-message--fb {
+        animation: hiwMessageFlow 6s ease-in-out infinite;
+      }
+
+      #how-it-works .hiw-message--wa {
+        animation: hiwMessageFlow 6s ease-in-out infinite 2s;
+      }
+
+      #how-it-works .hiw-message--wi {
+        animation: hiwMessageFlow 6s ease-in-out infinite 4s;
+      }
+
+      #how-it-works .hiw-order {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      #how-it-works .hiw-order--fb {
+        animation: hiwOrderAppear 6s ease-in-out infinite;
+      }
+
+      #how-it-works .hiw-order--wa {
+        animation: hiwOrderAppear 6s ease-in-out infinite 2s;
+      }
+
+      #how-it-works .hiw-order--wi {
+        animation: hiwOrderAppear 6s ease-in-out infinite 4s;
+      }
+
+      #how-it-works .hiw-mobile-message {
+        opacity: 0;
+        transform: translate(-50%, 10px);
+      }
+
+      #how-it-works .hiw-mobile-message--fb {
+        animation: hiwMobileMessage 6s ease-in-out infinite;
+      }
+
+      #how-it-works .hiw-mobile-message--wa {
+        animation: hiwMobileMessage 6s ease-in-out infinite 2s;
+      }
+
+      #how-it-works .hiw-mobile-message--wi {
+        animation: hiwMobileMessage 6s ease-in-out infinite 4s;
+      }
+
+      @keyframes hiwPing {
+        75%,
+        100% {
+          transform: scale(1.35);
+          opacity: 0;
+        }
+      }
+
+      @keyframes hiwMessageFlow {
+        0% {
+          transform: translateX(0) scale(0.85);
+          opacity: 0;
+        }
+
+        12% {
+          transform: translateX(0) scale(1);
+          opacity: 1;
+        }
+
+        62% {
+          transform: translateX(var(--flow-distance, 240px)) scale(0.92);
+          opacity: 1;
+        }
+
+        82% {
+          transform: translateX(calc(var(--flow-distance, 240px) + 26px)) scale(0.72);
+          opacity: 0;
+        }
+
+        100% {
+          transform: translateX(calc(var(--flow-distance, 240px) + 26px)) scale(0.72);
+          opacity: 0;
+        }
+      }
+
+      @keyframes hiwOrderAppear {
+        0%,
+        56% {
+          transform: translateY(10px);
+          opacity: 0;
+        }
+
+        66%,
+        88% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes hiwMobileMessage {
+        0%,
+        58% {
+          transform: translate(-50%, 8px);
+          opacity: 0;
+        }
+
+        66%,
+        88% {
+          transform: translate(-50%, 0);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translate(-50%, -8px);
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #how-it-works .animate-ping-slow,
+        #how-it-works .hiw-message,
+        #how-it-works .hiw-order,
+        #how-it-works .hiw-mobile-message {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+
     <Testimonials lang={lang} />
+    <SocialProof />
 
     <Pricing />
 
     <ContactSection />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
-    <!-- FAQ -->
-    <section class="py-20">
-      <div class="container mx-auto px-4 max-w-3xl">
-        <h2 class="text-4xl font-black mb-12 text-center uppercase text-[var(--color-text)]">{t('faq.title', lang)}</h2>
-        <div class="space-y-6">
-          {faqs.map((f, i) => (
-             <details class="group bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] open:shadow-none open:translate-y-1 transition-all">
-               <summary class="flex justify-between items-center p-6 font-bold cursor-pointer list-none text-[var(--color-text)]">
-                 <span>{f.q}</span>
-                 <span class="transform group-open:rotate-180 transition-transform">▼</span>
-               </summary>
-               <div class="px-6 pb-6 text-gray-600 font-medium leading-relaxed border-t-1 border-[var(--color-border)] pt-4">
-                 {f.a}
-               </div>
-             </details>
-          ))}
-        </div>
-      </div>
-    </section>
+      <!-- FAQ -->
+      <FaqSection lang={lang} variant="2col" />
+
+    </div>
 
     <!-- Final CTA -->
     <section class="py-24 bg-black text-white text-center">
@@ -126,5 +539,54 @@ const faqs = [
     </section>
   </main>
   
+  <script is:inline>
+    (() => {
+      const cta = document.querySelector('a[data-features-cta="true"]');
+      const features = document.getElementById('features');
+
+      if (!cta || !features) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const runReveal = () => {
+        features.removeAttribute('data-cta-reveal');
+        void features.offsetWidth;
+        features.setAttribute('data-cta-reveal', 'true');
+        window.setTimeout(() => features.removeAttribute('data-cta-reveal'), 1000);
+      };
+
+      const revealWhenVisible = () => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              runReveal();
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.25 }
+        );
+
+        observer.observe(features);
+        window.setTimeout(() => observer.disconnect(), 2200);
+      };
+
+      cta.addEventListener('click', (event) => {
+        event.preventDefault();
+        features.scrollIntoView({
+          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+
+        if (prefersReducedMotion.matches) {
+          runReveal();
+        } else {
+          revealWhenVisible();
+        }
+
+        history.replaceState(null, '', '#features');
+      });
+    })();
+  </script>
+
   <Footer />
 </Base>

@@ -57,10 +57,34 @@ npm run preview
 - `src/data/i18n.ts` - key/value translation strings
 - `src/data/localizedCopy.ts` - structured localized content
 - `src/data/seo/` - centralized SEO presets and config
+- `src/config/` - config center (app/theme/pricing/blog/ads)
 - `src/lib/lang.ts` - language routing helpers
 - `src/lib/seo.ts` - SEO resolver and schema helpers
 - `src/content/news/` - blog content
 - `public/` - static assets, fonts, robots, OG images
+
+## Config Center
+
+Use `src/config/` as the main config center:
+
+- `src/config/app.ts` - site + language config
+- `src/config/theme.ts` - theme colors
+- `src/config/pricing.ts` - trial/yearly pricing policy
+- `src/config/blog.ts` - blog pagination size
+- `src/config/ads.ts` - blog sidebar ads behavior
+
+Detailed guide: `src/config/README.md`
+
+## Theme colors
+
+Main site colors are centralized in `src/config/theme.ts`.
+
+To change the brand theme quickly:
+
+1. Update `accent` and/or `secondary` colors in `src/config/theme.ts`
+2. Rebuild with `npm run build`
+
+All `lime-*` and `pink-*` utility usage inherits from this config via CSS variables injected in `src/layouts/Base.astro`.
 
 ## SEO system
 
@@ -89,6 +113,39 @@ There are two translation layers:
 - `src/data/localizedCopy.ts` via `fromLang(...)`
 
 Read full guide for adding a new language: `src/data/i18n.README.md`
+
+## Blog publishing
+
+Use template: `docs/templates/blog-post-template.md`  
+Publishing guide: `docs/blog-publishing-guide.md`
+
+## Ads publishing
+
+Use template: `docs/templates/ad-campaign-template.md`  
+Publishing guide: `docs/ads-publishing-guide.md`
+Auto sidebar ad source: `src/content/ads/*.md`
+Sidebar display logic: weighted random per refresh by tier (`normal`, `premium`, `platinum`)
+Sidebar ad supports banner image + style + type + image-only mode via `bannerImage`, `style`, `type`, `displayMode`
+
+Content ops index: `docs/README.md`
+
+## AI Handoff Context
+
+For the next developer/AI agent, start here:
+
+- `docs/AI-CONTEXT.md`
+
+## Packages Data (Single Source)
+
+To add/edit package features in one place:
+
+- `src/data/packages.ts` (plans + comparison table source)
+- `src/config/pricing.ts` (trial days, yearly free-month policy, base prices)
+
+Used by:
+
+- `src/components/islands/PricingSelect.tsx`
+- `src/pages/[lang]/packages.astro`
 
 ## Open Graph images
 

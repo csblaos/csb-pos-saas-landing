@@ -1,4 +1,5 @@
 import type { Lang } from '../lib/lang';
+import { getTrialPhrase } from '../config/pricing';
 
 export const fromLang = <T extends Record<Lang, unknown>>(localized: T, lang: string): T[Lang] => {
   const key: Lang = (lang in localized ? lang : 'en') as Lang;
@@ -100,6 +101,9 @@ export const blogIndexSidebarCopy = {
     liveTitle: 'Orders Coming In',
     liveSubtitle: 'See orders flow in real-time from every channel.',
     liveCta: 'Start Free Trial ->',
+    paginationPrev: 'Previous',
+    paginationNext: 'Next',
+    paginationPage: 'Page',
   },
   th: {
     tags: 'หัวข้อยอดนิยม',
@@ -111,6 +115,9 @@ export const blogIndexSidebarCopy = {
     liveTitle: 'ออเดอร์กำลังเข้า',
     liveSubtitle: 'ดูออเดอร์ไหลเข้าจากทุกช่องทาง',
     liveCta: 'เริ่มทดลองฟรี ->',
+    paginationPrev: 'ก่อนหน้า',
+    paginationNext: 'ถัดไป',
+    paginationPage: 'หน้า',
   },
   la: {
     tags: 'ຫົວຂໍ້ຍອດນິຍົມ',
@@ -122,6 +129,9 @@ export const blogIndexSidebarCopy = {
     liveTitle: 'ອໍເດີກຳລັງເຂົ້າ',
     liveSubtitle: 'ເບິ່ງອໍເດີໄຫລເຂົ້າຈາກທຸກຊ່ອງທາງ',
     liveCta: 'ເລີ່ມທົດລອງຟຣີ ->',
+    paginationPrev: 'ກ່ອນໜ້າ',
+    paginationNext: 'ຖັດໄປ',
+    paginationPage: 'ໜ້າ',
   },
 } as const;
 
@@ -475,6 +485,219 @@ export const homeBusinessTypeCopy = {
   },
 } as const;
 
+export const homePainPointsCopy = {
+  en: {
+    title: 'Daily pain points for online shops in Laos',
+    subtitle:
+      'Small shop owners selling through Facebook, WhatsApp, and TikTok often feel overwhelmed because every order is still managed manually in chat.',
+    problems: [
+      {
+        title: 'Messages never stop, replies get delayed',
+        desc: 'Customers ask at the same time across channels, and you feel pressure every minute you cannot answer.',
+      },
+      {
+        title: 'Orders get lost between chat threads',
+        desc: 'When details are copied by hand, one missed message can mean a missed sale and an unhappy customer.',
+      },
+      {
+        title: 'Stock is unclear and overselling happens',
+        desc: 'You sell fast, but stock updates are slow, so you only discover out-of-stock after confirming the order.',
+      },
+      {
+        title: 'Payment checks take too much time',
+        desc: 'Matching transfers and COD status manually all day drains energy you should use to grow your store.',
+      },
+      {
+        title: 'Packing and shipping details are repetitive',
+        desc: 'Typing names, phone numbers, and addresses over and over makes fulfillment slower and more error-prone.',
+      },
+      {
+        title: 'No clear daily summary at closing time',
+        desc: 'After a long day, you are still unsure about true sales, pending orders, and real profit.',
+      },
+    ],
+    transitionTitle: 'You should not have to run your business this way.',
+    transitionBody:
+      'AstroPOS brings chats, orders, stock, and payments into one flow so your team can sell with less stress and more control.',
+    transitionCta: 'See how AstroPOS solves this',
+  },
+  th: {
+    title: 'ปัญหาที่ร้านค้าออนไลน์ในลาวต้องเจอทุกวัน',
+    subtitle:
+      'เจ้าของร้านเล็กที่ขายผ่าน Facebook, WhatsApp และ TikTok มักต้องรับมือทุกอย่างด้วยมือในแชต จนเหนื่อยและพลาดง่าย',
+    problems: [
+      {
+        title: 'แชตเข้าไม่หยุด จนตอบลูกค้าช้า',
+        desc: 'ข้อความเข้าพร้อมกันหลายช่องทาง แค่ตอบให้ทันก็แทบหมดแรง ลูกค้ารอไม่ไหวก็หายไปทันที',
+      },
+      {
+        title: 'ออเดอร์หลุด เพราะจดมือหลายที่',
+        desc: 'ย้ายข้อมูลไปมาในแชตและโน้ต ทำให้หลุดรายละเอียดนิดเดียว ก็เสียทั้งยอดขายและความเชื่อใจ',
+      },
+      {
+        title: 'สต็อกไม่ตรง ขายเกินโดยไม่รู้ตัว',
+        desc: 'ขายได้ไวแต่เช็กของไม่ทัน พอคอนเฟิร์มไปแล้วค่อยรู้ว่าสินค้าหมด ต้องทักขอโทษลูกค้าอีก',
+      },
+      {
+        title: 'เช็กยอดโอนและเก็บปลายทางวุ่นทั้งวัน',
+        desc: 'ต้องไล่ดูสลิป เช็กสถานะ COD เองทีละออเดอร์ งานจุกจิกกินเวลาทั้งวันจนไม่เหลือแรง',
+      },
+      {
+        title: 'แพ็กของช้า เพราะพิมพ์ข้อมูลซ้ำๆ',
+        desc: 'ชื่อ เบอร์โทร ที่อยู่ ต้องกรอกใหม่ตลอด ทำให้ส่งของช้าและมีโอกาสพิมพ์ผิดสูง',
+      },
+      {
+        title: 'ปิดร้านแล้ว ยังสรุปยอดไม่ได้ชัด',
+        desc: 'ทำงานมาทั้งวันแต่ยังไม่รู้ยอดจริง กำไรเท่าไร หรือมีออเดอร์ค้างอะไรบ้าง รู้สึกเครียดทุกคืน',
+      },
+    ],
+    transitionTitle: 'ร้านของคุณไม่ควรต้องเหนื่อยแบบนี้ทุกวัน',
+    transitionBody:
+      'AstroPOS รวมแชต ออเดอร์ สต็อก และการชำระเงินไว้ที่เดียว ให้ทีมทำงานไวขึ้น พลาดน้อยลง และดูแลลูกค้าได้ดีขึ้น',
+    transitionCta: 'ดูว่า POS ช่วยแก้ยังไง',
+  },
+  la: {
+    title: 'ບັນຫາທີ່ຮ້ານອອນໄລນ໌ໃນລາວຕ້ອງເຈີທຸກມື້',
+    subtitle:
+      'ຮ້ານນ້ອຍທີ່ຂາຍຜ່ານ Facebook, WhatsApp ແລະ TikTok ຍັງຕ້ອງຈັດການອໍເດີດ້ວຍມືໃນແຊັດ ຈົນເຄັ່ງແລະຜິດພາດງ່າຍ',
+    problems: [
+      {
+        title: 'ແຊັດເຂົ້າບໍ່ຢຸດ ຕອບລູກຄ້າບໍ່ທັນ',
+        desc: 'ຂໍ້ຄວາມເຂົ້າພ້ອມກັນຫຼາຍຊ່ອງທາງ ຕອບບໍ່ທັນນິດດຽວ ລູກຄ້າກໍຫາຍໄປ',
+      },
+      {
+        title: 'ອໍເດີຫາຍ ເພາະຈົດມືຫຼາຍຈຸດ',
+        desc: 'ຍ້າຍຂໍ້ມູນໄປມາໃນແຊັດ ແລະ ໂນ້ດ ເຮັດໃຫ້ຫຼຸດລາຍລະອຽດ ແລະ ເສຍຄວາມເຊື່ອໃຈ',
+      },
+      {
+        title: 'ສະຕັອກບໍ່ຕົງ ຂາຍເກີນໂດຍບໍ່ຮູ້ຕົວ',
+        desc: 'ຂາຍໄວ ແຕ່ອັບເດດສະຕັອກບໍ່ທັນ ຮູ້ທີຫຼັງວ່າຂອງໝົດແລ້ວ',
+      },
+      {
+        title: 'ເຊັກໂອນ ແລະ COD ວຸ້ນທັງມື້',
+        desc: 'ຕ້ອງກວດສະລິບ ແລະ ສະຖານະ COD ທີລະອໍເດີ ເສຍເວລາຈົນບໍ່ທັນຂາຍ',
+      },
+      {
+        title: 'ແພັກຂອງຊ້າ ເພາະພິມຂໍ້ມູນຊ້ຳ',
+        desc: 'ຊື່ ເບີໂທ ທີ່ຢູ່ ຕ້ອງພິມໃໝ່ຊ້ຳໆ ເຮັດໃຫ້ຊ້າ ແລະ ຜິດພາດງ່າຍ',
+      },
+      {
+        title: 'ປິດຮ້ານແລ້ວ ແຕ່ຍັງສະຫຼຸບຍອດບໍ່ຊັດ',
+        desc: 'ເຮັດວຽກທັງມື້ ແຕ່ຍັງບໍ່ແນ່ໃຈຍອດຂາຍ ກຳໄລ ແລະ ອໍເດີຄ້າງ',
+      },
+    ],
+    transitionTitle: 'ຮ້ານຂອງເຈົ້າບໍ່ຄວນເຫນື່ອຍແບບນີ້ທຸກມື້',
+    transitionBody:
+      'AstroPOS ຮວບຮວມແຊັດ ອໍເດີ ສະຕັອກ ແລະ ການຮັບເງິນໄວ້ບ່ອນດຽວ ໃຫ້ທີມເຮັດວຽກໄວ ແລະ ຜິດພາດນ້ອຍລົງ',
+    transitionCta: 'ເບິ່ງວ່າ POS ຊ່ວຍແນວໃດ',
+  },
+} as const;
+
+export const homeSocialProofCopy = {
+  en: {
+    headline: 'Trusted by 1,200+ small businesses across Laos',
+    subtitle:
+      'From chat-order sellers to busy storefronts, local teams use AstroPOS every day to run smoother operations.',
+    stats: [
+      { value: '1,200+', label: 'Active local shops' },
+      { value: '99.9%', label: 'System reliability' },
+      { value: '<10 min', label: 'Average local support response' },
+    ],
+    businessTypesTitle: 'Used by businesses like:',
+    businessTypes: ['Online chat shops', 'Cafe & restaurants', 'Clothing shops', 'Mini marts'],
+    testimonials: [
+      {
+        quote:
+          'Before AstroPOS, we tracked everything in chat and got confused every night. Now orders and stock are clear in one screen.',
+        owner: 'Noy',
+        shop: 'Mini Mart Owner, Vientiane',
+      },
+      {
+        quote:
+          'We sell from Facebook and WhatsApp all day. This system helps my team reply faster and miss fewer orders.',
+        owner: 'Kham',
+        shop: 'Online Clothing Shop, Savannakhet',
+      },
+      {
+        quote:
+          'At peak cafe hours, speed matters. AstroPOS keeps billing and stock under control, and support is easy to reach.',
+        owner: 'Mai',
+        shop: 'Cafe Owner, Luang Prabang',
+      },
+    ],
+    trustStatement:
+      'Built for Laos merchants with stable performance, secure workflows, and local support that understands your daily reality.',
+  },
+  th: {
+    headline: 'ร้านค้าขนาดเล็กในลาวกว่า 1,200+ ร้าน ใช้งานอยู่ทุกวัน',
+    subtitle:
+      'ตั้งแต่ร้านออนไลน์ที่รับออเดอร์ผ่านแชต ไปจนถึงหน้าร้านที่ลูกค้าแน่น AstroPOS ช่วยให้จัดการงานขายได้ลื่นขึ้น',
+    stats: [
+      { value: '1,200+', label: 'ร้านค้าในลาวที่ใช้งานจริง' },
+      { value: '99.9%', label: 'ความเสถียรของระบบ' },
+      { value: '<10 นาที', label: 'เวลาตอบกลับเฉลี่ยจากทีมซัพพอร์ต' },
+    ],
+    businessTypesTitle: 'ร้านที่ใช้งานระบบนี้ เช่น',
+    businessTypes: ['ร้านค้าออนไลน์', 'ร้านอาหารและคาเฟ่', 'ร้านเสื้อผ้า', 'มินิมาร์ท'],
+    testimonials: [
+      {
+        quote:
+          'เมื่อก่อนปิดร้านทีไร งงทุกวันว่าออเดอร์ไหนจ่ายแล้วหรือยัง พอใช้ AstroPOS ทุกอย่างชัดขึ้นมาก สบายใจขึ้นเยอะ',
+        owner: 'คุณน้อย',
+        shop: 'เจ้าของมินิมาร์ท, เวียงจันทน์',
+      },
+      {
+        quote:
+          'ร้านเราขายผ่าน Facebook กับ WhatsApp เป็นหลัก ระบบนี้ช่วยให้ทีมตอบไวขึ้นและออเดอร์ไม่หลุดเหมือนเมื่อก่อน',
+        owner: 'คุณคำ',
+        shop: 'เจ้าของร้านเสื้อผ้าออนไลน์, สะหวันนะเขต',
+      },
+      {
+        quote:
+          'ช่วงเที่ยงคาเฟ่ยุ่งมาก ถ้าระบบไม่เร็วคือพลาดทันที AstroPOS ช่วยคุมทั้งบิลและสต็อกได้ดี และทีมซัพพอร์ตคุยง่ายมาก',
+        owner: 'คุณใหม่',
+        shop: 'เจ้าของคาเฟ่, หลวงพระบาง',
+      },
+    ],
+    trustStatement:
+      'AstroPOS ออกแบบมาเพื่อร้านค้าในลาวโดยเฉพาะ ระบบเสถียร ปลอดภัย และมีทีมซัพพอร์ตท้องถิ่นที่เข้าใจงานหน้างานจริง',
+  },
+  la: {
+    headline: 'ຮ້ານນ້ອຍໃນລາວ 1,200+ ຮ້ານ ໃຊ້ງານລະບົບນີ້ແລ້ວ',
+    subtitle:
+      'ຕັ້ງແຕ່ຮ້ານຂາຍອອນໄລນ໌ຜ່ານແຊັດ ຫາຮ້ານໜ້າຮ້ານທີ່ລູກຄ້າແນ່ນ AstroPOS ຊ່ວຍໃຫ້ຈັດການວຽກໄດ້ລື່ນຂຶ້ນ',
+    stats: [
+      { value: '1,200+', label: 'ຮ້ານໃນລາວທີ່ໃຊ້ງານຈິງ' },
+      { value: '99.9%', label: 'ຄວາມໝັ້ນຄົງຂອງລະບົບ' },
+      { value: '<10 ນາທີ', label: 'ເວລາຕອບກັບສະເລ່ຍຈາກຊັບພອດ' },
+    ],
+    businessTypesTitle: 'ປະເພດຮ້ານທີ່ນິຍົມໃຊ້',
+    businessTypes: ['ຮ້ານຂາຍອອນໄລນ໌', 'ຮ້ານອາຫານ & ຄາເຟ່', 'ຮ້ານເສື້ອຜ້າ', 'ມິນິມາດ'],
+    testimonials: [
+      {
+        quote:
+          'ແຕ່ກ່ອນປິດຮ້ານແຕ່ລະມື້ຈະງົງຫຼາຍ ວ່າອໍເດີໃດຈ່າຍແລ້ວ. ພໍໃຊ້ AstroPOS ທຸກຢ່າງຊັດເຈນຂຶ້ນຫຼາຍ',
+        owner: 'ນາງ ນ້ອຍ',
+        shop: 'ເຈົ້າຂອງມິນິມາດ, ວຽງຈັນ',
+      },
+      {
+        quote:
+          'ຮ້ານເຮົາຂາຍຜ່ານ Facebook ແລະ WhatsApp ເປັນຫຼັກ. ລະບົບນີ້ຊ່ວຍໃຫ້ທີມຕອບໄວຂຶ້ນ ແລະ ອໍເດີບໍ່ຫາຍ',
+        owner: 'ນາງ ຄຳ',
+        shop: 'ຮ້ານເສື້ອຜ້າອອນໄລນ໌, ສະຫວັນນະເຂດ',
+      },
+      {
+        quote:
+          'ຊ່ວງເທ່ຽງຄາເຟ່ຄົນແນ່ນ ຄວາມໄວສຳຄັນຫຼາຍ. AstroPOS ຊ່ວຍຄຸມທັງບິນ ແລະ ສະຕັອກໄດ້ດີ',
+        owner: 'ນາງ ໃໝ່',
+        shop: 'ເຈົ້າຂອງຄາເຟ່, ຫຼວງພຣະບາງ',
+      },
+    ],
+    trustStatement:
+      'AstroPOS ຖືກອອກແບບສຳລັບຮ້ານໃນລາວໂດຍສະເພາະ: ລະບົບສະເຖຍນ, ປອດໄພ, ແລະ ມີຊັບພອດທ້ອງຖິ່ນທີ່ເຂົ້າໃຈວຽກຂອງຮ້ານຈິງ',
+  },
+} as const;
+
 export const pricingLeadFormCopy = {
   en: {
     title: 'Send Package Details',
@@ -492,7 +715,7 @@ export const pricingLeadFormCopy = {
     sendWithDetails: 'Send with Details',
     sendQuick: 'Quick Send',
     trialBadge: 'FREE 14 DAYS',
-    trialHint: 'Starter includes a 14-day free trial before you decide.',
+    trialHint: 'All monthly plans include a 14-day free trial before you decide.',
     close: 'Close',
   },
   th: {
@@ -511,7 +734,7 @@ export const pricingLeadFormCopy = {
     sendWithDetails: 'ส่งพร้อมข้อมูล',
     sendQuick: 'ส่งด่วน',
     trialBadge: 'ทดลองใช้ฟรี 14 วัน',
-    trialHint: 'แพ็กเกจ Starter เริ่มใช้ฟรี 14 วัน ก่อนตัดสินใจ',
+    trialHint: 'ทุกแพ็กเกจแบบรายเดือน เริ่มทดลองใช้ฟรี 14 วัน ก่อนตัดสินใจ',
     close: 'ปิด',
   },
   la: {
@@ -530,7 +753,7 @@ export const pricingLeadFormCopy = {
     sendWithDetails: 'ສົ່ງພ້ອມຂໍ້ມູນ',
     sendQuick: 'ສົ່ງດ່ວນ',
     trialBadge: 'ທົດລອງຟຣີ 14 ມື້',
-    trialHint: 'ແພັກເກັດ Starter ເລີ່ມທົດລອງຟຣີ 14 ມື້ ກ່ອນຕັດສິນໃຈ',
+    trialHint: 'ທຸກແພັກເກັດແບບລາຍເດືອນ ເລີ່ມທົດລອງຟຣີ 14 ມື້ ກ່ອນຕັດສິນໃຈ',
     close: 'ປິດ',
   },
 } as const;
@@ -541,12 +764,19 @@ export const buildPricingSelectMessage = (
   formattedPrice: string,
   period: string,
   bonus: string,
+  includeTrial: boolean,
   lead?: {
     contactName?: string;
     storeName?: string;
     phone?: string;
   },
 ) => {
+  const trialPhrase = {
+    en: getTrialPhrase('en'),
+    th: getTrialPhrase('th'),
+    la: getTrialPhrase('la'),
+  } as const;
+
   const clean = {
     contactName: lead?.contactName?.trim() ?? '',
     storeName: lead?.storeName?.trim() ?? '',
@@ -557,21 +787,27 @@ export const buildPricingSelectMessage = (
 
   const builders: Record<Lang, (name: string, price: string, periodLabel: string, bonusText: string) => string> = {
     en: (name, price, periodLabel, bonusText) => {
-      let message = `Hello, I want to subscribe to *${name} Plan* (${price} LAK / ${periodLabel})${bonusText}\n\nPlease send me payment details.`;
+      let message = includeTrial
+        ? `Hello, I want to start a *${trialPhrase.en}* for *${name} Plan* (${price} LAK / ${periodLabel})${bonusText}\n\nPlease share onboarding details.`
+        : `Hello, I want to subscribe to *${name} Plan* (${price} LAK / ${periodLabel})${bonusText}\n\nPlease send me payment details.`;
       if (hasLead) {
         message += `\n\nLead Details:\nContact: ${clean.contactName || '-'}\nStore: ${clean.storeName || '-'}\nPhone: ${clean.phone || '-'}`;
       }
       return message;
     },
     th: (name, price, periodLabel, bonusText) => {
-      let message = `สวัสดี สนใจแพ็กเกจ *${name}* (${price}₭ / ${periodLabel})${bonusText}\n\nขอรายละเอียดการชำระเงินด้วยครับ`;
+      let message = includeTrial
+        ? `สวัสดี ต้องการเริ่ม *${trialPhrase.th}* สำหรับแพ็กเกจ *${name}* (${price}₭ / ${periodLabel})${bonusText}\n\nขอรายละเอียดการเริ่มใช้งานด้วยครับ`
+        : `สวัสดี สนใจแพ็กเกจ *${name}* (${price}₭ / ${periodLabel})${bonusText}\n\nขอรายละเอียดการชำระเงินด้วยครับ`;
       if (hasLead) {
         message += `\n\nข้อมูลผู้สนใจ:\nชื่อผู้ติดต่อ: ${clean.contactName || '-'}\nชื่อร้าน: ${clean.storeName || '-'}\nเบอร์โทร: ${clean.phone || '-'}`;
       }
       return message;
     },
     la: (name, price, periodLabel, bonusText) => {
-      let message = `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${name}* (${price}₭ / ${periodLabel})${bonusText}\n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
+      let message = includeTrial
+        ? `ສະບາຍດີ ຕ້ອງການເລີ່ມ *${trialPhrase.la}* ສຳລັບແພັກເກັດ *${name}* (${price}₭ / ${periodLabel})${bonusText}\n\nຂໍລາຍລະອຽດການເລີ່ມໃຊ້ງານແດ່`
+        : `ສະບາຍດີ ສົນໃຈແພັກເກັດ *${name}* (${price}₭ / ${periodLabel})${bonusText}\n\nຂໍລາຍລະອຽດການຊຳລະເງິນແດ່`;
       if (hasLead) {
         message += `\n\nຂໍ້ມູນຜູ້ສົນໃຈ:\nຊື່ຜູ້ຕິດຕໍ່: ${clean.contactName || '-'}\nຊື່ຮ້ານ: ${clean.storeName || '-'}\nເບີໂທ: ${clean.phone || '-'}`;
       }

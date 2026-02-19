@@ -5,6 +5,7 @@ import { getLangFromUrl } from '../lib/lang';
 import ScrollToTop from '../components/islands/ScrollToTop';
 import { buildDefaultSchemas, resolveSeo } from '../lib/seo';
 import type { SeoPageKey } from '../data/seo/pages';
+import { getThemeCssVariables } from '../config/theme';
 
 interface Props {
   title?: string;
@@ -38,6 +39,9 @@ const seo = resolveSeo({
 });
 
 const schemaPayloads = buildDefaultSchemas(lang).map((item) => JSON.stringify(item));
+const themeInlineStyle = Object.entries(getThemeCssVariables())
+  .map(([name, value]) => `${name}: ${value}`)
+  .join('; ');
 ---
 
 <!doctype html>
@@ -97,13 +101,17 @@ const schemaPayloads = buildDefaultSchemas(lang).map((item) => JSON.stringify(it
     <script is:inline>
       // Language Logic (Auto-Redirect)
       if (typeof localStorage !== 'undefined') {
-        const storedLang = localStorage.getItem('lang');
-        const pathSegments = window.location.pathname.split('/').filter(Boolean);
-        const langInPath = pathSegments[0];
-        
-        // Only redirect if we have a stored language and we're at root or no language in path
-        if (storedLang && (!langInPath || !['en', 'th', 'la'].includes(langInPath))) {
-          window.location.replace(`/${storedLang}/`);
+        try {
+          const storedLang = localStorage.getItem('lang');
+          const pathSegments = window.location.pathname.split('/').filter(Boolean);
+          const langInPath = pathSegments[0];
+          
+          // Only redirect if we have a stored language and we're at root or no language in path
+          if (storedLang && (!langInPath || !['en', 'th', 'la'].includes(langInPath))) {
+            window.location.replace(`/${storedLang}/`);
+          }
+        } catch {
+          // Ignore storage access issues in strict privacy mode.
         }
       }
 
@@ -142,7 +150,7 @@ const schemaPayloads = buildDefaultSchemas(lang).map((item) => JSON.stringify(it
       }
     </script>
   </head>
-  <body class="bg-[var(--color-bg)] text-[var(--color-text)] min-h-screen flex flex-col font-sans relative overflow-x-hidden">
+  <body class="bg-[var(--color-bg)] text-[var(--color-text)] min-h-screen flex flex-col font-sans relative overflow-x-hidden" style={themeInlineStyle}>
     <!-- Background Animation -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
       <div class="absolute inset-0 bg-grid"></div>

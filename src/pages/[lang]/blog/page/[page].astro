@@ -1,0 +1,55 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import Navbar from '../../../../components/sections/Navbar.astro';
+import Footer from '../../../../components/sections/Footer.astro';
+import BlogIndexContent from '../../../../components/sections/BlogIndexContent.astro';
+import { getCollection } from 'astro:content';
+import { getLangFromUrl, languages } from '../../../../lib/lang';
+import { getTotalPages, paginateItems } from '../../../../lib/blog';
+
+export async function getStaticPaths() {
+  const allNews = await getCollection('news');
+  const totalPages = getTotalPages(allNews.length);
+
+  if (totalPages <= 1) {
+    return [];
+  }
+
+  return Object.keys(languages).flatMap((lang) =>
+    Array.from({ length: totalPages - 1 }, (_, index) => ({
+      params: { lang, page: String(index + 2) }
+    }))
+  );
+}
+
+const lang = getLangFromUrl(Astro.url);
+const currentPage = Number(Astro.params.page ?? '1');
+
+if (!Number.isInteger(currentPage) || currentPage < 2) {
+  throw new Error('Invalid blog page number');
+}
+
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const totalPages = getTotalPages(sortedNews.length);
+
+if (currentPage > totalPages) {
+  throw new Error('Blog page out of range');
+}
+
+const pagePosts = paginateItems(sortedNews, currentPage);
+
+const localizedBlogTitle = {
+  en: 'Blog - Page',
+  th: 'บทความ - หน้า',
+  la: 'ບົດຄວາມ - ໜ້າ'
+} as const;
+
+const pageTitlePrefix = localizedBlogTitle[lang as keyof typeof localizedBlogTitle] ?? localizedBlogTitle.en;
+---
+
+<Base seoKey="blog" title={`${pageTitlePrefix} ${currentPage} | AstroPOS`}>
+  <Navbar />
+  <BlogIndexContent lang={lang} posts={pagePosts} currentPage={currentPage} totalPages={totalPages} />
+  <Footer />
+</Base>

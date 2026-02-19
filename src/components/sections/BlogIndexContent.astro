@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SidebarAdCard from './SidebarAdCard.astro';
+import { t } from '../../data/i18n';
+import { blogIndexSidebarCopy, fromLang } from '../../data/localizedCopy';
+import { adsConfig } from '../../config/ads';
+
+interface Props {
+  lang: string;
+  posts: CollectionEntry<'news'>[];
+  currentPage: number;
+  totalPages: number;
+}
+
+const { lang, posts, currentPage, totalPages } : any = Astro.props as Props;
+const st = fromLang(blogIndexSidebarCopy, lang);
+
+const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+const prevPage = currentPage > 1 ? currentPage - 1 : null;
+const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+
+const buildPageHref = (page: number) => (page === 1 ? `/${lang}/blog` : `/${lang}/blog/page/${page}`);
+---
+
+<main class="py-8 md:py-20 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <h1 class="text-4xl md:text-5xl font-black mb-12 uppercase text-[var(--color-text)]">{t('nav.blog', lang)}</h1>
+    
+    <div class="grid lg:grid-cols-[1fr_300px] gap-10">
+      <div>
+        <div class="space-y-6">
+          {posts.map((post: any) => (
+            <article class="bg-[var(--color-bg-card)] border-1 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-shadow)] overflow-hidden flex flex-col md:flex-row hover:shadow-[0px_0px_0px_0px_var(--color-shadow)] hover:-translate-y-1 transition-all">
+              <div class="md:w-1/3 bg-gray-200 border-b-2 md:border-b-0 md:border-r-2 border-[var(--color-border)] aspect-video md:aspect-auto overflow-hidden">
+                {post.data.image ? (
+                  <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                ) : (
+                  <div class="w-full h-full bg-gray-100 flex items-center justify-center px-4 text-center">
+                    <span class="text-xs font-black uppercase text-gray-500">{post.data.title}</span>
+                  </div>
+                )}
+              </div>
+              <div class="p-5 md:p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-4 text-xs font-bold text-gray-500 mb-2">
+                    <span class="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                      {post.data.pubDate.toISOString().slice(0, 10)}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                      {post.data.tags.join(', ')}
+                    </span>
+                  </div>
+                  <h2 class="text-xl font-black mb-2">
+                    <a href={`/${lang}/blog/${post.slug}`} class="hover:underline decoration-2 underline-offset-4 text-[var(--color-text)]">
+                      {post.data.title}
+                    </a>
+                  </h2>
+                  <p class="font-medium text-gray-600 text-sm mb-4 line-clamp-2">{post.data.description}</p>
+                </div>
+                <a href={`/${lang}/blog/${post.slug}`} class="self-start font-black text-lime-600 border-b-2 border-lime-600 hover:text-[var(--color-text)] hover:border-[var(--color-border)] transition-colors text-sm">
+                  {st.readArticle}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <nav class="mt-8 p-4 border-1 border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-[2px_2px_0px_0px_var(--color-shadow)]" aria-label="Blog pagination">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <a
+                href={prevPage ? buildPageHref(prevPage) : '#'}
+                aria-disabled={prevPage ? 'false' : 'true'}
+                class={`px-3 py-2 text-sm font-black border-1 border-[var(--color-border)] transition-colors ${
+                  prevPage
+                    ? 'bg-[var(--color-bg)] hover:bg-lime-50 text-[var(--color-text)]'
+                    : 'bg-gray-100 text-gray-400 pointer-events-none'
+                }`}
+              >
+                {st.paginationPrev}
+              </a>
+
+              <div class="flex items-center gap-2 flex-wrap justify-center">
+                {pageNumbers.map((page) => (
+                  <a
+                    href={buildPageHref(page)}
+                    aria-current={page === currentPage ? 'page' : undefined}
+                    class={`w-9 h-9 inline-flex items-center justify-center text-sm font-black border-1 border-[var(--color-border)] transition-colors ${
+                      page === currentPage
+                        ? 'bg-lime-400 text-black'
+                        : 'bg-[var(--color-bg)] text-[var(--color-text)] hover:bg-lime-50'
+                    }`}
+                  >
+                    {page}
+                  </a>
+                ))}
+              </div>
+
+              <a
+                href={nextPage ? buildPageHref(nextPage) : '#'}
+                aria-disabled={nextPage ? 'false' : 'true'}
+                class={`px-3 py-2 text-sm font-black border-1 border-[var(--color-border)] transition-colors ${
+                  nextPage
+                    ? 'bg-[var(--color-bg)] hover:bg-lime-50 text-[var(--color-text)]'
+                    : 'bg-gray-100 text-gray-400 pointer-events-none'
+                }`}
+              >
+                {st.paginationNext}
+              </a>
+            </div>
+            <p class="mt-3 text-xs font-bold text-gray-500 text-center">
+              {st.paginationPage} {currentPage}/{totalPages}
+            </p>
+          </nav>
+        )}
+      </div>
+
+      <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+        <SidebarAdCard lang={lang} count={adsConfig.sidebar.listPageCount} />
+      </aside>
+    </div>
+  </div>
+</main>

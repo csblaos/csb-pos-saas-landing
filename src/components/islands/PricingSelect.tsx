@@ -4,47 +4,34 @@ import type { Lang } from '../../lib/lang';
 import { t } from '../../data/i18n';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
 import { buildPricingSelectMessage, fromLang, pricingLeadFormCopy } from '../../data/localizedCopy';
-
-const plans = [
-    {
-        id: 'starter',
-        name: 'Starter',
-        price: 9,
-        priceLak: 200000,
-        features: ['pricing.starter.shops', 'pricing.starter.users', 'pricing.starter.reports', 'pricing.starter.channels']
-    },
-    {
-        id: 'pro',
-        name: 'Professional',
-        price: 19,
-        priceLak: 420000,
-        popular: true,
-        features: ['pricing.pro.shops', 'pricing.pro.users', 'pricing.pro.channels', 'pricing.pro.labels', 'pricing.pro.reports']
-    },
-    {
-        id: 'business',
-        name: 'Premium',
-        price: 49,
-        priceLak: 1100000,
-        features: ['pricing.business.shops', 'pricing.business.users', 'pricing.business.rbac', 'pricing.business.api', 'pricing.business.support']
-    }
-];
+import { packagePlans } from '../../data/packages';
+import {
+    getPlanPriceLak,
+    getStartTrialLabel,
+    getTrialBadgeLabel,
+    getTrialHintLabel,
+    getYearlyBonusLabel,
+    getYearlyFreeMonthsLabel,
+    isTrialAvailable,
+    type BillingCycle,
+    type PlanId,
+} from '../../config/pricing';
 
 export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
-    const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
-    const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+    const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+    const [selectedPlanId, setSelectedPlanId] = useState<PlanId | null>(null);
     const [isModalAnimatedIn, setIsModalAnimatedIn] = useState(false);
     const [leadForm, setLeadForm] = useState({ contactName: '', storeName: '', phone: '' });
     const [showNameError, setShowNameError] = useState(false);
     const formCopy = fromLang(pricingLeadFormCopy, lang);
 
-    const getPlanById = (planId: string) => plans.find((p) => p.id === planId);
+    const getPlanById = (planId: PlanId) => packagePlans.find((p) => p.id === planId);
 
-    const getPlanMeta = (plan: (typeof plans)[number]) => {
+    const getPlanMeta = (plan: (typeof packagePlans)[number]) => {
         const isYearly = billingCycle === 'yearly';
-        const finalPrice = isYearly ? plan.priceLak * 12 : plan.priceLak;
+        const finalPrice = getPlanPriceLak(plan.id, billingCycle);
         const period = isYearly ? t('pricing.yearly', lang) : t('pricing.monthly', lang);
-        const bonus = isYearly ? ` (${t('pricing.yearlyBonus', lang)})` : '';
+        const bonus = isYearly ? ` (${getYearlyBonusLabel(lang)})` : '';
 
         return {
             isYearly,
@@ -56,19 +43,20 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
     };
 
     const getWhatsAppLink = (
-        planId: string,
+        planId: PlanId,
         lead?: { contactName?: string; storeName?: string; phone?: string }
     ) => {
         const plan = getPlanById(planId);
         if (!plan) return '#';
 
-        const { formattedPrice, period, bonus } = getPlanMeta(plan);
-        const message = buildPricingSelectMessage(lang, plan.name, formattedPrice, period, bonus, lead);
+        const { formattedPrice, period, bonus, isYearly } = getPlanMeta(plan);
+        const includeTrial = isTrialAvailable(plan.id, isYearly ? 'yearly' : 'monthly');
+        const message = buildPricingSelectMessage(lang, plan.name, formattedPrice, period, bonus, includeTrial, lead);
 
         return buildWhatsAppLink(storeSettings.whatsapp.packageSales, message);
     };
 
-    const openLeadForm = (planId: string) => {
+    const openLeadForm = (planId: PlanId) => {
         setIsModalAnimatedIn(false);
         setSelectedPlanId(planId);
         setLeadForm({ contactName: '', storeName: '', phone: '' });
@@ -129,24 +117,30 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                     onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
                     className="relative w-16 h-8 bg-black rounded-full transition-colors focus:outline-none ring-2 ring-offset-2 ring-lime-400"
                 >
-                    <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-transform duration-200 ${billingCycle === 'yearly' ? 'left-9' : 'left-1'}`} />
+                    <div className={`absolute top-1 w-6 h-6 bg-white dark:bg-lime-400 rounded-full transition-transform duration-200 ${billingCycle === 'yearly' ? 'left-9' : 'left-1'}`} />
                 </button>
                 <div className="flex items-center gap-2">
                     <span className={`font-bold ${billingCycle === 'yearly' ? 'text-[var(--color-text)]' : 'text-gray-400'}`}>
                         {t('pricing.yearly', lang)}
                     </span>
                     <span className="bg-pink-400 text-white text-xs px-2 py-1 font-black border-1 border-black shadow-[2px_2px_0px_0px_black] flex items-center gap-1">
-                        <Gift size={12} /> {t('pricing.2monthsFree', lang)}
+                        <Gift size={12} /> {getYearlyFreeMonthsLabel(lang)}
                     </span>
                 </div>
             </div>
 
             {/* Plan Selection Grid */}
             <div className="grid md:grid-cols-3 gap-8 items-start">
-                {plans.map((plan) => {
+                {packagePlans.map((plan) => {
                     const isYearly = billingCycle === 'yearly';
-                    // Yearly = full price × 12 (pay 12 months, get 14 months)
-                    const displayPrice = isYearly ? plan.priceLak * 12 : plan.priceLak;
+                    const isTrialCycle = isTrialAvailable(plan.id, billingCycle);
+                    const planButtonClass =
+                        plan.id === 'business'
+                            ? 'border-[var(--color-border)] bg-black text-white hover:bg-gray-800'
+                            : plan.id === 'pro'
+                                ? 'border-black bg-lime-400 text-black hover:bg-lime-300 shadow-[2px_2px_0px_0px_black] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_black]'
+                                : 'border-[var(--color-border)] bg-[var(--color-bg)] hover:bg-gray-100 text-[var(--color-text)]';
+                    const displayPrice = getPlanPriceLak(plan.id, billingCycle);
 
                     return (
                         <div
@@ -174,7 +168,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                     <div className="mt-3 bg-lime-100 border-1 border-lime-400 px-3 py-2 inline-flex items-center gap-1.5">
                                         <Gift size={14} className="text-lime-700" />
                                         <span className="text-xs text-lime-800 font-black">
-                                            {t('pricing.yearlyBonus', lang)}
+                                            {getYearlyBonusLabel(lang)}
                                         </span>
                                     </div>
                                 )}
@@ -189,32 +183,19 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                 ))}
                             </ul>
 
-                            {/* Direct CTA Buttons */}
-                            {plan.id === 'starter' ? (
-                                <button
-                                    type="button"
-                                    onClick={() => openLeadForm(plan.id)}
-                                    className="w-full py-3 font-black border-2 border-[var(--color-border)] text-center transition-all bg-[var(--color-bg)] hover:bg-gray-100 text-[var(--color-text)] uppercase"
-                                >
-                                    {t('pricing.startTrial', lang)}
-                                </button>
-                            ) : plan.id === 'business' ? (
-                                <button
-                                    type="button"
-                                    onClick={() => openLeadForm(plan.id)}
-                                    className="w-full py-3 font-black border-1 border-[var(--color-border)] text-center transition-all bg-black text-white hover:bg-gray-800 uppercase"
-                                >
-                                    {t('pricing.getBusiness', lang)}
-                                </button>
-                            ) : (
-                                <button
-                                    type="button"
-                                    onClick={() => openLeadForm(plan.id)}
-                                    className="w-full py-3 font-black border-1 border-black text-center transition-all bg-lime-400 text-black hover:bg-lime-300 shadow-[2px_2px_0px_0px_black] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_black] uppercase"
-                                >
-                                    {t('pricing.getPro', lang)}
-                                </button>
-                            )}
+                            <button
+                                type="button"
+                                onClick={() => openLeadForm(plan.id)}
+                                className={`w-full py-3 font-black border-1 text-center transition-all uppercase ${planButtonClass}`}
+                            >
+                                {isTrialCycle
+                                    ? getStartTrialLabel(lang)
+                                    : plan.id === 'business'
+                                        ? t('pricing.getBusiness', lang)
+                                        : plan.id === 'pro'
+                                            ? t('pricing.getPro', lang)
+                                            : t('pricing.select', lang)}
+                            </button>
                         </div>
                     );
                 })}
@@ -230,7 +211,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
 
                     <div className="relative flex h-full w-full items-center justify-center p-4">
                         <div
-                            className={`relative w-full max-w-lg bg-white border-2 border-black shadow-[6px_6px_0px_0px_black] p-5 md:p-6 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                            className={`relative w-full max-w-lg bg-white border-1 border-black shadow-[2px_2px_0px_0px_black] p-5 md:p-6 transition-all duration-300 ease-out motion-reduce:transition-none ${
                                 isModalAnimatedIn ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
                             }`}
                             onClick={(event) => event.stopPropagation()}
@@ -243,7 +224,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                             <button
                                 type="button"
                                 onClick={closeLeadForm}
-                                className="p-1 border-2 border-black bg-white hover:bg-gray-100"
+                                className="p-1 border-1 border-black bg-white hover:bg-gray-100"
                                 aria-label={formCopy.close}
                             >
                                 <X size={16} />
@@ -265,13 +246,13 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                             </div>
                         </div>
 
-                        {selectedPlan.id === 'starter' && (
-                            <div className="mt-4 border-2 border-black bg-lime-100 p-3">
+                        {isTrialAvailable(selectedPlan.id, billingCycle) && (
+                            <div className="mt-4 border-1 border-black bg-lime-100 p-3">
                                 <span className="inline-block bg-black text-lime-300 px-2 py-1 text-[10px] md:text-xs font-black uppercase">
-                                    {formCopy.trialBadge}
+                                    {getTrialBadgeLabel(lang)}
                                 </span>
                                 <p className="mt-2 text-xs md:text-sm font-bold text-black">
-                                    {formCopy.trialHint}
+                                    {getTrialHintLabel(lang)}
                                 </p>
                             </div>
                         )}
@@ -286,7 +267,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                         if (showNameError && e.target.value.trim()) setShowNameError(false);
                                     }}
                                     placeholder={formCopy.contactPlaceholder}
-                                    className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
+                                    className="mt-1 w-full border-1 border-black px-3 py-2 font-semibold focus:outline-none"
                                 />
                                 {showNameError && (
                                     <p className="mt-1 text-xs font-bold text-red-600">{formCopy.requiredName}</p>
@@ -299,7 +280,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                     value={leadForm.storeName}
                                     onChange={(e) => setLeadForm((prev) => ({ ...prev, storeName: e.target.value }))}
                                     placeholder={formCopy.storePlaceholder}
-                                    className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
+                                    className="mt-1 w-full border-1 border-black px-3 py-2 font-semibold focus:outline-none"
                                 />
                             </label>
 
@@ -319,7 +300,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                                         }))
                                     }
                                     placeholder={formCopy.phonePlaceholder}
-                                    className="mt-1 w-full border-2 border-black px-3 py-2 font-semibold focus:outline-none"
+                                    className="mt-1 w-full border-1 border-black px-3 py-2 font-semibold focus:outline-none"
                                 />
                             </label>
                         </div>
@@ -328,14 +309,14 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
                             <button
                                 type="button"
                                 onClick={handleSendWithDetails}
-                                className="flex-1 py-3 font-black uppercase border-2 border-black bg-lime-400 text-black hover:bg-lime-300"
+                                className="flex-1 py-3 font-black uppercase border-1 border-black bg-lime-400 text-black hover:bg-lime-300"
                             >
                                 {formCopy.sendWithDetails}
                             </button>
                             <button
                                 type="button"
                                 onClick={handleQuickSend}
-                                className="flex-1 py-3 font-black uppercase border-2 border-black bg-white text-black hover:bg-gray-100"
+                                className="flex-1 py-3 font-black uppercase border-1 border-black bg-white text-black hover:bg-gray-100"
                             >
                                 {formCopy.sendQuick}
                             </button>
@@ -347,7 +328,7 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
 
             <div className="text-center">
                 <p className="text-sm text-gray-600 font-semibold">
-                    {t('pricing.noCreditCard', lang)} • {t('pricing.2monthsFree', lang)} {t('pricing.yearly', lang)}
+                    {t('pricing.noCreditCard', lang)} • {getYearlyFreeMonthsLabel(lang)} {t('pricing.yearly', lang)}
                 </p>
             </div>
         </div>
