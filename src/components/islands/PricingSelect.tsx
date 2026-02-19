@@ -5,6 +5,7 @@ import { t } from '../../data/i18n';
 import { buildWhatsAppLink, storeSettings } from '../../data/store';
 import { buildPricingSelectMessage, fromLang, pricingLeadFormCopy } from '../../data/localizedCopy';
 import { packagePlans } from '../../data/packages';
+import { trackEvent } from '../../lib/analytics';
 import {
     getPlanPriceLak,
     getStartTrialLabel,
@@ -57,6 +58,15 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
     };
 
     const openLeadForm = (planId: PlanId) => {
+        const plan = getPlanById(planId);
+        trackEvent('package_click', {
+            cta_name: 'open_package_form',
+            plan_id: planId,
+            plan_name: plan?.name ?? planId,
+            billing_cycle: billingCycle,
+            lang,
+            source_page: typeof window !== 'undefined' ? window.location.pathname : '',
+        });
         setIsModalAnimatedIn(false);
         setSelectedPlanId(planId);
         setLeadForm({ contactName: '', storeName: '', phone: '' });
@@ -82,6 +92,18 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
             return;
         }
 
+        const plan = getPlanById(selectedPlanId);
+        trackEvent('package_whatsapp_click', {
+            cta_name: 'send_with_details',
+            plan_id: selectedPlanId,
+            plan_name: plan?.name ?? selectedPlanId,
+            billing_cycle: billingCycle,
+            lang,
+            source_page: typeof window !== 'undefined' ? window.location.pathname : '',
+            has_store_name: Boolean(leadForm.storeName.trim()),
+            has_phone: Boolean(leadForm.phone.trim()),
+        });
+
         const link = getWhatsAppLink(selectedPlanId, leadForm);
         window.open(link, '_blank', 'noopener,noreferrer');
         closeLeadForm();
@@ -89,6 +111,15 @@ export default function PricingSelect({ lang = 'th' }: { lang?: Lang }) {
 
     const handleQuickSend = () => {
         if (!selectedPlanId) return;
+        const plan = getPlanById(selectedPlanId);
+        trackEvent('package_whatsapp_click', {
+            cta_name: 'quick_send',
+            plan_id: selectedPlanId,
+            plan_name: plan?.name ?? selectedPlanId,
+            billing_cycle: billingCycle,
+            lang,
+            source_page: typeof window !== 'undefined' ? window.location.pathname : '',
+        });
         const link = getWhatsAppLink(selectedPlanId);
         window.open(link, '_blank', 'noopener,noreferrer');
         closeLeadForm();

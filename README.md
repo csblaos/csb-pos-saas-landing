@@ -69,6 +69,7 @@ Use `src/config/` as the main config center:
 
 - `src/config/app.ts` - site + language config
 - `src/config/theme.ts` - theme colors
+- `src/config/analytics.ts` - Google Analytics config
 - `src/config/pricing.ts` - trial/yearly pricing policy
 - `src/config/blog.ts` - blog pagination size
 - `src/config/ads.ts` - blog sidebar ads behavior

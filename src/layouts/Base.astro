@@ -6,6 +6,7 @@ import ScrollToTop from '../components/islands/ScrollToTop';
 import { buildDefaultSchemas, resolveSeo } from '../lib/seo';
 import type { SeoPageKey } from '../data/seo/pages';
 import { getThemeCssVariables } from '../config/theme';
+import { analyticsConfig } from '../config/analytics';
 
 interface Props {
   title?: string;
@@ -42,6 +43,8 @@ const schemaPayloads = buildDefaultSchemas(lang).map((item) => JSON.stringify(it
 const themeInlineStyle = Object.entries(getThemeCssVariables())
   .map(([name, value]) => `${name}: ${value}`)
   .join('; ');
+const gaMeasurementId = analyticsConfig.gaMeasurementId;
+const enableGa = analyticsConfig.enabled && Boolean(gaMeasurementId);
 ---
 
 <!doctype html>
@@ -51,7 +54,7 @@ const themeInlineStyle = Object.entries(getThemeCssVariables())
     <meta name="description" content={seo.description} />
     <meta name="robots" content={seo.robots} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml+jpg" href="/cb-logo.PNG" />
     <link rel="canonical" href={seo.canonical} />
     {seo.alternates.map((alternate) => (
       <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
@@ -80,6 +83,37 @@ const themeInlineStyle = Object.entries(getThemeCssVariables())
     {schemaPayloads.map((schemaJson) => (
       <script type="application/ld+json" set:html={schemaJson}></script>
     ))}
+
+    {enableGa && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+        <script is:inline define:vars={{ gaMeasurementId }}>
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
+
+          if (!window.__astroGaInitialized) {
+            window.gtag('js', new Date());
+            window.gtag('config', gaMeasurementId, { send_page_view: false });
+            window.__astroGaInitialized = true;
+          }
+
+          const sendPageView = () => {
+            window.gtag('event', 'page_view', {
+              page_title: document.title,
+              page_location: window.location.href,
+              page_path: window.location.pathname + window.location.search,
+            });
+          };
+
+          if (!window.__astroGaPageViewBound) {
+            document.addEventListener('astro:page-load', sendPageView);
+            window.__astroGaPageViewBound = true;
+          }
+
+          sendPageView();
+        </script>
+      </>
+    )}
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

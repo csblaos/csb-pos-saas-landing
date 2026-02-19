@@ -108,6 +108,7 @@ const ogImage = new URL(`/open-graph/${lang}/hardware/${product.id}.png?v=2`, As
                 <a 
                     href={whatsappLink}
                     target="_blank"
+                    data-product-buy-whatsapp
                     class="w-full bg-lime-400 hover:bg-lime-300 text-black border-1 border-black font-black text-xl py-4 flex items-center justify-center gap-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all uppercase"
                 >
                     <Share2 size={24} /> {copy.buy}
@@ -147,6 +148,34 @@ const ogImage = new URL(`/open-graph/${lang}/hardware/${product.id}.png?v=2`, As
 
     </div>
   </main>
+
+  <script is:inline define:vars={{ productId: product.id, productName: product.name[lang], productCategory: product.category, langCode: lang }}>
+    const bindProductWhatsappTracking = () => {
+      const buyButton = document.querySelector('[data-product-buy-whatsapp]');
+      if (!buyButton || buyButton.dataset.gaBound === '1') return;
+
+      buyButton.dataset.gaBound = '1';
+      buyButton.addEventListener('click', () => {
+        if (typeof window.gtag !== 'function') return;
+        window.gtag('event', 'product_whatsapp_click', {
+          cta_name: 'buy_product_whatsapp',
+          product_id: productId,
+          product_name: productName,
+          product_category: productCategory,
+          lang: langCode,
+          source_page: window.location.pathname,
+        });
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindProductWhatsappTracking, { once: true });
+    } else {
+      bindProductWhatsappTracking();
+    }
+
+    document.addEventListener('astro:page-load', bindProductWhatsappTracking);
+  </script>
 
   <Footer />
 </Base>

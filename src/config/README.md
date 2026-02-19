@@ -9,6 +9,8 @@
   - i18n source: `defaultLang`, `languages`, `locale`
 - `src/config/theme.ts`
   - theme color tokens (`accent`, `secondary`)
+- `src/config/analytics.ts`
+  - GA tracking config (`gaMeasurementId`, `enabled`)
 - `src/config/pricing.ts`
   - trial days / trial plans / yearly bonus policy / base prices
 - `src/config/blog.ts`
@@ -36,6 +38,17 @@ npm run build
 - `pricingConfig.yearly.payMonths`
 - `pricingConfig.yearly.getMonths`
 - `pricingConfig.plans.*`
+
+## Change analytics (GA)
+
+แก้ที่ `src/config/analytics.ts`:
+
+- `analyticsConfig.gaMeasurementId`
+- `analyticsConfig.enabled`
+
+หรือ override ผ่าน env:
+
+- `PUBLIC_GA_MEASUREMENT_ID`
 
 ## Change blog page size
 

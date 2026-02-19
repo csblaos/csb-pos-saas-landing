@@ -36,6 +36,7 @@ npm run preview
 - `src/lib/seo.ts` + `src/data/seo/*`: preset SEO กลาง
 - `src/config/app.ts`: site/domain + language source
 - `src/config/theme.ts`: theme token กลาง (เปลี่ยนสีหลักที่นี่)
+- `src/config/analytics.ts`: Google Analytics config (measurement ID + enable flag)
 - `src/config/pricing.ts`: pricing/trial policy กลาง (เปลี่ยนราคา + จำนวนวัน trial + เดือนรายปีที่นี่)
 - `src/config/ads.ts`: ads behavior กลาง (count + weight + storage key)
 - `src/data/i18n.ts` + `src/data/localizedCopy.ts`: ข้อความหลายภาษา
